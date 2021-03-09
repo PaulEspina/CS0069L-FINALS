@@ -3,16 +3,18 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventListener;
 
 public class Login extends JFrame implements ActionListener
 {
-    private JTextField usernameTextField;
-    private JPasswordField passwordField;
-    private JButton submitButton;
+    final private JTextField usernameTextField;
+    final private JPasswordField passwordField;
+    final private JButton submitButton;
+
+    private int attempts;
 
     public Login()
     {
+        attempts = 0;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setSize(400, 200);
@@ -41,6 +43,7 @@ public class Login extends JFrame implements ActionListener
         submitButton.setFont(new Font("Arial", Font.BOLD, 10));
         submitButton.setFocusPainted(false);
         submitButton.setBounds(125, 100, 75, 20);
+        submitButton.setBackground(Color.WHITE);
         submitButton.addActionListener(this);
 
         loginPanel.add(usernameLabel);
@@ -72,9 +75,23 @@ public class Login extends JFrame implements ActionListener
             }
             else
             {
+                attempts += 1;
+                JOptionPane.showMessageDialog(null, "Incorrect username or password!");
+                switch(attempts)
+                {
+                    case 3:
+                        JOptionPane.showMessageDialog(null, "You have 2 attempts left.", "Warning", JOptionPane.WARNING_MESSAGE);
+                        break;
+                    case 4:
+                        JOptionPane.showMessageDialog(null, "You have 1 attempt left.", "Warning", JOptionPane.WARNING_MESSAGE);
+                        break;
+                    case 5:
+                        JOptionPane.showMessageDialog(null, "Too many incorrect attempts! Closing the program.", "Closing", JOptionPane.ERROR_MESSAGE);
+                        dispose();
+                        break;
+                }
                 usernameTextField.setText("");
                 passwordField.setText("");
-                JOptionPane.showMessageDialog(null, "Wrong username or password!");
             }
         }
     }
