@@ -28,4 +28,57 @@ public abstract class User
     }
 
     public abstract void logout();
+
+    // Setters
+    public void setUserID(int value)
+    {
+        userID = value;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
+
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
+
+    public void setMiddleName(String middleName)
+    {
+        this.middleName = middleName;
+    }
+
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
+    // Getters
+    public int getUserID()
+    {
+        return userID;
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public String getMiddleName()
+    {
+        return middleName;
+    }
+
+    public String getLastName()
+
+    {
+        return lastName;
+    }
 }
