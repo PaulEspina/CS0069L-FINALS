@@ -1,5 +1,6 @@
 public class Bill
 {
+    private int billID;
     private int recipientID;
     private String dateIssued;
     private double totalAmount;
@@ -7,14 +8,16 @@ public class Bill
 
     public Bill()
     {
+        billID = 0;
         recipientID = 0;
         dateIssued = "";
         totalAmount = 0.0;
         amountPaid = 0.0;
     }
 
-    public Bill(int recipientID, String dateIssued, double totalAmount, double amountPaid)
+    public Bill(int billID, int recipientID, String dateIssued, double totalAmount, double amountPaid)
     {
+        this.billID = billID;
         this.recipientID = recipientID;
         this.dateIssued = dateIssued;
         this.totalAmount = totalAmount;
@@ -22,6 +25,11 @@ public class Bill
     }
 
     // Setters
+    public void setBillID(int value)
+    {
+        billID = value;
+    }
+
     public void setRecipientID(int value)
     {
         recipientID = value;
@@ -52,6 +60,11 @@ public class Bill
     }
 
     // Getters
+    public int getBillID()
+    {
+        return billID;
+    }
+
     public int getRecipientID()
     {
         return recipientID;
