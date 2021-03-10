@@ -1,8 +1,7 @@
 public abstract class User
 {
-    protected int userID;
+    protected int userID; // 5 digits xyyyy, x=usertype, y=id
     protected String username;
-    protected String password;
     protected String firstName;
     protected String middleName;
     protected String lastName;
@@ -11,17 +10,15 @@ public abstract class User
     {
         userID = 0;
         username = "";
-        password = "";
         firstName = "";
         middleName = "";
         lastName = "";
     }
 
-    public User(int userID, String username, String password, String firstName, String middleName, String lastName)
+    public User(int userID, String username, String firstName, String middleName, String lastName)
     {
         this.userID = userID;
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -38,11 +35,6 @@ public abstract class User
     public void setUsername(String username)
     {
         this.username = username;
-    }
-
-    public void setPassword(String password)
-    {
-        this.password = password;
     }
 
     public void setFirstName(String firstName)
