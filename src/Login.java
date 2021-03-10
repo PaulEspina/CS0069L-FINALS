@@ -3,6 +3,7 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 public class Login extends JFrame implements ActionListener
 {
@@ -61,19 +62,7 @@ public class Login extends JFrame implements ActionListener
     {
         if(e.getSource() == submitButton)
         {
-            User user = authenticate(usernameTextField.getText(), String.valueOf(passwordField.getPassword()));
-            if(user != null)
-            {
-                switch(user.getUserID() / 10000)
-                {
-                    case 1:
-                        new AdminScreen();
-                    case 2:
-                        new TenantScreen();
-                }
-                dispose();
-            }
-            else
+            if(!authenticate(usernameTextField.getText(), String.valueOf(passwordField.getPassword())))
             {
                 attempts += 1;
                 JOptionPane.showMessageDialog(null, "Incorrect username or password!");
@@ -93,12 +82,43 @@ public class Login extends JFrame implements ActionListener
                 usernameTextField.setText("");
                 passwordField.setText("");
             }
+            else
+            {
+                dispose();
+            }
         }
     }
 
-    private User authenticate(String username, String password)
+    private boolean authenticate(String username, String password)
     {
-        //TODO
-        return null;
+        DatabaseConnection dbCon = DatabaseConnection.getInstance();
+        ResultSet result = dbCon.getResult("SELECT * FROM users WHERE username='" + username + "' and password='" + password + "'");
+        try
+        {
+            User user = null;
+            if(result.next())
+            {
+                int id = result.getInt("key");
+                String firstName = result.getString("first_name");
+                String middleName = result.getString("middle_name");
+                String lastName = result.getString("last_name");
+                switch((id / 10000))
+                {
+                    case 1:
+                        new Admin(id, username, firstName, middleName, lastName);
+                        break;
+                    case 2:
+                        new Tenant(id, username, firstName, middleName, lastName);
+                        break;
+                }
+                return true;
+            }
+            return false;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
