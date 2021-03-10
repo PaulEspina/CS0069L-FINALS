@@ -36,38 +36,37 @@ public class DatabaseConnection
             ResultSet resultSet;
 
             // Create a users table if none
-            resultSet = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='users");
+            resultSet = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='users'");
             if(!resultSet.next())
             {
                 statement.execute("CREATE TABLE users" +
                                   "(" +
                                   "key INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                  "username CHAR(32) NOT NULL," +
+                                  "username CHAR(32) NOT NULL UNIQUE," +
                                   "password CHAR(32) NOT NULL," +
-                                  "first_name CHAR(32) NOT NULL," +
-                                  "middle_name CHAR(32) NOT NULL, " +
-                                  "last_name CHAR(32) NOT NULL, " +
-                                  "user_id INT NOT NULL" +
+                                  "first_name CHAR(32)," +
+                                  "middle_name CHAR(32), " +
+                                  "last_name CHAR(32)" +
                                   ")");
             }
             resultSet.close();
 
             // create default admin account if none
-            resultSet = statement.executeQuery("SELECT username FROM user WHERE username='default_admin'");
+            resultSet = statement.executeQuery("SELECT username FROM users WHERE username='default_admin'");
             if(!resultSet.next())
             {
-                statement.execute("INSERT INTO user(username, password, user_id) VALUES('default_admin', 'admin', '10000");
+                statement.execute("INSERT INTO users(key, username, password, first_name, middle_name, last_name) VALUES('10000', 'default_admin', 'admin', '', '', '')");
             }
             resultSet.close();
 
             // create tenants table if none
-            resultSet = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' and name='tenants");
+            resultSet = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' and name='tenants'");
             if(!resultSet.next())
             {
                 statement.execute("CREATE TABLE tenants" +
                                   "(" +
                                   "key INTEGER PRIMARY KEY, " +
-                                  "room INT NOT NULL" +
+                                  "room INT NOT NULL," +
                                   "bills INT NOT NULL" +
                                   ")");
             }
@@ -83,20 +82,20 @@ public class DatabaseConnection
                                   "recipient_id INT NOT NULL," +
                                   "dateIssued CHAR(11) NOT NULL," +
                                   "total_amount DECIMAL(65, 30) NOT NULL," +
-                                  "amount_paid DECIMAL(65, 30) NOT NULL," +
+                                  "amount_paid DECIMAL(65, 30) NOT NULL" +
                                   ")");
             }
             resultSet.close();
 
             // create rooms table if none
-            resultSet = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' and name='rooms");
+            resultSet = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' and name='rooms'");
             if(!resultSet.next())
             {
                 statement.execute("CREATE TABLE rooms" +
                                   "(" +
                                   "key INTEGER PRIMARY KEY AUTOINCREMENT," +
                                   "room_number INT NOT NULL," +
-                                  "rent_amount DECIMAL(65, 30) NOT NULL," +
+                                  "rent_amount DECIMAL(65, 30) NOT NULL" +
                                   ")");
             }
             resultSet.close();
@@ -107,11 +106,11 @@ public class DatabaseConnection
         }
     }
 
-    public ResultSet getTable(String tableName)
+    public ResultSet getResult(String query)
     {
         try
         {
-            return statement.executeQuery("SELECT * from sqlite_master WHERE type='table' and name='" + tableName + "'");
+            return statement.executeQuery(query);
         }
         catch(Exception e)
         {
@@ -120,16 +119,15 @@ public class DatabaseConnection
         return null;
     }
 
-    public ResultSet getTableEntry(String tableName, int key)
+    public void execute(String query)
     {
         try
         {
-            return statement.executeQuery("SELECT * from '" + tableName + "' WHERE key='" + key + "'");
+            statement.execute(query);
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        return null;
     }
 }
