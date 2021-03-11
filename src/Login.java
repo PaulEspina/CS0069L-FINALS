@@ -95,7 +95,6 @@ public class Login extends JFrame implements ActionListener
         ResultSet result = dbCon.getResult("SELECT * FROM users WHERE username='" + username + "' and password='" + password + "'");
         try
         {
-            User user = null;
             if(result.next())
             {
                 int id = result.getInt("key");
@@ -105,10 +104,10 @@ public class Login extends JFrame implements ActionListener
                 switch((id / 10000))
                 {
                     case 1:
-                        new Admin(id, username, firstName, middleName, lastName);
+                        new Admin(id, username, firstName, middleName, lastName).start();
                         break;
                     case 2:
-                        new Tenant(id, username, firstName, middleName, lastName);
+                        new Tenant(id, username, firstName, middleName, lastName).start();
                         break;
                 }
                 return true;
