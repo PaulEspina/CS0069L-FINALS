@@ -24,6 +24,19 @@ public class DatabaseConnection
         return instance;
     }
 
+    public void close()
+    {
+        try
+        {
+            statement.close();
+            connection.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void init()
     {
         try
