@@ -1,7 +1,10 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.sql.*;
 
 public class DatabaseConnection
 {
@@ -54,21 +57,22 @@ public class DatabaseConnection
             {
                 statement.execute("CREATE TABLE users" +
                                   "(" +
-                                  "key INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                  "key INTEGER PRIMARY KEY, " +
                                   "username CHAR(32) NOT NULL UNIQUE," +
                                   "password CHAR(32) NOT NULL," +
                                   "first_name CHAR(32)," +
                                   "middle_name CHAR(32), " +
-                                  "last_name CHAR(32)" +
+                                  "last_name CHAR(32)," +
+                                  "image CHAR(256)" +
                                   ")");
             }
             resultSet.close();
 
             // create default admin account if none
-            resultSet = statement.executeQuery("SELECT username FROM users WHERE username='default_admin'");
+            resultSet = statement.executeQuery("SELECT username FROM users WHERE username='admin'");
             if(!resultSet.next())
             {
-                statement.execute("INSERT INTO users(key, username, password, first_name, middle_name, last_name) VALUES('10000', 'default_admin', 'admin', '', '', '')");
+                statement.execute("INSERT INTO users VALUES('100000', 'admin', 'admin', '', '', '', 'default_pic')");
             }
             resultSet.close();
 

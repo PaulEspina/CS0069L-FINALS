@@ -10,23 +10,33 @@ public abstract class User implements ActionListener
     private String firstName;
     private String middleName;
     private String lastName;
+    private String imagePath;
+
     protected JFrame window;
     protected JPanel sidePanel;
     protected JPanel contentPanel;
     CardLayout contentCard;
+    JButton profileButton;
 
-    protected User(int userID, String username, String firstName, String middleName, String lastName)
+    DatabaseConnection connection;
+
+    protected User(int userID, String username, String firstName, String middleName, String lastName, String imagePath)
     {
         this.userID = userID;
         this.username = username;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
+        this.imagePath = imagePath;
+        window = null;
+        sidePanel = new JPanel();
+        contentPanel = new JPanel();
+        contentCard = new CardLayout();
+        connection = DatabaseConnection.getInstance();
     }
 
     public void start()
     {
-        contentCard = new CardLayout();
         window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setSize(800, 600);
@@ -76,10 +86,20 @@ public abstract class User implements ActionListener
         this.lastName = lastName;
     }
 
+    protected void setImagePath(String imagePath)
+    {
+        this.imagePath = imagePath;
+    }
+
     // Getters
     protected int getUserID()
     {
         return userID;
+    }
+
+    protected String getUsername()
+    {
+        return username;
     }
 
     protected String getFirstName()
@@ -96,5 +116,10 @@ public abstract class User implements ActionListener
 
     {
         return lastName;
+    }
+
+    protected String getImagePath()
+    {
+        return imagePath;
     }
 }
