@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public abstract class User
+public abstract class User implements ActionListener
 {
     private int userID; // 5 digits xyyyy, x=usertype, y=id
     private String username;
@@ -9,9 +11,9 @@ public abstract class User
     private String middleName;
     private String lastName;
     protected JFrame window;
-    protected JPanel headerPanel;
-    protected JPanel navPanel;
+    protected JPanel sidePanel;
     protected JPanel contentPanel;
+    CardLayout contentCard;
 
     protected User(int userID, String username, String firstName, String middleName, String lastName)
     {
@@ -24,42 +26,21 @@ public abstract class User
 
     public void start()
     {
+        contentCard = new CardLayout();
         window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setSize(800, 600);
         window.setMinimumSize(new Dimension(800, 600));
-//        window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.setTitle("Apartment Management System");
         header();
-        nav();
         content();
-        window.add(headerPanel, BorderLayout.NORTH);
-        window.add(navPanel, BorderLayout.WEST);
+        window.add(sidePanel, BorderLayout.WEST);
         window.add(contentPanel, BorderLayout.CENTER);
         window.setVisible(true);
     }
 
-    private void header()
-    {
-        headerPanel = new JPanel();
-        headerPanel.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-        headerPanel.setPreferredSize(new Dimension(window.getWidth(), window.getHeight() / 8));
-        headerPanel.setLayout(new BorderLayout());
-
-        JLabel title = new JLabel("Apartment Management System");
-        title.setFont(new Font("Arial", Font.BOLD, 24));
-
-        JPanel userInfoPanel = new JPanel();
-        userInfoPanel.setPreferredSize(new Dimension(window.getWidth() / 6, window.getHeight()));
-        userInfoPanel.setBackground(Color.BLACK);
-        userInfoPanel.setOpaque(true);
-
-        headerPanel.add(title, BorderLayout.CENTER);
-        headerPanel.add(userInfoPanel, BorderLayout.EAST);
-    }
-
-    protected abstract void nav();
+    protected abstract void header();
 
     protected abstract void content();
 
