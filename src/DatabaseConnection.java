@@ -1,9 +1,3 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.sql.*;
 
 public class DatabaseConnection
@@ -72,7 +66,7 @@ public class DatabaseConnection
             resultSet = statement.executeQuery("SELECT username FROM users WHERE username='admin'");
             if(!resultSet.next())
             {
-                statement.execute("INSERT INTO users VALUES('100000', 'admin', 'admin', '', '', '', 'default_pic')");
+                statement.execute("INSERT INTO users VALUES('100000', 'admin', 'admin', '', '', '', 'default_pic.png')");
             }
             resultSet.close();
 
@@ -83,8 +77,7 @@ public class DatabaseConnection
                 statement.execute("CREATE TABLE tenants" +
                                   "(" +
                                   "key INTEGER PRIMARY KEY, " +
-                                  "room INT NOT NULL," +
-                                  "bills INT NOT NULL" +
+                                  "room INT NOT NULL" +
                                   ")");
             }
             resultSet.close();
