@@ -3,48 +3,48 @@ Topic: Apartment Management System
 A system that keeps track of the tenants and their payment status. Can be used by tenants to pay and administrators to manage the apartment.
 
 ### Admin GUI Map
-![](ReadMe/images/AdminMapGUI.png)
+![](images/AdminMapGUI.png)
 
 ### Tenant GUI Map
-![](ReadMe/images/TenantMapGUI.png)
+![](images/TenantMapGUI.png)
 
 ### GUI Design
 #### Main Tenant Screen
 Dimension: 800x600
-![](ReadMe/images/GUIDesign/Tenant.png)
+![](images/GUIDesign/Tenant.png)
 #### Bill Details
 Dimension: 500x300
-![](ReadMe/images/GUIDesign/Bill.png)
+![](images/GUIDesign/Bill.png)
 #### Main Admin Screen
 Dimension: 800x600
-![](ReadMe/images/GUIDesign/Admin.png)
+![](images/GUIDesign/Admin.png)
 #### Admin Manage Apartment
 Dimension: 800x600
-![](ReadMe/images/GUIDesign/AdminManageApartment.png)
+![](images/GUIDesign/AdminManageApartment.png)
 #### Admin Manage Tenants
 Dimension: 800x600
-![](ReadMe/images/GUIDesign/AdminManageTenants.png)
+![](images/GUIDesign/AdminManageTenants.png)
 #### Admin Create Bill
 Dimension: 800x600
-![](ReadMe/images/GUIDesign/AdminCreateBill.png)
+![](images/GUIDesign/AdminCreateBill.png)
 #### Admin Create User
 Dimension: 800x600
-![](ReadMe/images/GUIDesign/AdminCreateUser.png)
+![](images/GUIDesign/AdminCreateUser.png)
 #### Room Details
 Dimension: 500x300
-![](ReadMe/images/GUIDesign/Room.png)
+![](images/GUIDesign/Room.png)
 #### Tenant Details
 Dimension: 500x300
-![](ReadMe/images/GUIDesign/TenantDetails.png)
+![](images/GUIDesign/TenantDetails.png)
 #### Payment Status
 Dimension: 500x300
-![](ReadMe/images/GUIDesign/PaymentStatus.png)
+![](images/GUIDesign/PaymentStatus.png)
 #### Profile Screen
 Dimension: 500x300
-![](ReadMe/images/GUIDesign/Profile.png)
+![](images/GUIDesign/Profile.png)
 #### Login Screen
 Dimension: 400x200
-![](ReadMe/images/GUIDesign/Login.png)
+![](images/GUIDesign/Login.png)
 
 ### Coding Convention
 1. Use tab size 4 (four spaces). If hindi four spaces ginagawa ng tab nyo, punta kayo sa *Codio -> Preferences -> User*. Then under [editor] iadd nyo tong line na to: 
