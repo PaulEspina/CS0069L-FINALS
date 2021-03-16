@@ -1,20 +1,21 @@
-import java.util.ArrayList;
-
 public class Tenant extends User
 {
-    public Tenant()
+    private Room room;
+
+    public Tenant(int userID, String username, String firstName, String middleName, String lastName, String imagePath)
     {
-        super();
+        super(userID, username, firstName, middleName, lastName, imagePath);
     }
 
-    public Tenant(int userID, String username, String firstName, String middleName, String lastName)
+    // Setters
+    public void setRoom(Room room)
     {
-        super(userID, username, firstName, middleName, lastName);
-        System.out.println("tenant");
+        this.room = room;
     }
-    @Override
-    public void logout()
-    {
 
+    // Getters
+    public Room getRoom()
+    {
+        return room;
     }
 }

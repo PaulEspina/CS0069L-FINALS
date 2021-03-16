@@ -4,40 +4,38 @@ import java.awt.*;
 public class AdminView
 {
     private Admin admin;
-    private JFrame window;
+    private JFrame frame;
     private JPanel sidePanel;
     private JPanel contentPanel;
     private JButton[] navButtons;
-    CardLayout contentCard;
-    JButton profileButton;
+    private CardLayout contentCard;
+    private JButton profileButton;
 
     public AdminView(Admin admin)
     {
         this.admin = admin;
-        window = null;
-        sidePanel = new JPanel();
-        contentPanel = new JPanel();
-        contentCard = new CardLayout();
     }
 
     public void start()
     {
-        window = new JFrame();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setSize(800, 600);
-        window.setMinimumSize(new Dimension(800, 600));
-        window.setLocationRelativeTo(null);
-        window.setTitle("Apartment Management System");
-        header();
+        contentCard = new CardLayout();
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setMinimumSize(new Dimension(800, 600));
+        frame.setLocationRelativeTo(null);
+        frame.setTitle("Apartment Management System");
+        side();
         content();
-        window.add(sidePanel, BorderLayout.WEST);
-        window.add(contentPanel, BorderLayout.CENTER);
-        window.setVisible(true);
+        frame.add(sidePanel, BorderLayout.WEST);
+        frame.add(contentPanel, BorderLayout.CENTER);
+        frame.setVisible(true);
     }
 
-    protected void header()
+    protected void side()
     {
-        sidePanel.setPreferredSize(new Dimension(window.getWidth() / 6, window.getHeight()));
+        sidePanel = new JPanel();
+        sidePanel.setPreferredSize(new Dimension(frame.getWidth() / 6, frame.getHeight()));
         sidePanel.setLayout(new GridLayout(3, 1));
         sidePanel.setBackground(Color.WHITE);
         sidePanel.setOpaque(true);
@@ -48,12 +46,13 @@ public class AdminView
 
         JLabel profileLabel = new JLabel();
         profileLabel.setFont(new Font("Arial", Font.BOLD, 10));
-        profileLabel.setIcon(new ImageIcon(new ImageIcon(admin.getImagePath()).getImage().getScaledInstance(window.getWidth() / 8, window.getWidth() / 8, Image.SCALE_SMOOTH)));
+        profileLabel.setIcon(new ImageIcon(new ImageIcon(admin.getImagePath()).getImage().getScaledInstance(frame.getWidth() / 8, frame.getWidth() / 8, Image.SCALE_SMOOTH)));
         profileLabel.setVerticalAlignment(JLabel.TOP);
         profileLabel.setHorizontalAlignment(JLabel.CENTER);
         profileLabel.setHorizontalTextPosition(JLabel.CENTER);
         profileLabel.setVerticalTextPosition(JLabel.BOTTOM);
 
+        //profileButton = new JButton(admin.getFirstName() + " " + admin.getLastName());
         profileButton = new JButton("Paul Espina");
         profileButton.setBackground(Color.WHITE);
         profileButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -96,6 +95,7 @@ public class AdminView
 
     protected void content()
     {
+        contentPanel = new JPanel();
         contentPanel.setBackground(Color.WHITE);
         contentPanel.setOpaque(true);
         contentPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
@@ -105,7 +105,6 @@ public class AdminView
         manageApartmentPanel.setBackground(Color.RED);
         manageApartmentPanel.setOpaque(true);
         //TODO
-
 
         JPanel manageTenantsPanel = new JPanel();
         manageTenantsPanel.setBackground(Color.GREEN);
@@ -133,9 +132,9 @@ public class AdminView
         return admin;
     }
 
-    public JFrame getWindow()
+    public JFrame getFrame()
     {
-        return window;
+        return frame;
     }
 
     public JPanel getSidePanel()
