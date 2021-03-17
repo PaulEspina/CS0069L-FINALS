@@ -90,7 +90,7 @@ public class DatabaseConnection
                                   "(" +
                                   "key INTEGER PRIMARY KEY AUTOINCREMENT," +
                                   "recipient_id INT NOT NULL," +
-                                  "dateIssued CHAR(11) NOT NULL," +
+                                  "date_issued CHAR(11) NOT NULL," +
                                   "total_amount DECIMAL(65, 30) NOT NULL," +
                                   "amount_paid DECIMAL(65, 30) NOT NULL" +
                                   ")");
