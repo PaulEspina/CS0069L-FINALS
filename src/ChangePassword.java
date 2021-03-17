@@ -7,13 +7,13 @@ import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ChangePassword extends JFrame implements WindowListener, ActionListener
+public class ChangePassword extends JFrame implements ActionListener
 {
 
     JButton confirm = new JButton();
-    JTextField currentPassword = new JTextField();
-    JTextField newPassword = new JTextField();
-    JTextField confirmPassword = new JTextField();
+    JPasswordField currentPassword = new JPasswordField();
+    JPasswordField newPassword = new JPasswordField();
+    JPasswordField confirmPassword = new JPasswordField();
     JLabel currentPass = new JLabel();
     JLabel newPass = new JLabel();
     JLabel confirmPass = new JLabel();
@@ -33,7 +33,6 @@ public class ChangePassword extends JFrame implements WindowListener, ActionList
         setSize(400, 200);
         setLayout(null);
         setLocationRelativeTo(null);
-        addWindowListener(this);
         setTitle("Change Password");
 
         //Francis - Current Password Message
@@ -109,6 +108,8 @@ public class ChangePassword extends JFrame implements WindowListener, ActionList
                 if(confirmPassword.getText().equals(newPassword.getText()))
                 {
                     connection.execute("UPDATE users SET password='" + confirmPassword.getText() + "' WHERE key ='" + user.user.getUserID()+ "'");
+                    JOptionPane.showMessageDialog(null,"Password Updated!","Congratulations", JOptionPane.WARNING_MESSAGE);
+                    dispose();
                 }
                 else
                 {
@@ -120,50 +121,5 @@ public class ChangePassword extends JFrame implements WindowListener, ActionList
                 JOptionPane.showMessageDialog(null,"Wrong Password!","ERROR",JOptionPane.WARNING_MESSAGE);
             }
         }
-        dispose();
-        JOptionPane.showMessageDialog(null,"Password Updated!","Congratulations", JOptionPane.WARNING_MESSAGE);
-    }
-
-
-    @Override
-    public void windowOpened(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e)
-    {
-
     }
 }
