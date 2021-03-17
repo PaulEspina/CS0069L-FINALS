@@ -3,8 +3,7 @@ Topic: Apartment Management System
 A system that keeps track of the tenants and their payment status. Can be used by tenants to pay and administrators to manage the apartment.
 
 ### Coding Convention
-1. Use tab size 4 (four spaces). If hindi four spaces ginagawa ng tab nyo, punta kayo sa *Codio -> Preferences -> User*. Then under [editor] iadd nyo tong line na to: 
-**tab_size = 4**
+1. Use tab size 4 (four spaces).
 2. Paki indent ng maayos ung code para malinaw basahin.
 3. Paki lagyan din ng comment above function definition, isulat nyo ung description nung function na yun, ano ginagawa non ganon.
 4. Open brackets on new line.
