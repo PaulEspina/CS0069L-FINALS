@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class AdminView
+public class AdminView extends UserView
 {
     private Admin admin;
     private JFrame frame;
