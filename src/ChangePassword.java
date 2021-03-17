@@ -7,20 +7,22 @@ import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ChangePassword extends JFrame implements WindowListener, ActionListener {
+public class ChangePassword extends JFrame implements WindowListener, ActionListener
+{
 
     JButton confirm = new JButton();
-    JTextField currentpassword = new JTextField();
-    JTextField newpassword = new JTextField();
-    JTextField confirmpassword = new JTextField();
-    JLabel currentpass = new JLabel();
-    JLabel newpass = new JLabel();
-    JLabel confirmpass = new JLabel();
+    JTextField currentPassword = new JTextField();
+    JTextField newPassword = new JTextField();
+    JTextField confirmPassword = new JTextField();
+    JLabel currentPass = new JLabel();
+    JLabel newPass = new JLabel();
+    JLabel confirmPass = new JLabel();
 
     DatabaseConnection connection;
 
     UserView user;
-    ChangePassword(UserView user){
+    ChangePassword(UserView user)
+    {
 
         this.user = user;
 
@@ -35,34 +37,34 @@ public class ChangePassword extends JFrame implements WindowListener, ActionList
         setTitle("Change Password");
 
         //Francis - Current Password Message
-        currentpass.setText("Please enter current password: ");
-        currentpass.setFont(new Font("Courier", Font.BOLD,12));
-        currentpass.setLayout(null);
-        currentpass.setBounds(15,20,250,25);
+        currentPass.setText("Please enter current password: ");
+        currentPass.setFont(new Font("Courier", Font.BOLD,12));
+        currentPass.setLayout(null);
+        currentPass.setBounds(15,20,250,25);
 
         //Francis - New Password Message
-        newpass.setText("Please enter new password: ");
-        newpass.setFont(new Font("Courier", Font.BOLD,12));
-        newpass.setLayout(null);
-        newpass.setBounds(15,50,250,25);
+        newPass.setText("Please enter new password: ");
+        newPass.setFont(new Font("Courier", Font.BOLD,12));
+        newPass.setLayout(null);
+        newPass.setBounds(15,50,250,25);
 
         //Francis - Confirm Password Message
-        confirmpass.setText("Please confirm your password: ");
-        confirmpass.setFont(new Font("Courier", Font.BOLD,12));
-        confirmpass.setLayout(null);
-        confirmpass.setBounds(15,80,250,25);
+        confirmPass.setText("Please confirm your password: ");
+        confirmPass.setFont(new Font("Courier", Font.BOLD,12));
+        confirmPass.setLayout(null);
+        confirmPass.setBounds(15,80,250,25);
 
         //Francis - Textfield for Current Password
-        currentpassword.setBounds(200,20,180,25);
-        currentpassword.setVisible(true);
+        currentPassword.setBounds(200,20,180,25);
+        currentPassword.setVisible(true);
 
         //Francis - Textfield for New Password
-        newpassword.setBounds(200,50,180,25);
-        newpassword.setVisible(true);
+        newPassword.setBounds(200,50,180,25);
+        newPassword.setVisible(true);
 
         //Francis - Textfield for Confirm Password
-        confirmpassword.setBounds(200,80,180,25);
-        confirmpassword.setVisible(true);
+        confirmPassword.setBounds(200,80,180,25);
+        confirmPassword.setVisible(true);
 
         //Francis - Confirm Button
         confirm.setText("Confirm");
@@ -75,12 +77,12 @@ public class ChangePassword extends JFrame implements WindowListener, ActionList
         confirm.addActionListener(this);
 
         //Francis - add to the frame
-        add(currentpass);
-        add(newpass);
-        add(confirmpass);
-        add(currentpassword);
-        add(newpassword);
-        add(confirmpassword);
+        add(currentPass);
+        add(newPass);
+        add(confirmPass);
+        add(currentPassword);
+        add(newPassword);
+        add(confirmPassword);
         add(confirm);
 
     }
@@ -102,11 +104,11 @@ public class ChangePassword extends JFrame implements WindowListener, ActionList
             {
                 throwables.printStackTrace();
             }
-            if(currentpassword.getText().equals(password))
+            if(currentPassword.getText().equals(password))
             {
-                if(confirmpassword.getText().equals(newpassword.getText()))
+                if(confirmPassword.getText().equals(newPassword.getText()))
                 {
-                    connection.execute("UPDATE users SET password='" + confirmpassword.getText() + "' WHERE key ='" + user.user.getUserID()+ "'");
+                    connection.execute("UPDATE users SET password='" + confirmPassword.getText() + "' WHERE key ='" + user.user.getUserID()+ "'");
                 }
                 else
                 {
@@ -124,37 +126,44 @@ public class ChangePassword extends JFrame implements WindowListener, ActionList
 
 
     @Override
-    public void windowOpened(WindowEvent e) {
+    public void windowOpened(WindowEvent e)
+    {
 
     }
 
     @Override
-    public void windowClosing(WindowEvent e) {
+    public void windowClosing(WindowEvent e)
+    {
 
     }
 
     @Override
-    public void windowClosed(WindowEvent e) {
+    public void windowClosed(WindowEvent e)
+    {
 
     }
 
     @Override
-    public void windowIconified(WindowEvent e) {
+    public void windowIconified(WindowEvent e)
+    {
 
     }
 
     @Override
-    public void windowDeiconified(WindowEvent e) {
+    public void windowDeiconified(WindowEvent e)
+    {
 
     }
 
     @Override
-    public void windowActivated(WindowEvent e) {
+    public void windowActivated(WindowEvent e)
+    {
 
     }
 
     @Override
-    public void windowDeactivated(WindowEvent e) {
+    public void windowDeactivated(WindowEvent e)
+    {
 
     }
 }
