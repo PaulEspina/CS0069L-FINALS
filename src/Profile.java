@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,8 @@ import java.sql.ResultSet;
 
 public class Profile extends JFrame implements WindowListener, ActionListener
 {
+    DatabaseConnection connection;
+
     JLabel userid = new JLabel();
     JLabel username = new JLabel();
     JLabel usertype = new JLabel();
@@ -166,8 +169,8 @@ public class Profile extends JFrame implements WindowListener, ActionListener
             newfirstname.setVisible(false);
             firstname.setText("First Name: " + newfirstname.getText());
 
-            DatabaseConnection dbCon = DatabaseConnection.getInstance();
-            dbCon.getResult("UPDATE * FROM users WHERE name='tenants'" + firstname + "'");
+            connection = DatabaseConnection.getInstance();
+            connection.execute("UPDATE * FROM users WHERE name='tenants'" + firstname + "'");
 
         }
         if(e.getSource() == edit2){

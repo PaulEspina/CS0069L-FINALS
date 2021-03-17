@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class AdminView
+public class AdminView extends UserView
 {
     private Admin admin;
     private JFrame frame;

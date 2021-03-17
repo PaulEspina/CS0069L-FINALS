@@ -152,6 +152,14 @@ public class TenantView extends UserView {
     {
         return profile;
     }
+
+    public JButton getExit(){
+        return exit;
+    }
+
+    public JButton getLogout() {
+        return logout;
+    }
 }
 
 

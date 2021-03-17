@@ -15,6 +15,9 @@ public class TenantController implements ActionListener, WindowListener
 
         tenantView.start();
 
+
+        tenantView.getLogout().addActionListener(this);
+        tenantView.getExit().addActionListener(this);
         tenantView.getProfileButton().addActionListener(this);
     }
 
@@ -29,7 +32,9 @@ public class TenantController implements ActionListener, WindowListener
         if(e.getSource() == tenantView.getProfileButton()){
             new Profile(tenantView);
         }
-
+        if(e.getSource() == tenantView.getExit()){
+            tenantView.getFrame().dispose();
+        }
     }
 
     @Override
