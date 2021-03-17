@@ -25,8 +25,8 @@ public class Login extends JFrame implements ActionListener
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(null);
         loginPanel.setOpaque(true);
-        loginPanel.setBackground(new Color(100, 100, 255));
-        loginPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.BLUE, Color.BLACK));
+        loginPanel.setBackground(new Color(175, 175, 175));
+        loginPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.lightGray, Color.BLACK));
 
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setBounds(50, 40, 75, 25);
