@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.time.LocalDate;
 
 public class AdminView extends UserView
 {
@@ -17,10 +17,33 @@ public class AdminView extends UserView
     private JLabel billMiscLabel;
     private JTextField billMisc;
     private JLabel billTotal;
+    private JLabel billUname;
+    private JLabel billLname;
+    private JLabel billFname;
+    private JLabel billMname;
     private JButton[] navButtons;
     private CardLayout contentCard;
     private JButton profileButton;
     private JComboBox tenants;
+    private JTextField lastName;
+    private JTextField firstName;
+    private JTextField middleName;
+    private JTextField userName;
+    private JTextField password;
+    private JTextField confirmPass;
+    private JLabel lName;
+    private JLabel fName;
+    private JLabel mName;
+    private JLabel uName;
+    private JLabel pass;
+    private JLabel cpass;
+    private JButton create;
+    private JButton reset;
+    private JButton create1;
+    private JButton reset1;
+    private JButton uploadImg;
+    private JRadioButton adm;
+    private JRadioButton ten;
 
 
     public AdminView(Admin admin)
@@ -131,7 +154,37 @@ public class AdminView extends UserView
         createBillPanel.setOpaque(true);
         //TODO
 
-        ResultSet rs1 = connection.execute("SELECT * FROM users");
+        //Username
+
+        JLabel billUname = new JLabel();
+        billUname.setForeground(Color.DARK_GRAY);
+        billUname.setText("Username: ");
+        billUname.setBounds(400,100,100,20);
+
+        //Last Name
+
+        JLabel billLname = new JLabel();
+        billLname.setForeground(Color.DARK_GRAY);
+        billLname.setText("Last Name: ");
+        billLname.setBounds(400,120,100,20);
+
+        //First Name
+
+        JLabel billFname = new JLabel();
+        billFname.setForeground(Color.DARK_GRAY);
+        billFname.setText("First Name: ");
+        billFname.setBounds(400,140,100,20);
+
+        //Middle Name
+
+        JLabel billMname = new JLabel();
+        billMname.setForeground(Color.DARK_GRAY);
+        billMname.setText("Middle Name: ");
+        billMname.setBounds(400,160,100,20);
+
+
+
+       /* ResultSet rs1 = connection.getResult("SELECT * FROM users");
         try {
             while (rs1.next()) {
                 System.out.println("ID: " + rs1.getString(1));
@@ -144,13 +197,14 @@ public class AdminView extends UserView
                 rs1.close();
             }
         }
-        catch (SQLException e2){}
+        catch (SQLException e2){} */
 
 
 
+        // Image
 
         icon = new JLabel();
-        Date date = new Date();
+        LocalDate date = LocalDate.now();
 
         ResultSet resultSet = connection.getResult("SELECT image FROM users WHERE username = 'admin' ");
         String image_path = "";
@@ -164,6 +218,7 @@ public class AdminView extends UserView
 
         icon.setIcon(new ImageIcon(image_path));
 
+        //Date
 
         JLabel billDate = new JLabel();
         billDate.setForeground(Color.DARK_GRAY);
@@ -172,12 +227,16 @@ public class AdminView extends UserView
         billDate.setBounds(100,250, 200, 50);
         billDate.setVisible(true);
 
+        //Room Number
+
         JLabel billNum = new JLabel();
         billNum.setForeground(Color.DARK_GRAY);
         billNum.setFont(new Font("Times New Roman", Font.BOLD, 12));
         billNum.setText("Room Number: ");
         billNum.setBounds(100,270, 200, 50);
         billNum.setVisible(true);
+
+        //Room Fee
 
         JLabel billFee = new JLabel();
         billFee.setForeground(Color.DARK_GRAY);
@@ -186,8 +245,9 @@ public class AdminView extends UserView
         billFee.setBounds(100,290, 200, 50);
         billFee.setVisible(true);
 
-        JLabel billMiscLabel = new JLabel();
+        //Miscellaneous
 
+        JLabel billMiscLabel = new JLabel();
         billMiscLabel.setForeground(Color.DARK_GRAY);
         billMiscLabel.setText("Miscellaneous Fee: ");
         billMiscLabel.setBounds(100, 310, 150, 50);
@@ -199,6 +259,8 @@ public class AdminView extends UserView
         billMisc.setFont(new Font("Times New Roman", Font.BOLD, 12));
         billMisc.setEditable(true);
 
+        //Total Bill
+
         JLabel billTotal = new JLabel();
         billTotal.setForeground(Color.DARK_GRAY);
         billTotal.setFont(new Font("Times New Roman", Font.BOLD, 12));
@@ -206,20 +268,157 @@ public class AdminView extends UserView
         billTotal.setBounds(100,330, 200, 50);
         billTotal.setVisible(true);
 
+        //Create Button
+
+        JButton create1 = new JButton("Create");
+        create1.setBounds(500,470,100,30);
+
+        //Reset Button
+
+        JButton reset1 = new JButton("Reset");
+        reset1.setBounds(380,470,100,30);
+
 
 
 
 
         JPanel createUser = new JPanel();
-        createUser.setBackground(Color.YELLOW);
+        createUser.setLayout(null);
+        createUser.setBackground(Color.LIGHT_GRAY);
         createUser.setOpaque(true);
         //TODO
+
+        //Last name
+
+        JLabel lName = new JLabel();
+        lName.setForeground(Color.DARK_GRAY);
+        lName.setFont(new Font("Times New Roman", Font.BOLD, 12));
+        lName.setText("Last Name: ");
+        lName.setBounds(120, 300, 100,20);
+
+        JTextField lastName = new JTextField();
+        lastName.setBounds(225, 300, 100, 20);
+
+        //First Name
+
+        JLabel fName = new JLabel();
+        fName.setForeground(Color.DARK_GRAY);
+        fName.setFont(new Font("Times New Roman", Font.BOLD, 12));
+        fName.setText("First Name: ");
+        fName.setBounds(120, 325, 100, 20);
+
+        JTextField firstName = new JTextField();
+        firstName.setBounds(225,325, 100, 20);
+
+        //Middle Name
+
+        JLabel middleName = new JLabel();
+        middleName.setForeground(Color.DARK_GRAY);
+        middleName.setFont(new Font("Times New Roman", Font.BOLD, 12));
+        middleName.setText("Middle Name: ");
+        middleName.setBounds(120, 350, 100, 20);
+
+        JTextField mName = new JTextField();
+        mName.setBounds(225, 350, 100, 20);
+
+        //Username
+
+        JLabel uName = new JLabel();
+        uName.setForeground(Color.DARK_GRAY);
+        uName.setFont(new Font("Times New Roman", Font.BOLD, 12));
+        uName.setText("Username: ");
+        uName.setBounds(120, 375, 100, 20);
+
+        JTextField userName = new JTextField();
+        userName.setBounds(225, 375, 100, 20);
+
+
+        //Password
+
+        JLabel pass = new JLabel();
+        pass.setForeground(Color.DARK_GRAY);
+        pass.setFont(new Font("Times New Roman", Font.BOLD, 12));
+        pass.setText("Password: ");
+        pass.setBounds(120, 400, 100, 20);
+
+        JTextField password = new JTextField();
+        password.setBounds(225,400,100,20);
+
+
+        //Confirm Password
+
+        JLabel cpass = new JLabel();
+        cpass.setForeground(Color.DARK_GRAY);
+        cpass.setFont(new Font("Times New Roman", Font.BOLD, 12));
+        cpass.setText("Confirm Password: ");
+        cpass.setBounds(120, 425, 150,20);
+
+        JTextField confirmPass = new JTextField();
+        confirmPass.setBounds(225, 425,100,20);
+
+        //Create Button
+
+        JButton create = new JButton("Create");
+        create.setBounds(500,470,100,30);
+
+        //Reset Button
+
+        JButton reset = new JButton("Reset");
+        reset.setBounds(380,470,100,30);
+
+        //Upload BUtton
+
+        JButton uploadImg = new JButton("Upload Image");
+        uploadImg.setBounds(150,220,150,50);
+
+        //Admin Button
+
+        JRadioButton adm = new JRadioButton("Admin");
+        adm.setBackground(Color.LIGHT_GRAY);
+        adm.setForeground(Color.DARK_GRAY);
+        adm.setBounds(500, 310, 100,20);
+
+        //Tenant Button
+
+        JRadioButton ten = new JRadioButton("Tenant");
+        ten.setBackground(Color.LIGHT_GRAY);
+        ten.setForeground(Color.DARK_GRAY);
+        ten.setBounds(500, 330,100,20);
+
+
+
+
+        createUser.add(lName);
+        createUser.add(lastName);
+        createUser.add(fName);
+        createUser.add(firstName);
+        createUser.add(middleName);
+        createUser.add(mName);
+        createUser.add(uName);
+        createUser.add(userName);
+        createUser.add(pass);
+        createUser.add(password);
+        createUser.add(cpass);
+        createUser.add(confirmPass);
+        createUser.add(create);
+        createUser.add(reset);
+        createUser.add(uploadImg);
+        createUser.add(adm);
+        createUser.add(ten);
+
+        createBillPanel.add(billUname);
+        createBillPanel.add(billFname);
+        createBillPanel.add(billLname);
+        createBillPanel.add(billMname);
         createBillPanel.add(billTotal);
         createBillPanel.add(billMiscLabel);
         createBillPanel.add(billMisc);
         createBillPanel.add(billFee);
         createBillPanel.add(billNum);
         createBillPanel.add(billDate);
+        createBillPanel.add(create1);
+        createBillPanel.add(reset1);
+
         contentPanel.add("manageApartmentPanel", manageApartmentPanel);
         contentPanel.add("manageTenantsPanel", manageTenantsPanel);
         contentPanel.add("createBillPanel", createBillPanel);
