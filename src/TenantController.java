@@ -35,6 +35,10 @@ public class TenantController implements ActionListener, WindowListener
         if(e.getSource() == tenantView.getExit()){
             tenantView.getFrame().dispose();
         }
+        if(e.getSource() == tenantView.getLogout()){
+            tenantView.getFrame().dispose();
+            new Login();
+        }
     }
 
     @Override
