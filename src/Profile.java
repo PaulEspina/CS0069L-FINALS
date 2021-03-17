@@ -170,7 +170,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
             firstname.setText("First Name: " + newfirstname.getText());
 
             connection = DatabaseConnection.getInstance();
-            connection.execute("UPDATE * FROM users WHERE name='tenants'" + firstname + "'");
+            connection.execute("UPDATE users SET first_name='" + firstname +  "' WHERE key= '" + user.user.getUserID() + "'");
 
         }
         if(e.getSource() == edit2){
