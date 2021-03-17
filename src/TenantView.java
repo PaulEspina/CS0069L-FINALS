@@ -87,7 +87,7 @@ public class TenantView extends UserView {
 
         //Profile button
         profile = new JButton();
-        profile.setText("Username");
+        profile.setText(user.getUsername());
         profile.setBounds(25,180,110,20);
         profile.setBackground(Color.WHITE);
         profile.setBorderPainted(true);
