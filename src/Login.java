@@ -108,7 +108,7 @@ public class Login extends JFrame implements ActionListener
                         new AdminController(new Admin(id, username, firstName, middleName, lastName, imagePath));
                         break;
                     case 2:
-                        //new TenantController(new Tenant(id, username, firstName, middleName, lastName, imagePath));
+                        new TenantController(new Tenant(id, username, firstName, middleName, lastName, imagePath));
                         break;
                 }
                 return true;
