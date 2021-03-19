@@ -37,6 +37,7 @@ public class TenantController implements ActionListener, WindowListener
         }
     }
 
+
     @Override
     public void windowOpened(WindowEvent e)
     {

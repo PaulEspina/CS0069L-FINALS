@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class AdminView extends UserView
     private JTextField userName;
     private JTextField password;
     private JTextField confirmPass;
+    private JTextField search;
     private JLabel lName;
     private JLabel fName;
     private JLabel mName;
@@ -154,33 +156,39 @@ public class AdminView extends UserView
         createBillPanel.setOpaque(true);
         //TODO
 
+        //Seach Bar
+        JTextField search = new JTextField();
+        search.setBounds(250,50,300,30);
+
+
+
         //Username
 
         JLabel billUname = new JLabel();
         billUname.setForeground(Color.DARK_GRAY);
         billUname.setText("Username: ");
-        billUname.setBounds(400,100,100,20);
+        billUname.setBounds(370,100,100,20);
 
         //Last Name
 
         JLabel billLname = new JLabel();
         billLname.setForeground(Color.DARK_GRAY);
         billLname.setText("Last Name: ");
-        billLname.setBounds(400,120,100,20);
+        billLname.setBounds(370,120,100,20);
 
         //First Name
 
         JLabel billFname = new JLabel();
         billFname.setForeground(Color.DARK_GRAY);
         billFname.setText("First Name: ");
-        billFname.setBounds(400,140,100,20);
+        billFname.setBounds(370,140,100,20);
 
         //Middle Name
 
         JLabel billMname = new JLabel();
         billMname.setForeground(Color.DARK_GRAY);
         billMname.setText("Middle Name: ");
-        billMname.setBounds(400,160,100,20);
+        billMname.setBounds(370,160,100,20);
 
 
 
@@ -209,10 +217,13 @@ public class AdminView extends UserView
         ResultSet resultSet = connection.getResult("SELECT image FROM users WHERE username = 'admin' ");
         String image_path = "";
 
-        try {
+        try
+        {
             image_path = resultSet.getString("image");
             resultSet.close();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
 
@@ -225,7 +236,7 @@ public class AdminView extends UserView
         billDate.setFont(new Font("Times New Roman", Font.BOLD, 12));
         billDate.setText("Date: " + date);
         billDate.setBounds(100,250, 200, 50);
-        billDate.setVisible(true);
+
 
         //Room Number
 
@@ -234,7 +245,7 @@ public class AdminView extends UserView
         billNum.setFont(new Font("Times New Roman", Font.BOLD, 12));
         billNum.setText("Room Number: ");
         billNum.setBounds(100,270, 200, 50);
-        billNum.setVisible(true);
+
 
         //Room Fee
 
@@ -243,7 +254,7 @@ public class AdminView extends UserView
         billFee.setFont(new Font("Times New Roman", Font.BOLD, 12));
         billFee.setText("Room Rent Fee: ");
         billFee.setBounds(100,290, 200, 50);
-        billFee.setVisible(true);
+
 
         //Miscellaneous
 
@@ -251,13 +262,13 @@ public class AdminView extends UserView
         billMiscLabel.setForeground(Color.DARK_GRAY);
         billMiscLabel.setText("Miscellaneous Fee: ");
         billMiscLabel.setBounds(100, 310, 150, 50);
-        billMiscLabel.setVisible(true);
+
 
         JTextField billMisc = new JTextField();
         billMisc.setForeground(Color.DARK_GRAY);
         billMisc.setBounds(220,325,100, 20);
         billMisc.setFont(new Font("Times New Roman", Font.BOLD, 12));
-        billMisc.setEditable(true);
+
 
         //Total Bill
 
@@ -266,7 +277,7 @@ public class AdminView extends UserView
         billTotal.setFont(new Font("Times New Roman", Font.BOLD, 12));
         billTotal.setText("Total Fee: ");
         billTotal.setBounds(100,330, 200, 50);
-        billTotal.setVisible(true);
+
 
         //Create Button
 
@@ -360,6 +371,7 @@ public class AdminView extends UserView
 
         JButton create = new JButton("Create");
         create.setBounds(500,470,100,30);
+        create.addActionListener((ActionListener) this);
 
         //Reset Button
 
@@ -406,6 +418,7 @@ public class AdminView extends UserView
         createUser.add(adm);
         createUser.add(ten);
 
+        createBillPanel.add(search);
         createBillPanel.add(billUname);
         createBillPanel.add(billFname);
         createBillPanel.add(billLname);
@@ -440,7 +453,10 @@ public class AdminView extends UserView
         return sidePanel;
     }
 
-    public JLabel getIcon() { return icon ;}
+    public JLabel getIcon()
+    {
+        return icon ;
+    }
 
     public JPanel getContentPanel()
     {
