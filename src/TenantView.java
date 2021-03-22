@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.ResultSet;
@@ -22,7 +21,7 @@ public class TenantView extends UserView{
     private JPanel detailPanel;
     private JScrollPane panelScroll;
     private JTable detailTable;
-    DefaultTableModel dtt = new DefaultTableModel();
+    DefaultTableModel defaultTableModeltt = new DefaultTableModel();
 
     DatabaseConnection connection;
 
@@ -44,9 +43,9 @@ public class TenantView extends UserView{
         tenantPage.setLocationRelativeTo(null);
 
         //Table Settings
-        detailTable = new JTable(dtt);
+        detailTable = new JTable(defaultTableModeltt);
         detailTable.setOpaque(true);
-        dtt = (DefaultTableModel) detailTable.getModel();
+        defaultTableModeltt = (DefaultTableModel) detailTable.getModel();
         detailTable.setBackground(Color.LIGHT_GRAY);
         detailTable.setBounds(0,30,585,490);
 
@@ -103,6 +102,13 @@ public class TenantView extends UserView{
         ResultSet rs = connection.getResult("SELECT * FROM bills WHERE recipient_id='" + user.getUserID() + "'");
             try
             {
+                defaultTableModeltt.setRowCount(0);
+                defaultTableModeltt.addColumn("ID");
+                defaultTableModeltt.addColumn("Date");
+                defaultTableModeltt.addColumn("Total Amount");
+                defaultTableModeltt.addColumn("Amount Paid");
+                defaultTableModeltt.addColumn("Status");
+
                 while (rs.next())
                 {
                     int key = rs.getInt("key");
@@ -115,15 +121,10 @@ public class TenantView extends UserView{
 //                    detailTable.getModel().setValueAt(date,detailTable.getSelectedRow(), 0);
 //                    detailTable.getModel().setValueAt(totalAmount,detailTable.getSelectedRow(), 0);
 //                    detailTable.getModel().setValueAt(amountPaid,detailTable.getSelectedRow(), 0);
-                    dtt.setRowCount(6);
-                    dtt.addRow((new Object[]{recipient_id,dateIssue,totalAmount,amountPaid}));
-                    dtt.addColumn(recipient_id);
-                    dtt.addColumn(dateIssue);
-                    dtt.addColumn(totalAmount);
-                    dtt.addColumn(amountPaid);
-                    dtt.addColumn(status);
 
-                    break;
+                    defaultTableModeltt.addRow((new Object[]{recipient_id,dateIssue,totalAmount,amountPaid}));
+
+
                 }
             }
             catch (SQLException throwables)
