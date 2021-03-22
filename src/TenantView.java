@@ -1,22 +1,29 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+public class TenantView extends UserView{
 
-public class TenantView extends UserView {
-
-    private Tenant tenant;
+    private final Tenant tenant = null;
     private JFrame tenantPage;
     private JButton exit;
     private JButton logout;
     private JButton profile;
-    private JLabel welcomemessage;
+    private JLabel welcomeMessage;
     private JLabel id;
     private JLabel date;
-    private JLabel totalammount;
-    private JLabel ammountpaid;
+    private JLabel totalAmmount;
+    private JLabel ammountPaid;
     private JLabel status;
-    private JPanel picturepanel;
-    private JPanel detailpanel;
+    private JPanel picturePanel;
+    private JPanel detailPanel;
+    private JScrollPane panelScroll;
+    private JTable detailTable;
+    DefaultTableModel defaultTableModeltt = new DefaultTableModel();
+
+    DatabaseConnection connection;
 
     TenantView(Tenant tenant) {
         this.user = tenant;
@@ -26,7 +33,7 @@ public class TenantView extends UserView {
 
         //Frame settings.
         tenantPage = new JFrame();
-        tenantPage.setTitle("Hakdog draft quack quack");
+        tenantPage.setTitle("Apartment Management System");
         tenantPage.setResizable(false);
         tenantPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tenantPage.setSize(800, 600);
@@ -35,37 +42,42 @@ public class TenantView extends UserView {
 
         tenantPage.setLocationRelativeTo(null);
 
-        //BILL MESSAGE
-        welcomemessage = new JLabel();
-        welcomemessage.setBounds(190,25,200,22);
-        welcomemessage.setText("BILLS");
-        welcomemessage.setFont(new Font("Courier", Font.BOLD,25));
+        //Table Settings
+        detailTable = new JTable(defaultTableModeltt);
+        detailTable.setOpaque(true);
+        defaultTableModeltt = (DefaultTableModel) detailTable.getModel();
+        detailTable.setBackground(Color.LIGHT_GRAY);
+        detailTable.setBounds(0,30,585,490);
 
-        //Details
-        //detailpanel.setLayout(new GridLayout());
+        //BILL MESSAGE
+        welcomeMessage = new JLabel();
+        welcomeMessage.setBounds(190,25,200,22);
+        welcomeMessage.setText("BILLS");
+        welcomeMessage.setFont(new Font("Courier", Font.BOLD,25));
+
         id = new JLabel();
         id.setText("ID");
         id.setLayout(null);
-        id.setBounds(40, 5, 20,20);
+        id.setBounds(60, 5, 20,20);
         id.setFont(new Font("Courier", Font.BOLD, 16));
 
         date = new JLabel();
         date.setText("Date");
         date.setLayout(null);
-        date.setBounds(90, 5, 40,20);
+        date.setBounds(160, 5, 40,20);
         date.setFont(new Font("Courier", Font.BOLD, 16));
 
-        totalammount = new JLabel();
-        totalammount.setText("Total Amount");
-        totalammount.setLayout(null);
-        totalammount.setBounds(170, 5, 120,20);
-        totalammount.setFont(new Font("Courier", Font.BOLD, 16));
+        totalAmmount = new JLabel();
+        totalAmmount.setText("Total Amount");
+        totalAmmount.setLayout(null);
+        totalAmmount.setBounds(240, 5, 120,20);
+        totalAmmount.setFont(new Font("Courier", Font.BOLD, 16));
 
-        ammountpaid = new JLabel();
-        ammountpaid.setText("Amount Paid");
-        ammountpaid.setLayout(null);
-        ammountpaid.setBounds(340, 5, 120,20);
-        ammountpaid.setFont(new Font("Courier", Font.BOLD, 16));
+        ammountPaid = new JLabel();
+        ammountPaid.setText("Amount Paid");
+        ammountPaid.setLayout(null);
+        ammountPaid.setBounds(360, 5, 120,20);
+        ammountPaid.setFont(new Font("Courier", Font.BOLD, 16));
 
         status = new JLabel();
         status.setText("Status");
@@ -74,16 +86,54 @@ public class TenantView extends UserView {
         status.setFont(new Font("Courier", Font.BOLD, 16));
 
         //Setting for profile panel.
-        picturepanel = new JPanel();
-        picturepanel.setLayout(null);
-        picturepanel.setBounds(0,0,160,600);
-        picturepanel.setBackground(Color.lightGray);
+        picturePanel = new JPanel();
+        picturePanel.setLayout(null);
+        picturePanel.setBounds(0,0,160,600);
+        picturePanel.setBackground(Color.lightGray);
 
         //Settings for detail panel.
-        detailpanel = new JPanel();
-        detailpanel.setLayout(null);
-        detailpanel.setBounds(180,60,585,490);
-        detailpanel.setBackground(Color.lightGray);
+        detailPanel = new JPanel();
+        detailPanel.setLayout(null);
+        detailPanel.setBounds(180,60,585,490);
+        detailPanel.setBackground(Color.lightGray);
+
+        //bills statement of account
+        connection = DatabaseConnection.getInstance();
+        ResultSet rs = connection.getResult("SELECT * FROM bills WHERE recipient_id='" + user.getUserID() + "'");
+            try
+            {
+                defaultTableModeltt.setRowCount(0);
+                defaultTableModeltt.addColumn("ID");
+                defaultTableModeltt.addColumn("Date");
+                defaultTableModeltt.addColumn("Total Amount");
+                defaultTableModeltt.addColumn("Amount Paid");
+                defaultTableModeltt.addColumn("Status");
+
+                while (rs.next())
+                {
+                    int key = rs.getInt("key");
+                    int recipient_id = rs.getInt("recipient_id");
+                    String dateIssue = rs.getString("date_issued");
+                    String totalAmount = String.valueOf(rs.getInt("total_amount"));
+                    String amountPaid = String.valueOf(rs.getInt("amount_paid"));
+
+//                    detailTable.getModel().setValueAt(id,detailTable.getSelectedRow(), 0);
+//                    detailTable.getModel().setValueAt(date,detailTable.getSelectedRow(), 0);
+//                    detailTable.getModel().setValueAt(totalAmount,detailTable.getSelectedRow(), 0);
+//                    detailTable.getModel().setValueAt(amountPaid,detailTable.getSelectedRow(), 0);
+
+                    defaultTableModeltt.addRow((new Object[]{recipient_id,dateIssue,totalAmount,amountPaid}));
+
+
+                }
+            }
+            catch (SQLException throwables)
+            {
+                throwables.printStackTrace();
+            }
+
+        //Scroll Settings
+        panelScroll = new JScrollPane(detailTable,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         //Profile button
         profile = new JButton();
@@ -114,18 +164,20 @@ public class TenantView extends UserView {
         logout.setFocusable(false);
 
         //Add things.
-        tenantPage.add(detailpanel);
-        tenantPage.add(picturepanel);
-        tenantPage.add(welcomemessage);
-        picturepanel.add(logout);
-        picturepanel.add(exit);
-        picturepanel.add(profile);
-        detailpanel.add(id);
-        detailpanel.add(date);
-        detailpanel.add(totalammount);
-        detailpanel.add(ammountpaid);
-        detailpanel.add(status);
+        tenantPage.add(detailPanel);
+        tenantPage.add(picturePanel);
+        tenantPage.add(welcomeMessage);
+        picturePanel.add(logout);
+        picturePanel.add(exit);
+        picturePanel.add(profile);
+        detailPanel.add(panelScroll);
+        detailPanel.add(detailTable);
 
+        detailPanel.add(id);
+        detailPanel.add(date);
+        detailPanel.add(totalAmmount);
+        detailPanel.add(ammountPaid);
+        detailPanel.add(status);
     }
 
     public Tenant getModel()
@@ -140,12 +192,12 @@ public class TenantView extends UserView {
 
     public JPanel getSidePanel()
     {
-        return picturepanel;
+        return picturePanel;
     }
 
     public JPanel getContentPanel()
     {
-        return detailpanel;
+        return detailPanel;
     }
 
     public JButton getProfileButton()
