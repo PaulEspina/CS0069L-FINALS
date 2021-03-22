@@ -24,8 +24,8 @@ public class TenantView extends UserView{
     private JScrollPane panelScroll;
     private JTable detailTable;
 
-    DefaultTableCellRenderer defaultTableCellRenderer;
-    DefaultTableModel defaultTableModeltt;
+    private DefaultTableCellRenderer defaultTableCellRenderer;
+    private DefaultTableModel defaultTableModeltt;
 
     DatabaseConnection connection;
 
