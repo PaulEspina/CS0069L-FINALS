@@ -13,9 +13,9 @@ public class Tenant extends User implements ActionListener
 {
     private Room room;
 
-    public Tenant(int userID, String username, String firstName, String middleName, String lastName, String imagePath)
+    public Tenant(int userID, String username, String firstName, String middleName, String lastName)
     {
-        super(userID, username, firstName, middleName, lastName, imagePath);
+        super(userID, username, firstName, middleName, lastName);
         start();
     }
 

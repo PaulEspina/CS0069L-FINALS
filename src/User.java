@@ -7,21 +7,19 @@ public abstract class User
     protected String firstName;
     protected String middleName;
     protected String lastName;
-    protected String imagePath;
 
     protected JFrame frame;
     protected JPanel sidePanel;
     protected JPanel contentPanel;
     protected JButton profileButton;
 
-    protected User(int userID, String username, String firstName, String middleName, String lastName, String imagePath)
+    protected User(int userID, String username, String firstName, String middleName, String lastName)
     {
         this.userID = userID;
         this.username = username;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
-        this.imagePath = imagePath;
     }
 
     // Setters
@@ -50,11 +48,6 @@ public abstract class User
         this.lastName = lastName;
     }
 
-    protected void setImagePath(String imagePath)
-    {
-        this.imagePath = imagePath;
-    }
-
     // Getters
     protected int getUserID()
     {
@@ -80,11 +73,6 @@ public abstract class User
 
     {
         return lastName;
-    }
-
-    protected String getImagePath()
-    {
-        return imagePath;
     }
 
     public JFrame getFrame()

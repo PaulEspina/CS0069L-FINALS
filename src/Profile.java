@@ -290,12 +290,12 @@ public class Profile extends JFrame implements WindowListener, ActionListener
     @Override
     public void windowClosing(WindowEvent e)
     {
-        user.getProfileButton().setEnabled(true);
     }
 
     @Override
     public void windowClosed(WindowEvent e)
     {
+        user.getProfileButton().setEnabled(true);
     }
 
     @Override

@@ -101,14 +101,13 @@ public class Login extends JFrame implements ActionListener
                 String firstName = result.getString("first_name");
                 String middleName = result.getString("middle_name");
                 String lastName = result.getString("last_name");
-                String imagePath = result.getString("image");
                 switch((id / 100000))
                 {
                     case 1:
-                        new Admin(id, username, firstName, middleName, lastName, imagePath);
+                        new Admin(id, username, firstName, middleName, lastName);
                         break;
                     case 2:
-                        new Tenant(id, username, firstName, middleName, lastName, imagePath);
+                        new Tenant(id, username, firstName, middleName, lastName);
                         break;
                 }
                 return true;
