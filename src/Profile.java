@@ -29,11 +29,11 @@ public class Profile extends JFrame implements WindowListener, ActionListener
     JButton changePass = new JButton();
     JButton close = new JButton();
 
-    UserView user;
-    Profile(UserView user)
+    UserView userView;
+    Profile(UserView userView)
     {
 
-        this.user = user;
+        this.userView = userView;
 
         //Francis - Frame Settings
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -45,19 +45,19 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         setTitle("Profile");
 
         //Francis - Details of the User
-        userId.setText("User ID: " + user.user.getUserID());
+        userId.setText("User ID: " + userView.user.getUserID());
         userId.setBounds(180,30,1000,25);
         userId.setFont(new Font("Courier",Font.PLAIN,14));
 
         //Francis
-        userName.setText("Username: "+ user.user.getUsername());
+        userName.setText("Username: "+ userView.user.getUsername());
         userName.setBounds(180,60,200,25);
         userName.setFont(new Font("Courier",Font.PLAIN,14));
 
         //Francis
         userType.setBounds(180,90,200,25);
         userType.setFont(new Font("Courier",Font.PLAIN,14));
-        if(user.user.getUserID() / 100000 == 1)
+        if(userView.user.getUserID() / 100000 == 1)
         {
             userType.setText("User Type: Admin");
         }
@@ -66,17 +66,17 @@ public class Profile extends JFrame implements WindowListener, ActionListener
             userType.setText("User Type: Tenant");
         }
         //Francis
-        firstName.setText("First Name: "+ user.user.getFirstName());
+        firstName.setText("First Name: "+ userView.user.getFirstName());
         firstName.setBounds(30,140,200,25);
         firstName.setFont(new Font("Courier",Font.PLAIN,14));
 
         //Francis
-        middleName.setText("Middle Name: "+ user.user.getMiddleName());
+        middleName.setText("Middle Name: "+ userView.user.getMiddleName());
         middleName.setBounds(30,170,200,25);
         middleName.setFont(new Font("Courier",Font.PLAIN,14));
 
         //Francis
-        lastName.setText("Last Name: "+ user.user.getLastName());
+        lastName.setText("Last Name: "+ userView.user.getLastName());
         lastName.setBounds(30,200,200,25);
         lastName.setFont(new Font("Courier",Font.PLAIN,14));
 
@@ -212,10 +212,10 @@ public class Profile extends JFrame implements WindowListener, ActionListener
                 confirm1.setVisible(false);
                 newFirstname.setVisible(false);
                 firstName.setText("First Name: " + newFirstname.getText());
-                user.user.setFirstName(newFirstname.getText());
+                userView.user.setFirstName(newFirstname.getText());
 
                 connection = DatabaseConnection.getInstance();
-                connection.execute("UPDATE users SET first_name='" + newFirstname.getText() + "' WHERE key= '" + user.user.getUserID() + "'");
+                connection.execute("UPDATE users SET first_name='" + newFirstname.getText() + "' WHERE key= '" + userView.user.getUserID() + "'");
             }
         }
         if(e.getSource() == edit2)
@@ -238,10 +238,10 @@ public class Profile extends JFrame implements WindowListener, ActionListener
                 confirm2.setVisible(false);
                 newMiddlename.setVisible(false);
                 middleName.setText("Middle Name: " + newMiddlename.getText());
-                user.user.setMiddleName(newMiddlename.getText());
+                userView.user.setMiddleName(newMiddlename.getText());
 
                 connection = DatabaseConnection.getInstance();
-                connection.execute("UPDATE users SET middle_name='" + newMiddlename.getText() + "' WHERE key= '" + user.user.getUserID() + "'");
+                connection.execute("UPDATE users SET middle_name='" + newMiddlename.getText() + "' WHERE key= '" + userView.user.getUserID() + "'");
             }
         }
         if(e.getSource() == edit3)
@@ -259,21 +259,21 @@ public class Profile extends JFrame implements WindowListener, ActionListener
                 JOptionPane.showMessageDialog(null,"Please newpass atleast 1 characters !","ERROR", JOptionPane.WARNING_MESSAGE);
             }
             else
-                {
+            {
                 edit3.setEnabled(true);
                 edit3.setVisible(true);
                 confirm3.setVisible(false);
                 newLastname.setVisible(false);
                 lastName.setText("Last Name: " + newLastname.getText());
-                user.user.setLastName(newLastname.getText());
+                userView.user.setLastName(newLastname.getText());
 
                 connection = DatabaseConnection.getInstance();
-                connection.execute("UPDATE users SET last_name='" + newLastname.getText() + "' WHERE key= '" + user.user.getUserID() + "'");
+                connection.execute("UPDATE users SET last_name='" + newLastname.getText() + "' WHERE key= '" + userView.user.getUserID() + "'");
             }
         }
         if(e.getSource() == changePass)
         {
-            new ChangePassword(user);
+            new ChangePassword(userView);
         }
         if(e.getSource() == close)
         {
@@ -290,8 +290,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
     @Override
     public void windowClosing(WindowEvent e)
     {
-
-        user.getProfileButton().setEnabled(true);
+        userView.getProfileButton().setEnabled(true);
     }
 
     @Override
