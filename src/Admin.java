@@ -1,4 +1,4 @@
-import javafx.scene.chart.PieChart;
+import sun.rmi.runtime.Log;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Random;
 
 public class Admin extends User implements ActionListener, DocumentListener
@@ -57,9 +56,7 @@ public class Admin extends User implements ActionListener, DocumentListener
     JButton createUserResetButton;
     JButton createUserButton;
     // Create User Variables
-    String profilePicturePath;
     File image;
-
 
     public Admin(int userID, String username, String firstName, String middleName, String lastName)
     {
@@ -140,6 +137,30 @@ public class Admin extends User implements ActionListener, DocumentListener
 
         // LOGOUT PANEL STARTS
         JPanel logoutPanel = new JPanel();
+        logoutPanel.setLayout(null);
+
+        logoutButton = new JButton();
+        logoutButton.setText("Logout");
+        logoutButton.setHorizontalAlignment(JButton.LEFT);
+        logoutButton.setBounds(0,120,80,20);
+        logoutButton.setBorderPainted(false);
+        logoutButton.setContentAreaFilled(false);
+        logoutButton.setOpaque(false);
+        logoutButton.setFocusable(false);
+        logoutButton.addActionListener(this);
+
+        exitButton = new JButton();
+        exitButton.setText("Exit");
+        exitButton.setHorizontalAlignment(JButton.LEFT);
+        exitButton.setBounds(0,150,80,20);
+        exitButton.setBorderPainted(false);
+        exitButton.setContentAreaFilled(false);
+        exitButton.setOpaque(false);
+        exitButton.setFocusable(false);
+        exitButton.addActionListener(this);
+
+        logoutPanel.add(logoutButton);
+        logoutPanel.add(exitButton);
         // LOGOUT PANEL ENDS
         //TODO
 
@@ -618,6 +639,20 @@ public class Admin extends User implements ActionListener, DocumentListener
             {
                 JOptionPane.showMessageDialog(null, "Please fill all the fields.", "Insufficient Data", JOptionPane.ERROR_MESSAGE);
             }
+        }
+
+        // Logout Button
+        if(e.getSource() == logoutButton)
+        {
+            frame.dispose();
+            new Login();
+        }
+
+        // Exit Button
+        if(e.getSource() == exitButton)
+        {
+            connection.close();
+            frame.dispose();
         }
     }
 

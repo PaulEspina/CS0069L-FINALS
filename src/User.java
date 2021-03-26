@@ -12,6 +12,8 @@ public abstract class User
     protected JPanel sidePanel;
     protected JPanel contentPanel;
     protected JButton profileButton;
+    protected JButton logoutButton;
+    protected JButton exitButton;
 
     protected User(int userID, String username, String firstName, String middleName, String lastName)
     {
