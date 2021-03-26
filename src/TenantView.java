@@ -47,7 +47,13 @@ public class TenantView extends UserView{
         tenantPage.setLocationRelativeTo(null);
 
         //Table Settings
-        defaultTableModeltt = new DefaultTableModel();
+        defaultTableModeltt = new DefaultTableModel(){
+
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
         detailTable = new JTable(defaultTableModeltt);
         defaultTableCellRenderer = new DefaultTableCellRenderer();
         defaultTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -105,6 +111,7 @@ public class TenantView extends UserView{
         {
             detailTable.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
         }
+
         panelScroll = new JScrollPane(detailTable);
         panelScroll.setBounds(0,0,585,490);
         panelScroll.setBackground(Color.LIGHT_GRAY);
@@ -140,12 +147,6 @@ public class TenantView extends UserView{
         //Add things.
 
         detailPanel.add(panelScroll);
-
-//        detailPanel.add(id);
-//        detailPanel.add(date);
-//        detailPanel.add(totalAmmount);
-//        detailPanel.add(ammountPaid);
-//        detailPanel.add(status);
 
         picturePanel.add(logout);
         picturePanel.add(exit);
