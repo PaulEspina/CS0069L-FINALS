@@ -43,8 +43,8 @@ public class Login extends JFrame implements ActionListener
         submitButton = new JButton("SUBMIT");
         submitButton.setFont(new Font("Arial", Font.BOLD, 10));
         submitButton.setFocusPainted(false);
-        submitButton.setBounds(125, 100, 75, 20);
         submitButton.setBackground(Color.WHITE);
+        submitButton.setBounds(125, 100, 75, 20);
         submitButton.addActionListener(this);
 
         loginPanel.add(usernameLabel);
