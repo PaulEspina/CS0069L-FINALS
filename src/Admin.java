@@ -1,56 +1,43 @@
+import javafx.scene.chart.PieChart;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class Admin extends User implements ActionListener, WindowListener
 {
-    private JLabel icon;
-    private JLabel billDate;
-    private JLabel billNum;
-    private JLabel billFee;
-    private JLabel billMiscLabel;
-    private JTextField billMisc;
-    private JLabel billTotal;
-    private JLabel billUname;
-    private JLabel billLname;
-    private JLabel billFname;
-    private JLabel billMname;
+    DatabaseConnection connection;
     private JButton[] navButtons;
     private CardLayout contentCard;
-    private JComboBox tenants;
-    private JTextField lastName;
-    private JTextField firstName;
-    private JTextField middleName;
-    private JTextField userName;
-    private JTextField password;
-    private JTextField confirmPass;
-    private JTextField search;
-    private JLabel lName;
-    private JLabel fName;
-    private JLabel mName;
-    private JLabel uName;
-    private JLabel pass;
-    private JLabel cpass;
-    private JButton create;
-    private JButton reset;
-    private JButton create1;
-    private JButton reset1;
-    private JButton uploadImg;
-    private JRadioButton adm;
-    private JRadioButton ten;
+
+    // Create Bill Components
+    JTextField searchField;
+    JButton searchButton;
+    JLabel recipientPicture;
+    JLabel recipientUsername;
+    JLabel recipientFirstName;
+    JLabel recipientLastName;
+    JLabel recipientMiddleName;
+    String dateString;
+    JLabel recipientRoomNumber;
+    JLabel recipientRoomFee;
+    JTextField recipientMiscFee;
+    JLabel recipientTotalFee;
+    JButton createBillResetButton;
+    JButton createBillButton;
+
+    // Create User Components
+
 
     public Admin(int userID, String username, String firstName, String middleName, String lastName, String imagePath)
     {
         super(userID, username, firstName, middleName, lastName, imagePath);
         start();
     }
-
-    DatabaseConnection connection;
 
     public void start()
     {
@@ -156,104 +143,87 @@ public class Admin extends User implements ActionListener, WindowListener
     {
         JPanel createBillPanel = new JPanel();
         createBillPanel.setLayout(null);
-        createBillPanel.setBackground(Color.LIGHT_GRAY);
-        createBillPanel.setOpaque(true);
 
-        //Seach Bar
-        JTextField search = new JTextField();
-        search.setBounds(250,50,300,30);
+        JLabel recipientLabel = new JLabel();
+        recipientLabel.setText("Recipient ID:");
+        recipientLabel.setBounds(50, 25, 75, 25);
 
-        //Username
-        JLabel billUname = new JLabel();
-        billUname.setForeground(Color.DARK_GRAY);
-//        billUname.setText("Username: ");
-        billUname.setBounds(370,100,100,20);
+        searchField = new JTextField();
+        searchField.setBounds(125, 25, 350, 25);
+        searchField.setToolTipText("Enter tenant ID here.");
 
-        //Last Name
-        JLabel billLname = new JLabel();
-        billLname.setForeground(Color.DARK_GRAY);
-//        billLname.setText("Last Name: ");
-        billLname.setBounds(370,120,100,20);
-        //First Name
-        JLabel billFname = new JLabel();
-        billFname.setForeground(Color.DARK_GRAY);
-//        billFname.setText("First Name: ");
-        billFname.setBounds(370,140,100,20);
-        //Middle Name
-        JLabel billMname = new JLabel();
-        billMname.setForeground(Color.DARK_GRAY);
-//        billMname.setText("Middle Name: ");
-        billMname.setBounds(370,160,100,20);
-        // Image
-        icon = new JLabel();
-        ResultSet resultSet = connection.getResult("SELECT image FROM users WHERE username = 'admin' ");
-        String image_path = "";
-        try
-        {
-            image_path = resultSet.getString("image");
-            resultSet.close();
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        icon.setIcon(new ImageIcon(image_path));
-        //Date
-//        LocalDate date = LocalDate.now();
-        JLabel billDate = new JLabel();
-        billDate.setForeground(Color.DARK_GRAY);
-//        billDate.setFont(new Font("Times New Roman", Font.BOLD, 12));
-//        billDate.setText("Date: " + date);
-        billDate.setBounds(100,250, 200, 50);
-        //Room Number
-        JLabel billNum = new JLabel();
-        billNum.setForeground(Color.DARK_GRAY);
-//        billNum.setFont(new Font("Times New Roman", Font.BOLD, 12));
-//        billNum.setText("Room Number: ");
-        billNum.setBounds(100,270, 200, 50);
-        //Room Fee
-        JLabel billFee = new JLabel();
-        billFee.setForeground(Color.DARK_GRAY);
-//        billFee.setFont(new Font("Times New Roman", Font.BOLD, 12));
-//        billFee.setText("Room Rent Fee: ");
-        billFee.setBounds(100,290, 200, 50);
-        //Miscellaneous
-        JLabel billMiscLabel = new JLabel();
-        billMiscLabel.setForeground(Color.DARK_GRAY);
-//        billMiscLabel.setText("Miscellaneous Fee: ");
-        billMiscLabel.setBounds(100, 310, 150, 50);
+        searchButton = new JButton();
+        searchButton.setText("SELECT");
+        searchButton.setFont(new Font("Arial", Font.BOLD, 10));
+        searchButton.setFocusPainted(false);
+        searchButton.setBackground(Color.WHITE);
+        searchButton.setBounds(480, 25, 75, 24);
 
-        JTextField billMisc = new JTextField();
-        billMisc.setForeground(Color.DARK_GRAY);
-        billMisc.setBounds(220,325,100, 20);
-//        billMisc.setFont(new Font("Times New Roman", Font.BOLD, 12));
-        //Total Bill
-        JLabel billTotal = new JLabel();
-        billTotal.setForeground(Color.DARK_GRAY);
-//        billTotal.setFont(new Font("Times New Roman", Font.BOLD, 12));
-//        billTotal.setText("Total Fee: ");
-        billTotal.setBounds(100,330, 200, 50);
-        //Create Button
-        JButton create1 = new JButton("Create");
-        create1.setBounds(500,470,100,30);
-        //Reset Button
-        JButton reset1 = new JButton("Reset");
-        reset1.setBounds(380,470,100,30);
+        recipientPicture = new JLabel();
+        recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+        recipientPicture.setBounds(50, 100, recipientPicture.getIcon().getIconWidth(), recipientPicture.getIcon().getIconHeight());
+        recipientPicture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        createBillPanel.add(search);
-        createBillPanel.add(billUname);
-        createBillPanel.add(billFname);
-        createBillPanel.add(billLname);
-        createBillPanel.add(billMname);
-        createBillPanel.add(billTotal);
-        createBillPanel.add(billMiscLabel);
-        createBillPanel.add(billMisc);
-        createBillPanel.add(billFee);
-        createBillPanel.add(billNum);
-        createBillPanel.add(billDate);
-        createBillPanel.add(create1);
-        createBillPanel.add(reset1);
+        recipientUsername = new JLabel("Username:");
+        recipientUsername.setBounds(300, 100, 300, 25);
+        recipientFirstName = new JLabel("First Name:");
+        recipientFirstName.setBounds(300, 125, 300, 25);
+        recipientMiddleName = new JLabel("Middle Name:");
+        recipientMiddleName.setBounds(300, 150, 300, 25);
+        recipientLastName = new JLabel("Last Name:");
+        recipientLastName.setBounds(300, 175, 300, 25);
 
+        LocalDate localDate = LocalDate.now();
+        int month = localDate.getMonthValue();
+        int day = localDate.getDayOfMonth();
+        int year = localDate.getYear();
+        dateString = String.format("%2d/%2d/%4d", month, day, year);
+        JLabel date = new JLabel("Date Issued: " + dateString);
+        date.setBounds(60, 325, 500, 25);
+
+        recipientRoomNumber = new JLabel("Room Number:");
+        recipientRoomNumber.setBounds(60, 350, 500, 25);
+        recipientRoomFee = new JLabel("Room Rent Fee:");
+        recipientRoomFee.setBounds(60, 375, 500, 25);
+        JLabel miscFeeLabel = new JLabel("Miscellaneous Fee:");
+        miscFeeLabel.setBounds(60, 400, 150, 25);
+        recipientMiscFee = new JTextField();
+        recipientMiscFee.setEnabled(false);
+        recipientMiscFee.setToolTipText("Enter miscellaneous fees here.");
+        recipientMiscFee.setBounds(175, 400, 385, 25);
+        recipientTotalFee = new JLabel("Total Fee:");
+        recipientTotalFee.setBounds(60, 425, 500, 25);
+
+        createBillResetButton = new JButton("Reset");
+        createBillResetButton.setFont(new Font("Arial", Font.BOLD, 10));
+        createBillResetButton.setFocusPainted(false);
+        createBillResetButton.setBackground(Color.WHITE);
+        createBillResetButton.setBounds(475, 525, 75, 25);
+        createBillResetButton.addActionListener(this);
+
+        createBillButton = new JButton("Create");
+        createBillButton.setFont(new Font("Arial", Font.BOLD, 10));
+        createBillButton.setFocusPainted(false);
+        createBillButton.setBackground(Color.WHITE);
+        createBillButton.setBounds(560, 525, 75, 25);
+        createBillButton.addActionListener(this);
+
+        createBillPanel.add(recipientLabel);
+        createBillPanel.add(searchField);
+        createBillPanel.add(searchButton);
+        createBillPanel.add(recipientPicture);
+        createBillPanel.add(recipientUsername);
+        createBillPanel.add(recipientFirstName);
+        createBillPanel.add(recipientMiddleName);
+        createBillPanel.add(recipientLastName);
+        createBillPanel.add(date);
+        createBillPanel.add(recipientRoomNumber);
+        createBillPanel.add(recipientRoomFee);
+        createBillPanel.add(miscFeeLabel);
+        createBillPanel.add(recipientMiscFee);
+        createBillPanel.add(recipientTotalFee);
+        createBillPanel.add(createBillResetButton);
+        createBillPanel.add(createBillButton);
         contentPanel.add("createBillPanel", createBillPanel);
     }
 
