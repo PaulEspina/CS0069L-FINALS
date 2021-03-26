@@ -31,6 +31,8 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
     JButton createBillButton;
     double rentFee = 0;
     double totalFee = 0;
+    JLabel date;
+    String dateString;
 
     // Create User Components
 
@@ -177,7 +179,7 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
         recipientLastName.setBounds(300, 175, 300, 25);
 
 
-        JLabel date = new JLabel("Date Issued: ");
+        date = new JLabel("Date Issued: ");
         date.setBounds(60, 325, 500, 25);
 
         recipientRoomNumber = new JLabel("Room Number:");
@@ -437,6 +439,11 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
                 if(id / 100000 == 2)
                 {
                     ResultSet resultSet = connection.getResult("SELECT * FROM users WHERE key='" + id + "'");
+                    if(!resultSet.next())
+                    {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid recipient ID.", "Recipient not found.", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                     String username = resultSet.getString("username");
                     String firstName = resultSet.getString("first_name");
                     String middleName = resultSet.getString("middle_name");
@@ -451,13 +458,19 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
                     resultSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
                     int roomNumber = resultSet.getInt("room_number");
                     double rentAmount = resultSet.getDouble("rent_amount");
+                    if(!resultSet.next())
+                    {
+                        JOptionPane.showMessageDialog(null, "No room is assigned to this tenant. Please assign the tenant to a room first.", "Tenant does not have a room.", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                     resultSet.close();
 
                     LocalDate localDate = LocalDate.now();
                     int month = localDate.getMonthValue();
                     int day = localDate.getDayOfMonth();
                     int year = localDate.getYear();
-                    String dateString = String.format("%2d/%2d/%4d", month, day, year);
+                    dateString = String.format("%2d/%2d/%4d", month, day, year);
+                    date.setText("Date Issued: " + dateString);
                     recipientUsername.setText("Username: " + username);
                     recipientFirstName.setText("First Name: " + firstName);
                     recipientMiddleName.setText("Middle Name: " + middleName);
@@ -506,6 +519,35 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
             recipientMiscFee.setEnabled(false);
             createBillResetButton.setEnabled(false);
             createBillButton.setEnabled(false);
+        }
+
+        // Confirm Create Bill Button
+        if(e.getSource() == createBillButton)
+        {
+            connection.execute("INSERT INTO bills(recipient_id, date_issued, total_amount, amount_paid) " +
+                               "VALUES(" +
+                               "'" + searchField.getText() + "'," +
+                               "'" + dateString + "'," +
+                               "'" + totalFee + "'," +
+                               "'0'" +
+                               ")");
+            recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+            recipientUsername.setText("Username: ");
+            recipientFirstName.setText("First Name: ");
+            recipientMiddleName.setText("Middle Name: ");
+            recipientLastName.setText("Last Name: ");
+            recipientRoomNumber.setText("Room Number: ");
+            recipientRoomFee.setText("Room Rent Fee: ");
+            recipientMiscFee.setText("");
+            recipientTotalFee.setText("");
+            searchField.setText("");
+            rentFee = 0;
+            searchField.setEnabled(true);
+            searchButton.setEnabled(true);
+            recipientMiscFee.setEnabled(false);
+            createBillResetButton.setEnabled(false);
+            createBillButton.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "The bill is successfully created!", "Bill Created", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
