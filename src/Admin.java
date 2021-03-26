@@ -1,14 +1,17 @@
 import javafx.scene.chart.PieChart;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.InputMismatchException;
 
-public class Admin extends User implements ActionListener, WindowListener
+public class Admin extends User implements ActionListener, WindowListener, DocumentListener
 {
     DatabaseConnection connection;
     private JButton[] navButtons;
@@ -29,6 +32,8 @@ public class Admin extends User implements ActionListener, WindowListener
     JLabel recipientTotalFee;
     JButton createBillResetButton;
     JButton createBillButton;
+    double rentFee = 0;
+    double totalFee = 0;
 
     // Create User Components
 
@@ -158,6 +163,7 @@ public class Admin extends User implements ActionListener, WindowListener
         searchButton.setFocusPainted(false);
         searchButton.setBackground(Color.WHITE);
         searchButton.setBounds(480, 25, 75, 24);
+        searchButton.addActionListener(this);
 
         recipientPicture = new JLabel();
         recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
@@ -191,6 +197,7 @@ public class Admin extends User implements ActionListener, WindowListener
         recipientMiscFee.setEnabled(false);
         recipientMiscFee.setToolTipText("Enter miscellaneous fees here.");
         recipientMiscFee.setBounds(175, 400, 385, 25);
+        recipientMiscFee.getDocument().addDocumentListener(this);
         recipientTotalFee = new JLabel("Total Fee:");
         recipientTotalFee.setBounds(60, 425, 500, 25);
 
@@ -199,6 +206,7 @@ public class Admin extends User implements ActionListener, WindowListener
         createBillResetButton.setFocusPainted(false);
         createBillResetButton.setBackground(Color.WHITE);
         createBillResetButton.setBounds(475, 525, 75, 25);
+        createBillResetButton.setEnabled(false);
         createBillResetButton.addActionListener(this);
 
         createBillButton = new JButton("Create");
@@ -206,6 +214,7 @@ public class Admin extends User implements ActionListener, WindowListener
         createBillButton.setFocusPainted(false);
         createBillButton.setBackground(Color.WHITE);
         createBillButton.setBounds(560, 525, 75, 25);
+        createBillButton.setEnabled(false);
         createBillButton.addActionListener(this);
 
         createBillPanel.add(recipientLabel);
@@ -375,6 +384,7 @@ public class Admin extends User implements ActionListener, WindowListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        // Manage Apartment Button
         if(e.getSource() == navButtons[0])
         {
             for(JButton button : navButtons)
@@ -384,6 +394,8 @@ public class Admin extends User implements ActionListener, WindowListener
             navButtons[0].setBackground(Color.LIGHT_GRAY);
             contentCard.show(contentPanel, "manageApartmentPanel");
         }
+
+        // Manage Tenant Button
         if(e.getSource() == navButtons[1])
         {
             for(JButton button : navButtons)
@@ -393,6 +405,8 @@ public class Admin extends User implements ActionListener, WindowListener
             navButtons[1].setBackground(Color.LIGHT_GRAY);
             contentCard.show(contentPanel, "manageTenantsPanel");
         }
+
+        // Create Bill Button
         if(e.getSource() == navButtons[2])
         {
             for(JButton button : navButtons)
@@ -402,6 +416,8 @@ public class Admin extends User implements ActionListener, WindowListener
             navButtons[2].setBackground(Color.LIGHT_GRAY);
             contentCard.show(contentPanel, "createBillPanel");
         }
+
+        // Create User Button
         if(e.getSource() == navButtons[3])
         {
             for(JButton button : navButtons)
@@ -411,11 +427,101 @@ public class Admin extends User implements ActionListener, WindowListener
             navButtons[3].setBackground(Color.LIGHT_GRAY);
             contentCard.show(contentPanel, "createUser");
         }
+
+        // Show Profile Details Button
         if(e.getSource() == profileButton)
         {
             profileButton.setEnabled(false);
             new Profile(this);
         }
+
+        // Search Recipient Button
+        if(e.getSource() == searchButton)
+        {
+            try
+            {
+                int id = Integer.parseInt(searchField.getText());
+                if(id / 100000 == 2)
+                {
+                    ResultSet resultSet = connection.getResult("SELECT * FROM users WHERE key='" + id + "'");
+                    String username = resultSet.getString("username");
+                    String firstName = resultSet.getString("first_name");
+                    String middleName = resultSet.getString("middle_name");
+                    String lastName = resultSet.getString("last_name");
+                    String imagePath = resultSet.getString("image");
+                    resultSet.close();
+
+                    resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + id + "'");
+                    int roomID = resultSet.getInt("room");
+                    resultSet.close();
+
+                    resultSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
+                    int roomNumber = resultSet.getInt("room_number");
+                    double rentAmount = resultSet.getDouble("rent_amount");
+                    resultSet.close();
+
+                    recipientUsername.setText("Username: " + username);
+                    recipientFirstName.setText("First Name: " + firstName);
+                    recipientMiddleName.setText("Middle Name: " + middleName);
+                    recipientLastName.setText("Last Name: " + lastName);
+                    recipientRoomNumber.setText("Room Number: " + roomNumber);
+                    recipientRoomFee.setText("Room Rent Fee: " + rentAmount);
+                    rentFee = rentAmount;
+                    searchField.setEnabled(false);
+                    searchButton.setEnabled(false);
+                    recipientMiscFee.setEnabled(true);
+                    createBillResetButton.setEnabled(true);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid recipient ID.", "Recipient is not a tenant.", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            catch(NumberFormatException ex)
+            {
+                JOptionPane.showMessageDialog(null, "Please enter a valid recipient ID.", "Invalid Input.", JOptionPane.ERROR_MESSAGE);
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public void changeTotalFee(DocumentEvent e)
+    {
+        totalFee = rentFee;
+//        if(!recipientMiscFee.getText().isEmpty())
+//        {
+//            totalFee += Double.parseDouble(recipientMiscFee.getText());
+//        }
+        try
+        {
+            totalFee += Double.parseDouble(recipientMiscFee.getText());
+        }
+        catch(NumberFormatException ex)
+        {
+            System.err.println("Miscellaneous Fee textfield's value is not a number.");
+        }
+        recipientTotalFee.setText("Total Fee: " + totalFee);
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e)
+    {
+        changeTotalFee(e);
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e)
+    {
+        changeTotalFee(e);
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e)
+    {
     }
 
     @Override
@@ -458,6 +564,4 @@ public class Admin extends User implements ActionListener, WindowListener
     {
 
     }
-
-
 }
