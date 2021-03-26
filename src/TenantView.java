@@ -156,11 +156,6 @@ public class TenantView extends UserView{
         tenantPage.add(welcomeMessage);
     }
 
-    public Tenant getModel()
-    {
-        return tenant;
-    }
-
     public JFrame getFrame()
     {
         return tenantPage;
