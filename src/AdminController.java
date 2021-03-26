@@ -26,9 +26,6 @@ public class AdminController implements ActionListener, WindowListener
         }
     }
 
-
-
-
     private void logout()
     {
         DatabaseConnection dbCon = DatabaseConnection.getInstance();
