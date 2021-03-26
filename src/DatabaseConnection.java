@@ -56,8 +56,7 @@ public class DatabaseConnection
                                   "password CHAR(32) NOT NULL," +
                                   "first_name CHAR(32)," +
                                   "middle_name CHAR(32), " +
-                                  "last_name CHAR(32)," +
-                                  "image CHAR(256)" +
+                                  "last_name CHAR(32)" +
                                   ")");
             }
             resultSet.close();
@@ -66,7 +65,7 @@ public class DatabaseConnection
             resultSet = statement.executeQuery("SELECT username FROM users WHERE username='admin'");
             if(!resultSet.next())
             {
-                statement.execute("INSERT INTO users VALUES('100000', 'admin', 'admin', '', '', '', 'default_pic.png')");
+                statement.execute("INSERT INTO users VALUES('100000', 'admin', 'admin', '', '', '')");
             }
             resultSet.close();
 
@@ -77,7 +76,7 @@ public class DatabaseConnection
                 statement.execute("CREATE TABLE tenants" +
                                   "(" +
                                   "key INTEGER PRIMARY KEY, " +
-                                  "room INT NOT NULL" +
+                                  "room INT" +
                                   ")");
             }
             resultSet.close();
