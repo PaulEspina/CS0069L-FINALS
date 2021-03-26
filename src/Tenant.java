@@ -22,16 +22,12 @@ public class Tenant extends User implements ActionListener, WindowListener
     private final Tenant tenant = null;
     private JButton exit;
     private JButton logout;
-    private JButton profile;
+    private JButton pay;
     private JLabel welcomeMessage;
-    private JLabel id;
-    private JLabel date;
-    private JLabel totalAmmount;
-    private JLabel ammountPaid;
-    private JLabel status;
+    private JLabel enterID;
     private JPanel picturePanel;
     private JPanel detailPanel;
-    private JTable newpanel;
+    private JTextField idText;
     private JScrollPane panelScroll;
     private JTable detailTable;
 
@@ -104,12 +100,21 @@ public class Tenant extends User implements ActionListener, WindowListener
 
             while (rs.next())
             {
-                int recipient_id = rs.getInt("recipient_id");
+                int billID = rs.getInt("key");
                 String dateIssue = rs.getString("date_issued");
                 String totalAmount = String.valueOf(rs.getInt("total_amount"));
                 String amountPaid = String.valueOf(rs.getInt("amount_paid"));
 
-                defaultTableModeltt.addRow((new Object[]{recipient_id,dateIssue,totalAmount,amountPaid}));
+                String status;
+                if(Double.parseDouble(amountPaid) >= Double.parseDouble(totalAmount))
+                {
+                    status = "Paid";
+                }
+                else
+                {
+                    status = "Unpaid";
+                }
+                defaultTableModeltt.addRow((new Object[]{billID,dateIssue,totalAmount,amountPaid,status}));
             }
         }
         catch (SQLException throwables)
@@ -126,15 +131,36 @@ public class Tenant extends User implements ActionListener, WindowListener
         panelScroll.setBounds(0,0,585,490);
         panelScroll.setBackground(Color.LIGHT_GRAY);
 
+        //This is where ID input for pay bills.
+        idText = new JTextField();
+        idText.setBounds(590,36,100,20);
+
+        //Enter ID for textfield
+        enterID = new JLabel();
+        enterID.setText("Please enter ID:");
+        enterID.setFont(new Font("Courier",Font.PLAIN,14));
+        enterID.setBounds(480,35, 200,20);
+
+        //Pay Button
+        pay = new JButton();
+        pay.setText("Pay");
+        pay.setBackground(Color.WHITE);
+        pay.setFont(new Font("Courier", Font.PLAIN,14));
+        pay.setBounds(702,35,60,20);
+        pay.setFocusable(false);
+        pay.setOpaque(true);
+        pay.addActionListener(this);
+
         //Profile button
-        profile = new JButton();
-        profile.setText(username);
-        profile.setBounds(25,180,110,20);
-        profile.setBackground(Color.WHITE);
-        profile.setBorderPainted(true);
-        profile.setContentAreaFilled(false);
-        profile.setOpaque(true);
-        profile.setFocusable(false);
+        profileButton = new JButton();
+        profileButton.setText(username);
+        profileButton.setBounds(25,180,110,20);
+        profileButton.setBackground(Color.WHITE);
+        profileButton.setBorderPainted(true);
+        profileButton.setContentAreaFilled(false);
+        profileButton.setOpaque(true);
+        profileButton.setFocusable(false);
+        profileButton.addActionListener(this);
 
         //Exit button
         exit = new JButton();
@@ -162,8 +188,11 @@ public class Tenant extends User implements ActionListener, WindowListener
 
         picturePanel.add(logout);
         picturePanel.add(exit);
-        picturePanel.add(profile);
+        picturePanel.add(profileButton);
 
+        frame.add(enterID);
+        frame.add(idText);
+        frame.add(pay);
         frame.add(detailPanel);
         frame.add(picturePanel);
         frame.add(welcomeMessage);
@@ -172,15 +201,38 @@ public class Tenant extends User implements ActionListener, WindowListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource() == profileButton){
+        if(e.getSource() == profileButton)
+        {
             new Profile(this);
         }
-        if(e.getSource() == exit){
+        if(e.getSource() == exit)
+        {
             frame.dispose();
         }
-        if(e.getSource() == logout){
+        if(e.getSource() == logout)
+        {
             frame.dispose();
             new Login();
+        }
+        if(e.getSource() == pay)
+        {
+            DatabaseConnection con = DatabaseConnection.getInstance();
+            ResultSet rs = con.getResult("SELECT * FROM bills WHERE key='" + idText.getText() + "'");
+            try
+            {
+                if(rs.getDouble("amount_paid") >= rs.getDouble("total_amount"))
+                {
+                    JOptionPane.showMessageDialog(null,"Your bill is already paid!","Warning",JOptionPane.WARNING_MESSAGE);
+                }
+                else
+                {
+                    new PayBills(Integer.parseInt(idText.getText()));
+                }
+            }
+            catch (Exception f)
+            {
+                f.printStackTrace();
+            }
         }
     }
 
