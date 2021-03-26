@@ -8,8 +8,6 @@ import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.InputMismatchException;
 
 public class Admin extends User implements ActionListener, WindowListener, DocumentListener
 {
@@ -25,7 +23,6 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
     JLabel recipientFirstName;
     JLabel recipientLastName;
     JLabel recipientMiddleName;
-    String dateString;
     JLabel recipientRoomNumber;
     JLabel recipientRoomFee;
     JTextField recipientMiscFee;
@@ -179,12 +176,8 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
         recipientLastName = new JLabel("Last Name:");
         recipientLastName.setBounds(300, 175, 300, 25);
 
-        LocalDate localDate = LocalDate.now();
-        int month = localDate.getMonthValue();
-        int day = localDate.getDayOfMonth();
-        int year = localDate.getYear();
-        dateString = String.format("%2d/%2d/%4d", month, day, year);
-        JLabel date = new JLabel("Date Issued: " + dateString);
+
+        JLabel date = new JLabel("Date Issued: ");
         date.setBounds(60, 325, 500, 25);
 
         recipientRoomNumber = new JLabel("Room Number:");
@@ -460,12 +453,18 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
                     double rentAmount = resultSet.getDouble("rent_amount");
                     resultSet.close();
 
+                    LocalDate localDate = LocalDate.now();
+                    int month = localDate.getMonthValue();
+                    int day = localDate.getDayOfMonth();
+                    int year = localDate.getYear();
+                    String dateString = String.format("%2d/%2d/%4d", month, day, year);
                     recipientUsername.setText("Username: " + username);
                     recipientFirstName.setText("First Name: " + firstName);
                     recipientMiddleName.setText("Middle Name: " + middleName);
                     recipientLastName.setText("Last Name: " + lastName);
                     recipientRoomNumber.setText("Room Number: " + roomNumber);
                     recipientRoomFee.setText("Room Rent Fee: " + rentAmount);
+                    recipientPicture.setIcon(new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
                     rentFee = rentAmount;
                     searchField.setEnabled(false);
                     searchButton.setEnabled(false);
@@ -487,15 +486,32 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
                 System.out.println(ex.getMessage());
             }
         }
+
+        // Create Bill Reset Button
+        if(e.getSource() == createBillResetButton)
+        {
+            recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+            recipientUsername.setText("Username: ");
+            recipientFirstName.setText("First Name: ");
+            recipientMiddleName.setText("Middle Name: ");
+            recipientLastName.setText("Last Name: ");
+            recipientRoomNumber.setText("Room Number: ");
+            recipientRoomFee.setText("Room Rent Fee: ");
+            recipientMiscFee.setText("");
+            recipientTotalFee.setText("");
+            searchField.setText("");
+            rentFee = 0;
+            searchField.setEnabled(true);
+            searchButton.setEnabled(true);
+            recipientMiscFee.setEnabled(false);
+            createBillResetButton.setEnabled(false);
+            createBillButton.setEnabled(false);
+        }
     }
 
     public void changeTotalFee(DocumentEvent e)
     {
         totalFee = rentFee;
-//        if(!recipientMiscFee.getText().isEmpty())
-//        {
-//            totalFee += Double.parseDouble(recipientMiscFee.getText());
-//        }
         try
         {
             totalFee += Double.parseDouble(recipientMiscFee.getText());
@@ -505,6 +521,7 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
             System.err.println("Miscellaneous Fee textfield's value is not a number.");
         }
         recipientTotalFee.setText("Total Fee: " + totalFee);
+        createBillButton.setEnabled(true);
     }
 
     @Override
