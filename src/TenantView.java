@@ -47,16 +47,19 @@ public class TenantView extends UserView{
         tenantPage.setLocationRelativeTo(null);
 
         //Table Settings
-        defaultTableModeltt = new DefaultTableModel(){
-
+        defaultTableModeltt = new DefaultTableModel()
+        {
             @Override
-            public boolean isCellEditable(int row, int column){
-                return false;
+            public boolean isCellEditable(int row, int column)
+            {
+                    return false;
             }
         };
         detailTable = new JTable(defaultTableModeltt);
         defaultTableCellRenderer = new DefaultTableCellRenderer();
         defaultTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        detailTable.getTableHeader().setResizingAllowed(false);
+        detailTable.getTableHeader().setReorderingAllowed(false);
         detailTable.setOpaque(true);
         detailTable.setModel(defaultTableModeltt);
         detailTable.setBackground(Color.LIGHT_GRAY);
