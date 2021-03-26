@@ -20,10 +20,9 @@ public class ChangePassword extends JFrame implements ActionListener
 
     DatabaseConnection connection;
 
-    UserView user;
-    ChangePassword(UserView user)
+    User user;
+    ChangePassword(User user)
     {
-
         this.user = user;
 
         //Francis - Frame Settings
@@ -94,7 +93,7 @@ public class ChangePassword extends JFrame implements ActionListener
         {
             String password = null;
             connection = DatabaseConnection.getInstance();
-            ResultSet rs = connection.getResult("SELECT password FROM users WHERE key ='" + user.user.getUserID()+ "'");
+            ResultSet rs = connection.getResult("SELECT password FROM users WHERE key ='" + user.getUserID()+ "'");
             try
             {
                 password = rs.getString("password");
@@ -103,11 +102,11 @@ public class ChangePassword extends JFrame implements ActionListener
             {
                 throwables.printStackTrace();
             }
-            if(currentPassword.getText().equals(password))
+            if(String.valueOf(currentPassword.getPassword()).equals(password))
             {
-                if(confirmPassword.getText().equals(newPassword.getText()))
+                if(String.valueOf(currentPassword.getPassword()).equals(String.valueOf(currentPassword.getPassword())))
                 {
-                    connection.execute("UPDATE users SET password='" + confirmPassword.getText() + "' WHERE key ='" + user.user.getUserID()+ "'");
+                    connection.execute("UPDATE users SET password='" + String.valueOf(currentPassword.getPassword()) + "' WHERE key ='" + user.getUserID()+ "'");
                     JOptionPane.showMessageDialog(null,"Password Updated!","Congratulations", JOptionPane.WARNING_MESSAGE);
                     dispose();
                 }

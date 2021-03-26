@@ -105,10 +105,10 @@ public class Login extends JFrame implements ActionListener
                 switch((id / 100000))
                 {
                     case 1:
-                        new AdminController(new Admin(id, username, firstName, middleName, lastName, imagePath));
+                        new Admin(id, username, firstName, middleName, lastName, imagePath);
                         break;
                     case 2:
-                        new TenantController(new Tenant(id, username, firstName, middleName, lastName, imagePath));
+                        new Tenant(id, username, firstName, middleName, lastName, imagePath);
                         break;
                 }
                 return true;

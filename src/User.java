@@ -1,11 +1,18 @@
+import javax.swing.*;
+
 public abstract class User
 {
-    private int userID; // 5 digits xyyyy, x=usertype, y=id
-    private String username;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String imagePath;
+    protected int userID; // 5 digits xyyyy, x=usertype, y=id
+    protected String username;
+    protected String firstName;
+    protected String middleName;
+    protected String lastName;
+    protected String imagePath;
+
+    protected JFrame frame;
+    protected JPanel sidePanel;
+    protected JPanel contentPanel;
+    protected JButton profileButton;
 
     protected User(int userID, String username, String firstName, String middleName, String lastName, String imagePath)
     {
@@ -78,5 +85,25 @@ public abstract class User
     protected String getImagePath()
     {
         return imagePath;
+    }
+
+    public JFrame getFrame()
+    {
+        return frame;
+    }
+
+    public JPanel getSidePanel()
+    {
+        return sidePanel;
+    }
+
+    public JPanel getContentPanel()
+    {
+        return contentPanel;
+    }
+
+    public JButton getProfileButton()
+    {
+        return profileButton;
     }
 }
