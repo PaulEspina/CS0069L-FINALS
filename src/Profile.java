@@ -296,6 +296,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
     public void windowClosed(WindowEvent e)
     {
         user.getProfileButton().setEnabled(true);
+        user.getProfileButton().setText(user.getFirstName() + " " + user.getLastName());
     }
 
     @Override
