@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class Admin extends User implements ActionListener, WindowListener, DocumentListener
+public class Admin extends User implements ActionListener, DocumentListener
 {
     DatabaseConnection connection;
     private JButton[] navButtons;
@@ -29,12 +29,26 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
     JLabel recipientTotalFee;
     JButton createBillResetButton;
     JButton createBillButton;
+    JLabel date;
+    //Create Bill Variables
     double rentFee = 0;
     double totalFee = 0;
-    JLabel date;
     String dateString;
 
     // Create User Components
+    JLabel newPicture;
+    JButton uploadPictureButton;
+    JTextField enterFirstName;
+    JTextField enterMiddleName;
+    JTextField enterLastName;
+    JTextField enterUsername;
+    JPasswordField enterPassword;
+    JPasswordField enterConfirmPassword;
+    JRadioButton tenantTypeButton;
+    JRadioButton adminTypeButton;
+    ButtonGroup accountTypeButton;
+    JButton createUserResetButton;
+    JButton createUserButton;
 
 
     public Admin(int userID, String username, String firstName, String middleName, String lastName, String imagePath)
@@ -80,8 +94,7 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
         profileLabel.setHorizontalTextPosition(JLabel.CENTER);
         profileLabel.setVerticalTextPosition(JLabel.BOTTOM);
 
-        //profileButton = new JButton(admin.getFirstName() + " " + admin.getLastName());
-        profileButton = new JButton("Paul Espina");
+        profileButton = new JButton(firstName + " " + lastName);
         profileButton.setBackground(Color.WHITE);
         profileButton.setFont(new Font("Arial", Font.BOLD, 10));
         profileButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -106,7 +119,7 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
             button.setBackground(Color.WHITE);
             button.setFont(new Font("Arial", Font.PLAIN, 10));
             button.setHorizontalAlignment(JButton.LEFT);
-            button.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            button.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
             button.setFocusPainted(false);
             navigationPanel.add(button);
             button.addActionListener(this);
@@ -235,125 +248,95 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
     {
         JPanel createUser = new JPanel();
         createUser.setLayout(null);
-        createUser.setBackground(Color.LIGHT_GRAY);
-        createUser.setOpaque(true);
-        //TODO
 
-        //Last name
+        JLabel createUserHeader = new JLabel("CREATE USER");
+        createUserHeader.setBounds(50, 25, 400, 50);
+        createUserHeader.setFont(new Font("Arial", Font.BOLD, 32));
 
-        JLabel lName = new JLabel();
-        lName.setForeground(Color.DARK_GRAY);
-        lName.setFont(new Font("Times New Roman", Font.BOLD, 12));
-        lName.setText("Last Name: ");
-        lName.setBounds(120, 300, 100,20);
+        newPicture = new JLabel();
+        newPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+        newPicture.setBounds(50, 100, newPicture.getIcon().getIconWidth(), newPicture.getIcon().getIconHeight());
+        newPicture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        JTextField lastName = new JTextField();
-        lastName.setBounds(225, 300, 100, 20);
+        uploadPictureButton = new JButton("Upload Image");
+        uploadPictureButton.setFont(new Font("Arial", Font.BOLD, 9));
+        uploadPictureButton.setFocusPainted(false);
+        uploadPictureButton.setBackground(Color.WHITE);
+        uploadPictureButton.setBounds(75, 260, 100, 24);
+        uploadPictureButton.addActionListener(this);
 
-        //First Name
+        JLabel username = new JLabel("Username:");
+        username.setBounds(250, 100, 200, 25);
+        JLabel password = new JLabel("Password:");
+        password.setBounds(250, 135, 200, 25);
+        JLabel confirmPassword = new JLabel("Confirm Password:");
+        confirmPassword.setBounds(250, 170, 200, 25);
+        JLabel firstName = new JLabel("First Name:");
+        firstName.setBounds(250, 205, 200, 25);
+        JLabel middleName = new JLabel("Middle Name:");
+        middleName.setBounds(250, 240, 200, 25);
+        JLabel lastName = new JLabel("Last Name:");
+        lastName.setBounds(250, 275, 200, 25);
+        JLabel accountType = new JLabel("Account Type:");
+        accountType.setBounds(250, 310, 200, 25);
 
-        JLabel fName = new JLabel();
-        fName.setForeground(Color.DARK_GRAY);
-        fName.setFont(new Font("Times New Roman", Font.BOLD, 12));
-        fName.setText("First Name: ");
-        fName.setBounds(120, 325, 100, 20);
+        enterUsername = new JTextField();
+        enterUsername.setBounds(375, 100, 200, 25);
+        enterPassword = new JPasswordField();
+        enterPassword.setBounds(375, 135, 200, 25);
+        enterConfirmPassword = new JPasswordField();
+        enterConfirmPassword.setBounds(375, 170, 200, 25);
+        enterFirstName = new JTextField();
+        enterFirstName.setBounds(375, 205, 200, 25);
+        enterMiddleName = new JTextField();
+        enterMiddleName.setBounds(375, 240, 200, 25);
+        enterLastName = new JTextField();
+        enterLastName.setBounds(375, 275, 200, 25);
+        adminTypeButton = new JRadioButton("Admin");
+        adminTypeButton.setBounds(375, 310, 100, 25);
+        adminTypeButton.setFocusPainted(false);
+        tenantTypeButton = new JRadioButton("Tenant");
+        tenantTypeButton.setFocusPainted(false);
+        tenantTypeButton.setBounds(475, 310, 100, 25);
+        accountTypeButton = new ButtonGroup();
+        accountTypeButton.add(adminTypeButton);
+        accountTypeButton.add(tenantTypeButton);
 
-        JTextField firstName = new JTextField();
-        firstName.setBounds(225,325, 100, 20);
+        createUserResetButton = new JButton("Reset");
+        createUserResetButton.setFont(new Font("Arial", Font.BOLD, 10));
+        createUserResetButton.setFocusPainted(false);
+        createUserResetButton.setBackground(Color.WHITE);
+        createUserResetButton.setBounds(475, 525, 75, 25);
+        createUserResetButton.addActionListener(this);
 
-        //Middle Name
+        createUserButton = new JButton("Create");
+        createUserButton.setFont(new Font("Arial", Font.BOLD, 10));
+        createUserButton.setFocusPainted(false);
+        createUserButton.setBackground(Color.WHITE);
+        createUserButton.setBounds(560, 525, 75, 25);
+        createUserButton.setEnabled(false);
+        createUserButton.addActionListener(this);
 
-        JLabel middleName = new JLabel();
-        middleName.setForeground(Color.DARK_GRAY);
-        middleName.setFont(new Font("Times New Roman", Font.BOLD, 12));
-        middleName.setText("Middle Name: ");
-        middleName.setBounds(120, 350, 100, 20);
-
-        JTextField mName = new JTextField();
-        mName.setBounds(225, 350, 100, 20);
-
-        //Username
-
-        JLabel uName = new JLabel();
-        uName.setForeground(Color.DARK_GRAY);
-        uName.setFont(new Font("Times New Roman", Font.BOLD, 12));
-        uName.setText("Username: ");
-        uName.setBounds(120, 375, 100, 20);
-
-        JTextField userName = new JTextField();
-        userName.setBounds(225, 375, 100, 20);
-
-
-        //Password
-
-        JLabel pass = new JLabel();
-        pass.setForeground(Color.DARK_GRAY);
-        pass.setFont(new Font("Times New Roman", Font.BOLD, 12));
-        pass.setText("Password: ");
-        pass.setBounds(120, 400, 100, 20);
-
-        JTextField password = new JTextField();
-        password.setBounds(225,400,100,20);
-
-
-        //Confirm Password
-
-        JLabel cpass = new JLabel();
-        cpass.setForeground(Color.DARK_GRAY);
-        cpass.setFont(new Font("Times New Roman", Font.BOLD, 12));
-        cpass.setText("Confirm Password: ");
-        cpass.setBounds(120, 425, 150,20);
-
-        JTextField confirmPass = new JTextField();
-        confirmPass.setBounds(225, 425,100,20);
-
-        //Create Button
-
-        JButton create = new JButton("Create");
-        create.setBounds(500,470,100,30);
-
-        //Reset Button
-
-        JButton reset = new JButton("Reset");
-        reset.setBounds(380,470,100,30);
-
-        //Upload BUtton
-
-        JButton uploadImg = new JButton("Upload Image");
-        uploadImg.setBounds(150,220,150,50);
-
-        //Admin Button
-
-        JRadioButton adm = new JRadioButton("Admin");
-        adm.setBackground(Color.LIGHT_GRAY);
-        adm.setForeground(Color.DARK_GRAY);
-        adm.setBounds(500, 310, 100,20);
-
-        //Tenant Button
-
-        JRadioButton ten = new JRadioButton("Tenant");
-        ten.setBackground(Color.LIGHT_GRAY);
-        ten.setForeground(Color.DARK_GRAY);
-        ten.setBounds(500, 330,100,20);
-
-        createUser.add(lName);
-        createUser.add(lastName);
-        createUser.add(fName);
+        createUser.add(createUserHeader);
+        createUser.add(newPicture);
+        createUser.add(uploadPictureButton);
+        createUser.add(username);
+        createUser.add(password);
+        createUser.add(confirmPassword);
         createUser.add(firstName);
         createUser.add(middleName);
-        createUser.add(mName);
-        createUser.add(uName);
-        createUser.add(userName);
-        createUser.add(pass);
-        createUser.add(password);
-        createUser.add(cpass);
-        createUser.add(confirmPass);
-        createUser.add(create);
-        createUser.add(reset);
-        createUser.add(uploadImg);
-        createUser.add(adm);
-        createUser.add(ten);
-
+        createUser.add(lastName);
+        createUser.add(accountType);
+        createUser.add(enterUsername);
+        createUser.add(enterPassword);
+        createUser.add(enterConfirmPassword);
+        createUser.add(enterFirstName);
+        createUser.add(enterMiddleName);
+        createUser.add(enterLastName);
+        createUser.add(adminTypeButton);
+        createUser.add(tenantTypeButton);
+        createUser.add(createUserResetButton);
+        createUser.add(createUserButton);
         contentPanel.add("createUser", createUser);
     }
 
@@ -368,12 +351,6 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
         manageTenants();
         createBill();
         createUser();
-    }
-
-    private void logout()
-    {
-        DatabaseConnection dbCon = DatabaseConnection.getInstance();
-        dbCon.close();
     }
 
     @Override
@@ -581,46 +558,5 @@ public class Admin extends User implements ActionListener, WindowListener, Docum
     @Override
     public void changedUpdate(DocumentEvent e)
     {
-    }
-
-    @Override
-    public void windowOpened(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e)
-    {
-        logout();
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e)
-    {
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e)
-    {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e)
-    {
-
     }
 }
