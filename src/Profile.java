@@ -8,7 +8,6 @@ import java.awt.event.WindowListener;
 
 public class Profile extends JFrame implements WindowListener, ActionListener
 {
-    //Francis - Declare variables
     DatabaseConnection connection;
 
     JLabel userId = new JLabel();
@@ -35,7 +34,6 @@ public class Profile extends JFrame implements WindowListener, ActionListener
 
         this.user = user;
 
-        //Francis - Frame Settings
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
         setSize(500, 300);
@@ -44,17 +42,14 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         addWindowListener(this);
         setTitle("Profile");
 
-        //Francis - Details of the User
         userId.setText("User ID: " + user.getUserID());
         userId.setBounds(180,30,1000,25);
         userId.setFont(new Font("Courier",Font.PLAIN,14));
 
-        //Francis
         userName.setText("Username: "+ user.getUsername());
         userName.setBounds(180,60,200,25);
         userName.setFont(new Font("Courier",Font.PLAIN,14));
 
-        //Francis
         userType.setBounds(180,90,200,25);
         userType.setFont(new Font("Courier",Font.PLAIN,14));
         if(user.getUserID() / 100000 == 1)
@@ -65,22 +60,19 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         {
             userType.setText("User Type: Tenant");
         }
-        //Francis
+
         firstName.setText("First Name: "+ user.getFirstName());
         firstName.setBounds(30,140,200,25);
         firstName.setFont(new Font("Courier",Font.PLAIN,14));
 
-        //Francis
         middleName.setText("Middle Name: "+ user.getMiddleName());
         middleName.setBounds(30,170,200,25);
         middleName.setFont(new Font("Courier",Font.PLAIN,14));
 
-        //Francis
         lastName.setText("Last Name: "+ user.getLastName());
         lastName.setBounds(30,200,200,25);
         lastName.setFont(new Font("Courier",Font.PLAIN,14));
 
-        //Francis
         //edit button for first name
         newFirstname.setBounds(130,140,200,25);
         newFirstname.setVisible(false);
@@ -102,7 +94,6 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         confirm1.setOpaque(true);
         confirm1.addActionListener(this);
 
-        //Francis
         //edit button for middle name
         newMiddlename.setBounds(130,170,200,25);
         newMiddlename.setVisible(false);
@@ -124,7 +115,6 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         confirm2.setOpaque(true);
         confirm2.addActionListener(this);
 
-        //Francis
         //edit button for last name
         newLastname.setBounds(130,200,200,25);
         newLastname.setVisible(false);
@@ -146,7 +136,6 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         confirm3.setOpaque(true);
         confirm3.addActionListener(this);
 
-        //Francis
         //Change password
         changePass.setText("Change Password");
         changePass.setFocusable(false);
@@ -187,7 +176,6 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         add(close);
     }
 
-    //Francis
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -280,7 +268,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
             dispose();
         }
     }
-    // -- End of Francis' Coding --
+
     @Override
     public void windowOpened(WindowEvent e)
     {

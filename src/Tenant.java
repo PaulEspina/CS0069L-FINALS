@@ -4,29 +4,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Tenant extends User implements ActionListener
 {
-    private Room room;
-
-    public Tenant(int userID, String username, String firstName, String middleName, String lastName)
-    {
-        super(userID, username, firstName, middleName, lastName);
-        start();
-    }
-
-    private final Tenant tenant = null;
     private JButton exit;
     private JButton logout;
     private JButton pay;
-    private JLabel welcomeMessage;
-    private JLabel enterID;
-    private JPanel picturePanel;
-    private JPanel detailPanel;
     private JTextField idText;
     private JScrollPane panelScroll;
     private JTable detailTable;
@@ -35,6 +20,12 @@ public class Tenant extends User implements ActionListener
     private DefaultTableModel defaultTableModeltt;
 
     DatabaseConnection connection;
+
+    public Tenant(int userID, String username, String firstName, String middleName, String lastName)
+    {
+        super(userID, username, firstName, middleName, lastName);
+        start();
+    }
 
     public void start() {
 
@@ -69,19 +60,19 @@ public class Tenant extends User implements ActionListener
         detailTable.setBounds(0,0,585,Integer.MAX_VALUE);
 
         //BILL MESSAGE
-        welcomeMessage = new JLabel();
+        JLabel welcomeMessage = new JLabel();
         welcomeMessage.setBounds(190,25,200,22);
         welcomeMessage.setText("BILLS");
         welcomeMessage.setFont(new Font("Courier", Font.BOLD, 25));
 
         //Setting for profile panel.
-        picturePanel = new JPanel();
+        JPanel picturePanel = new JPanel();
         picturePanel.setLayout(null);
         picturePanel.setBounds(0,0,160,600);
         picturePanel.setBackground(Color.lightGray);
 
         //Settings for detail panel.
-        detailPanel = new JPanel();
+        JPanel detailPanel = new JPanel();
         detailPanel.setLayout(null);
         detailPanel.setBounds(180,60,585,490);
         detailPanel.setBackground(Color.lightGray);
@@ -136,7 +127,7 @@ public class Tenant extends User implements ActionListener
         idText.setBounds(590,36,100,20);
 
         //Enter ID for textfield
-        enterID = new JLabel();
+        JLabel enterID = new JLabel();
         enterID.setText("Please enter ID:");
         enterID.setFont(new Font("Courier",Font.PLAIN,14));
         enterID.setBounds(480,35, 200,20);
@@ -234,26 +225,5 @@ public class Tenant extends User implements ActionListener
                 f.printStackTrace();
             }
         }
-    }
-
-    // Setters
-    public void setRoom(Room room)
-    {
-        this.room = room;
-    }
-
-    // Getters
-    public Room getRoom()
-    {
-        return room;
-    }
-
-
-    public JButton getExit(){
-        return exit;
-    }
-
-    public JButton getLogout() {
-        return logout;
     }
 }

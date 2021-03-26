@@ -1,5 +1,3 @@
-import sun.rmi.runtime.Log;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -139,8 +137,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         JPanel logoutPanel = new JPanel();
         logoutPanel.setLayout(null);
 
-        logoutButton = new JButton();
-        logoutButton.setText("Logout");
+        logoutButton = new JButton("Logout");
         logoutButton.setHorizontalAlignment(JButton.LEFT);
         logoutButton.setBounds(0,120,80,20);
         logoutButton.setBorderPainted(false);
@@ -149,8 +146,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         logoutButton.setFocusable(false);
         logoutButton.addActionListener(this);
 
-        exitButton = new JButton();
-        exitButton.setText("Exit");
+        exitButton = new JButton("Exit");
         exitButton.setHorizontalAlignment(JButton.LEFT);
         exitButton.setBounds(0,150,80,20);
         exitButton.setBorderPainted(false);
@@ -194,16 +190,14 @@ public class Admin extends User implements ActionListener, DocumentListener
         JPanel createBillPanel = new JPanel();
         createBillPanel.setLayout(null);
 
-        JLabel recipientLabel = new JLabel();
-        recipientLabel.setText("Recipient ID:");
+        JLabel recipientLabel = new JLabel("Recipient ID:");
         recipientLabel.setBounds(50, 25, 75, 25);
 
         searchField = new JTextField();
         searchField.setBounds(125, 25, 350, 25);
         searchField.setToolTipText("Enter tenant ID here.");
 
-        searchButton = new JButton();
-        searchButton.setText("SELECT");
+        searchButton = new JButton("SELECT");
         searchButton.setFont(new Font("Arial", Font.BOLD, 10));
         searchButton.setFocusPainted(false);
         searchButton.setBackground(Color.WHITE);
@@ -234,9 +228,8 @@ public class Admin extends User implements ActionListener, DocumentListener
         recipientRoomFee.setBounds(60, 375, 500, 25);
         JLabel miscFeeLabel = new JLabel("Miscellaneous Fee:");
         miscFeeLabel.setBounds(60, 400, 150, 25);
-        recipientMiscFee = new JTextField();
+        recipientMiscFee = new JTextField("Enter miscellaneous fees here.");
         recipientMiscFee.setEnabled(false);
-        recipientMiscFee.setToolTipText("Enter miscellaneous fees here.");
         recipientMiscFee.setBounds(175, 400, 385, 25);
         recipientMiscFee.getDocument().addDocumentListener(this);
         recipientTotalFee = new JLabel("Total Fee:");
