@@ -1,13 +1,20 @@
 import javafx.scene.chart.PieChart;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Admin extends User implements ActionListener, DocumentListener
 {
@@ -30,7 +37,7 @@ public class Admin extends User implements ActionListener, DocumentListener
     JButton createBillResetButton;
     JButton createBillButton;
     JLabel date;
-    //Create Bill Variables
+    // Create Bill Variables
     double rentFee = 0;
     double totalFee = 0;
     String dateString;
@@ -49,11 +56,14 @@ public class Admin extends User implements ActionListener, DocumentListener
     ButtonGroup accountTypeButton;
     JButton createUserResetButton;
     JButton createUserButton;
+    // Create User Variables
+    String profilePicturePath;
+    File image;
 
 
-    public Admin(int userID, String username, String firstName, String middleName, String lastName, String imagePath)
+    public Admin(int userID, String username, String firstName, String middleName, String lastName)
     {
-        super(userID, username, firstName, middleName, lastName, imagePath);
+        super(userID, username, firstName, middleName, lastName);
         start();
     }
 
@@ -77,28 +87,30 @@ public class Admin extends User implements ActionListener, DocumentListener
     protected void side()
     {
         sidePanel = new JPanel();
-        sidePanel.setPreferredSize(new Dimension(frame.getWidth() / 6, frame.getHeight()));
+        sidePanel.setPreferredSize(new Dimension(140, 600));
         sidePanel.setLayout(new GridLayout(3, 1));
         sidePanel.setBackground(Color.WHITE);
         sidePanel.setOpaque(true);
 
         // PROFILE PANEL STARTS
         JPanel profilePanel = new JPanel();
-        profilePanel.setLayout(new FlowLayout());
+        profilePanel.setLayout(null);
 
         JLabel profileLabel = new JLabel();
         profileLabel.setFont(new Font("Arial", Font.BOLD, 10));
-        profileLabel.setIcon(new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(frame.getWidth() / 8, frame.getWidth() / 8, Image.SCALE_SMOOTH)));
+        profileLabel.setIcon(new ImageIcon(new ImageIcon("image/" + userID).getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH)));
         profileLabel.setVerticalAlignment(JLabel.TOP);
         profileLabel.setHorizontalAlignment(JLabel.CENTER);
         profileLabel.setHorizontalTextPosition(JLabel.CENTER);
         profileLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        profileLabel.setBounds(5, 5, 130, 130);
 
         profileButton = new JButton(firstName + " " + lastName);
         profileButton.setBackground(Color.WHITE);
         profileButton.setFont(new Font("Arial", Font.BOLD, 10));
         profileButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         profileButton.setFocusPainted(false);
+        profileButton.setBounds(25, 140, 90, 20);
         profileButton.addActionListener(this);
 
         profilePanel.add(profileLabel);
@@ -314,7 +326,6 @@ public class Admin extends User implements ActionListener, DocumentListener
         createUserButton.setFocusPainted(false);
         createUserButton.setBackground(Color.WHITE);
         createUserButton.setBounds(560, 525, 75, 25);
-        createUserButton.setEnabled(false);
         createUserButton.addActionListener(this);
 
         createUser.add(createUserHeader);
@@ -425,7 +436,6 @@ public class Admin extends User implements ActionListener, DocumentListener
                     String firstName = resultSet.getString("first_name");
                     String middleName = resultSet.getString("middle_name");
                     String lastName = resultSet.getString("last_name");
-                    String imagePath = resultSet.getString("image");
                     resultSet.close();
 
                     resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + id + "'");
@@ -454,7 +464,7 @@ public class Admin extends User implements ActionListener, DocumentListener
                     recipientLastName.setText("Last Name: " + lastName);
                     recipientRoomNumber.setText("Room Number: " + roomNumber);
                     recipientRoomFee.setText("Room Rent Fee: " + rentAmount);
-                    recipientPicture.setIcon(new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+                    recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/" + id).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
                     rentFee = rentAmount;
                     searchField.setEnabled(false);
                     searchButton.setEnabled(false);
@@ -526,6 +536,89 @@ public class Admin extends User implements ActionListener, DocumentListener
             createBillButton.setEnabled(false);
             JOptionPane.showMessageDialog(null, "The bill is successfully created!", "Bill Created", JOptionPane.INFORMATION_MESSAGE);
         }
+
+        // Upload Picture Button
+        if(e.getSource() == uploadPictureButton)
+        {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()));
+            int i = fileChooser.showOpenDialog(null);
+            if(i == JFileChooser.APPROVE_OPTION)
+            {
+                image = fileChooser.getSelectedFile();
+                newPicture.setIcon(new ImageIcon(new ImageIcon(image.getPath()).getImage().getScaledInstance(newPicture.getWidth(), newPicture.getHeight(), Image.SCALE_SMOOTH)));
+            }
+        }
+
+        // Create User Reset Button
+        if(e.getSource() == createUserResetButton)
+        {
+            enterUsername.setText("");
+            enterPassword.setText("");
+            enterConfirmPassword.setText("");
+            enterFirstName.setText("");
+            enterMiddleName.setText("");
+            enterLastName.setText("");
+            accountTypeButton.clearSelection();
+            newPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+            image = null;
+        }
+
+        // Confirm Create User Button
+        if(e.getSource() == createUserButton)
+        {
+            if(!enterUsername.getText().isEmpty() &&
+               !String.valueOf(enterPassword.getPassword()).isEmpty() &&
+               !String.valueOf(enterPassword.getPassword()).isEmpty() &&
+               !enterFirstName.getText().isEmpty() &&
+               !enterMiddleName.getText().isEmpty() &&
+               !enterLastName.getText().isEmpty())
+            {
+                if(String.valueOf(enterPassword.getPassword()).equals(String.valueOf(enterPassword.getPassword())))
+                {
+                    int id = 0;
+                    if(adminTypeButton.isSelected())
+                    {
+                        id = 100000;
+                    }
+                    if(tenantTypeButton.isSelected())
+                    {
+                        id = 200000;
+                    }
+                    id += new Random().nextInt(100000);
+
+                    File save = new File("image/" + id);
+                    try
+                    {
+                        Files.copy(image.toPath(), save.toPath());
+                        connection.execute("INSERT INTO users VALUES(" +
+                                           "'" + id + "'," +
+                                           "'" + enterUsername.getText() + "'," +
+                                           "'" + String.valueOf(enterPassword.getPassword()) + "'," +
+                                           "'" + enterFirstName.getText() + "'," +
+                                           "'" + enterMiddleName.getText() + "'," +
+                                           "'" + enterLastName.getText() + "'" +
+                                           ")");
+                        if(tenantTypeButton.isSelected())
+                        {
+                            connection.execute("INSERT INTO tenants(key) VALUES('" + id + "')");
+                        }
+                    }
+                    catch(IOException ioException)
+                    {
+                        ioException.printStackTrace();
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "The password you entered did not match the the confirmation.", "Password Mismatch", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Please fill all the fields.", "Insufficient Data", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     public void changeTotalFee(DocumentEvent e)
@@ -537,7 +630,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         }
         catch(NumberFormatException ex)
         {
-            System.err.println("Miscellaneous Fee textfield's value is not a number.");
+            System.out.println("Miscellaneous Fee textfield's value is not a number.");
         }
         recipientTotalFee.setText("Total Fee: " + totalFee);
         createBillButton.setEnabled(true);
