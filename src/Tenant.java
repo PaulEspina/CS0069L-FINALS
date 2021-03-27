@@ -12,7 +12,7 @@ public class Tenant extends User implements ActionListener
     private final DatabaseConnection connection;
 
     private JButton payButton;
-    private JTextField idText;
+    private JTextField searchField;
     private DefaultTableModel defaultTableModeltt;
 
     public Tenant(int userID, String username, String firstName, String middleName, String lastName)
@@ -47,13 +47,12 @@ public class Tenant extends User implements ActionListener
         profilePanel.setLayout(null);
 
         JLabel profileLabel = new JLabel();
-        profileLabel.setFont(new Font("Arial", Font.BOLD, 10));
-        profileLabel.setIcon(new ImageIcon(new ImageIcon("image/" + userID).getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH)));
+        profileLabel.setBounds(5, 5, 130, 130);
+        profileLabel.setIcon(new ImageIcon(new ImageIcon("image/" + getUserID()).getImage().getScaledInstance(profileLabel.getWidth(), profileLabel.getHeight(), Image.SCALE_SMOOTH)));
         profileLabel.setVerticalAlignment(JLabel.TOP);
         profileLabel.setHorizontalAlignment(JLabel.CENTER);
         profileLabel.setHorizontalTextPosition(JLabel.CENTER);
         profileLabel.setVerticalTextPosition(JLabel.BOTTOM);
-        profileLabel.setBounds(5, 5, 130, 130);
 
         //Profile button
         profileButton = new JButton(firstName + " " + lastName);
@@ -162,8 +161,8 @@ public class Tenant extends User implements ActionListener
             {
                 int billID = resultSet.getInt("key");
                 String dateIssue = resultSet.getString("date_issued");
-                String totalAmount = String.valueOf(resultSet.getInt("total_amount"));
-                String amountPaid = String.valueOf(resultSet.getInt("amount_paid"));
+                String totalAmount = String.valueOf(resultSet.getDouble("total_amount"));
+                String amountPaid = String.valueOf(resultSet.getDouble("amount_paid"));
                 String status = Double.parseDouble(amountPaid) >= Double.parseDouble(totalAmount) ? "Paid" : "Unpaid";
                 defaultTableModeltt.addRow((new Object[]{billID,dateIssue,totalAmount,amountPaid,status}));
             }
@@ -179,8 +178,8 @@ public class Tenant extends User implements ActionListener
         enterID.setBounds(300,25, 75,25);
 
         //This is where ID input for pay bills.
-        idText = new JTextField();
-        idText.setBounds(375,25,150,25);
+        searchField = new JTextField();
+        searchField.setBounds(375, 25, 150, 25);
 
         //Pay Button
         payButton = new JButton("Pay");
@@ -192,7 +191,7 @@ public class Tenant extends User implements ActionListener
         payButton.addActionListener(this);
 
         contentPanel.add(enterID);
-        contentPanel.add(idText);
+        contentPanel.add(searchField);
         contentPanel.add(payButton);
         contentPanel.add(detailPanel);
     }
@@ -222,8 +221,7 @@ public class Tenant extends User implements ActionListener
         // Pay Button
         if(e.getSource() == payButton)
         {
-            idText.setText("");
-            ResultSet resultSet = connection.getResult("SELECT * FROM bills WHERE key='" + idText.getText() + "'");
+            ResultSet resultSet = connection.getResult("SELECT * FROM bills WHERE key='" + searchField.getText() + "'");
             try
             {
                 if(resultSet.next())
@@ -238,7 +236,7 @@ public class Tenant extends User implements ActionListener
                         else
                         {
                             payButton.setEnabled(false);
-                            new PayBills(this, Integer.parseInt(idText.getText()));
+                            new PayBills(this, Integer.parseInt(searchField.getText()));
                         }
                     }
                     else
@@ -255,6 +253,7 @@ public class Tenant extends User implements ActionListener
             {
                 f.printStackTrace();
             }
+            searchField.setText("");
         }
     }
 
@@ -268,8 +267,8 @@ public class Tenant extends User implements ActionListener
             {
                 int billID = rs.getInt("key");
                 String dateIssue = rs.getString("date_issued");
-                String totalAmount = String.valueOf(rs.getInt("total_amount"));
-                String amountPaid = String.valueOf(rs.getInt("amount_paid"));
+                String totalAmount = String.valueOf(rs.getDouble("total_amount"));
+                String amountPaid = String.valueOf(rs.getDouble("amount_paid"));
                 String status = Double.parseDouble(amountPaid) >= Double.parseDouble(totalAmount) ? "Paid" : "Unpaid";
                 defaultTableModeltt.addRow((new Object[]{billID,dateIssue,totalAmount,amountPaid,status}));
             }

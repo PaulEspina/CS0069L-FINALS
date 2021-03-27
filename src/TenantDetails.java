@@ -106,7 +106,7 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         tenantIDValue.setBounds(275, 35, 85, 25);
         usernameValue = new JLabel(username);
         usernameValue.setBounds(275, 60, 85, 25);
-        roomNumberValue = new JLabel(roomNumber == 0 ? "Vacant" : String.valueOf(roomNumber));
+        roomNumberValue = new JLabel(roomNumber == 0 ? "N/A" : String.valueOf(roomNumber));
         roomNumberValue.setBounds(275, 85, 80, 25);
         firstNameValue = new JLabel(firstName);
         firstNameValue.setBounds(150, 135, 150, 25);
@@ -240,7 +240,7 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
                         resultSet.close();
 
                         usernameValue.setText(username);
-                        roomNumberValue.setText(roomNumber == 0 ? "Vacant" : String.valueOf(roomNumber));
+                        roomNumberValue.setText(roomNumber == 0 ? "N/A" : String.valueOf(roomNumber));
                         firstNameValue.setText(firstName);
                         middleNameValue.setText(middleName);
                         lastNameValue.setText(lastName);
