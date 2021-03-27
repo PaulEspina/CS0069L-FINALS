@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,17 +9,13 @@ import java.sql.SQLException;
 
 public class Tenant extends User implements ActionListener
 {
+    private DatabaseConnection connection;
+
     private JButton exit;
     private JButton logout;
     private JButton pay;
     private JTextField idText;
-    private JScrollPane panelScroll;
-    private JTable detailTable;
-
-    private DefaultTableCellRenderer defaultTableCellRenderer;
     private DefaultTableModel defaultTableModeltt;
-
-    DatabaseConnection connection;
 
     public Tenant(int userID, String username, String firstName, String middleName, String lastName)
     {
@@ -50,15 +45,15 @@ public class Tenant extends User implements ActionListener
                 return false;
             }
         };
-        defaultTableCellRenderer = new DefaultTableCellRenderer();
+        DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer();
         defaultTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
-        detailTable = new JTable(defaultTableModeltt);
+        JTable detailTable = new JTable(defaultTableModeltt);
         detailTable.getTableHeader().setResizingAllowed(false);
         detailTable.getTableHeader().setReorderingAllowed(false);
         detailTable.setOpaque(true);
         detailTable.setModel(defaultTableModeltt);
         detailTable.setBackground(Color.LIGHT_GRAY);
-        detailTable.setBounds(0,0,585,Integer.MAX_VALUE);
+        detailTable.setBounds(0, 0, 585, Integer.MAX_VALUE);
 
         //BILL MESSAGE
         JLabel welcomeMessage = new JLabel();
@@ -119,8 +114,8 @@ public class Tenant extends User implements ActionListener
             detailTable.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
         }
 
-        panelScroll = new JScrollPane(detailTable);
-        panelScroll.setBounds(0,0,585,490);
+        JScrollPane panelScroll = new JScrollPane(detailTable);
+        panelScroll.setBounds(0, 0, 585, 490);
         panelScroll.setBackground(Color.LIGHT_GRAY);
 
         //This is where ID input for pay bills.

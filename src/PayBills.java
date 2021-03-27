@@ -8,30 +8,22 @@ import java.sql.ResultSet;
 
 public class PayBills extends JFrame implements WindowListener, ActionListener
 {
-    DatabaseConnection con = DatabaseConnection.getInstance();
+    private final DatabaseConnection connection;
+    private final Tenant tenant;
+    private final int key;
 
-    JLabel recipientIDLabel;
-    JLabel dateIssueLabel;
-    JLabel totalAmountLabel;
-    JLabel amountPaidLabel;
-    JLabel balanceRemainLabel;
-    JLabel enterAmount;
-    JPanel allDetailLabel;
-    JTextField payBill;
-    JButton pay;
-    JButton close;
+    private final JTextField payBill;
+    private final JButton pay;
+    private final JButton close;
 
-    double totalAmount;
-    double amountPaid;
-
-    int key;
-
-    Tenant tenant;
+    private double amountPaid;
 
     PayBills(Tenant tenant, int id)
     {
         this.tenant = tenant;
         this.key = id;
+
+        connection = DatabaseConnection.getInstance();
 
         //Frame settings
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -43,40 +35,40 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
         setVisible(true);
 
         //Panel Settings
-        allDetailLabel = new JPanel();
-        allDetailLabel.setBounds(0,0,500,300);
+        JPanel allDetailLabel = new JPanel();
+        allDetailLabel.setBounds(0, 0, 500, 300);
         allDetailLabel.setLayout(null);
 
         //Label Settings
-        recipientIDLabel = new JLabel();
+        JLabel recipientIDLabel = new JLabel();
         recipientIDLabel.setLayout(null);
-        recipientIDLabel.setBounds(40,20,400,25);
-        recipientIDLabel.setFont(new Font("Courier",Font.BOLD,14));
+        recipientIDLabel.setBounds(40, 20, 400, 25);
+        recipientIDLabel.setFont(new Font("Courier", Font.BOLD, 14));
 
-        dateIssueLabel = new JLabel();
+        JLabel dateIssueLabel = new JLabel();
         dateIssueLabel.setLayout(null);
-        dateIssueLabel.setBounds(40,50,400,25);
-        dateIssueLabel.setFont(new Font("Courier",Font.BOLD,14));
+        dateIssueLabel.setBounds(40, 50, 400, 25);
+        dateIssueLabel.setFont(new Font("Courier", Font.BOLD, 14));
 
-        totalAmountLabel = new JLabel();
+        JLabel totalAmountLabel = new JLabel();
         totalAmountLabel.setLayout(null);
-        totalAmountLabel.setBounds(40,80,400,25);
-        totalAmountLabel.setFont(new Font("Courier",Font.BOLD,14));
+        totalAmountLabel.setBounds(40, 80, 400, 25);
+        totalAmountLabel.setFont(new Font("Courier", Font.BOLD, 14));
 
-        amountPaidLabel = new JLabel();
+        JLabel amountPaidLabel = new JLabel();
         amountPaidLabel.setLayout(null);
-        amountPaidLabel.setBounds(40,110,400,25);
-        amountPaidLabel.setFont(new Font("Courier",Font.BOLD,14));
+        amountPaidLabel.setBounds(40, 110, 400, 25);
+        amountPaidLabel.setFont(new Font("Courier", Font.BOLD, 14));
 
-        balanceRemainLabel = new JLabel();
+        JLabel balanceRemainLabel = new JLabel();
         balanceRemainLabel.setLayout(null);
-        balanceRemainLabel.setBounds(40,140,400,25);
-        balanceRemainLabel.setFont(new Font("Courier",Font.BOLD,14));
+        balanceRemainLabel.setBounds(40, 140, 400, 25);
+        balanceRemainLabel.setFont(new Font("Courier", Font.BOLD, 14));
 
-        enterAmount = new JLabel();
+        JLabel enterAmount = new JLabel();
         enterAmount.setText("Enter Amount:");
         enterAmount.setLayout(null);
-        enterAmount.setBounds(165,220,200,25);
+        enterAmount.setBounds(165, 220, 200, 25);
 
         //Enter money settings
         payBill = new JTextField();
@@ -102,12 +94,12 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
         close.setBounds(400,220,70,25);
         close.addActionListener(this);
 
-        ResultSet rs = con.getResult("SELECT * FROM bills WHERE key='" + id + "'");
+        ResultSet rs = connection.getResult("SELECT * FROM bills WHERE key='" + id + "'");
         try
         {
                 int recipientID = rs.getInt("recipient_id");
                 String dateIssue = rs.getString("date_issued");
-                totalAmount = rs.getDouble("total_amount");
+            double totalAmount = rs.getDouble("total_amount");
                 amountPaid = rs.getDouble("amount_paid");
 
                 recipientIDLabel.setText("Recipient ID: " + recipientID);

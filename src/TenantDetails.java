@@ -11,30 +11,28 @@ import java.sql.SQLException;
 
 public class TenantDetails extends JFrame implements ActionListener, WindowListener
 {
-    DatabaseConnection connection;
+    private final DatabaseConnection connection;
 
-    Admin admin;
+    private final Admin admin;
 
-    int tenantID;
-    int roomNumber;
-    String username;
-    String firstName;
-    String middleName;
-    String lastName;
+    private final int tenantID;
+    private int roomNumber;
+    private String username;
+    private String firstName;
+    private String middleName;
+    private String lastName;
 
-    JLabel profilePicture;
-    JLabel tenantIDValue;
-    JLabel usernameValue;
-    JLabel roomNumberValue;
-    JLabel firstNameValue;
-    JLabel middleNameValue;
-    JLabel lastNameValue;
-    JTextField newRoomField;
-    JButton editRoomButton;
-    JButton confirmEditButton;
-    JButton paymentStatusButton;
-    JButton closeButton;
-    JButton removeButton;
+    private final JLabel usernameValue;
+    private final JLabel roomNumberValue;
+    private final JLabel firstNameValue;
+    private final JLabel middleNameValue;
+    private final JLabel lastNameValue;
+    private final JTextField newRoomField;
+    private final JButton editRoomButton;
+    private final JButton confirmEditButton;
+    private final JButton paymentStatusButton;
+    private final JButton closeButton;
+    private final JButton removeButton;
 
     public TenantDetails(Admin admin, int tenantID)
     {
@@ -83,7 +81,7 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         addWindowListener(this);
         setTitle("Tenant: " + username);
 
-        profilePicture = new JLabel();
+        JLabel profilePicture = new JLabel();
         profilePicture.setIcon(new ImageIcon(new ImageIcon("image/" + tenantID).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
         profilePicture.setVerticalAlignment(JLabel.TOP);
         profilePicture.setHorizontalAlignment(JLabel.CENTER);
@@ -105,7 +103,7 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         JLabel lastNameText = new JLabel("Last Name:");
         lastNameText.setBounds(50, 185, 100, 25);
 
-        tenantIDValue = new JLabel(String.valueOf(tenantID));
+        JLabel tenantIDValue = new JLabel(String.valueOf(tenantID));
         tenantIDValue.setBounds(275, 35, 85, 25);
         usernameValue = new JLabel(username);
         usernameValue.setBounds(275, 60, 85, 25);

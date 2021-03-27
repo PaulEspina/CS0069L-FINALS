@@ -9,18 +9,12 @@ import java.sql.SQLException;
 
 public class ChangePassword extends JFrame implements ActionListener
 {
+    private DatabaseConnection connection;
+    private final User user;
 
-    JButton confirm = new JButton();
-    JPasswordField currentPassword = new JPasswordField();
-    JPasswordField newPassword = new JPasswordField();
-    JPasswordField confirmPassword = new JPasswordField();
-    JLabel currentPass = new JLabel();
-    JLabel newPass = new JLabel();
-    JLabel confirmPass = new JLabel();
+    private final JButton confirm = new JButton();
+    private final JPasswordField currentPassword = new JPasswordField();
 
-    DatabaseConnection connection;
-
-    User user;
     ChangePassword(User user)
     {
         this.user = user;
@@ -35,33 +29,38 @@ public class ChangePassword extends JFrame implements ActionListener
         setTitle("Change Password");
 
         //Francis - Current Password Message
+        JLabel currentPass = new JLabel();
         currentPass.setText("Please enter current password: ");
-        currentPass.setFont(new Font("Courier", Font.BOLD,12));
+        currentPass.setFont(new Font("Courier", Font.BOLD, 12));
         currentPass.setLayout(null);
-        currentPass.setBounds(15,20,250,25);
+        currentPass.setBounds(15, 20, 250, 25);
 
         //Francis - New Password Message
+        JLabel newPass = new JLabel();
         newPass.setText("Please enter new password: ");
-        newPass.setFont(new Font("Courier", Font.BOLD,12));
+        newPass.setFont(new Font("Courier", Font.BOLD, 12));
         newPass.setLayout(null);
-        newPass.setBounds(15,50,250,25);
+        newPass.setBounds(15, 50, 250, 25);
 
         //Francis - Confirm Password Message
+        JLabel confirmPass = new JLabel();
         confirmPass.setText("Please confirm your password: ");
-        confirmPass.setFont(new Font("Courier", Font.BOLD,12));
+        confirmPass.setFont(new Font("Courier", Font.BOLD, 12));
         confirmPass.setLayout(null);
-        confirmPass.setBounds(15,80,250,25);
+        confirmPass.setBounds(15, 80, 250, 25);
 
         //Francis - Textfield for Current Password
         currentPassword.setBounds(200,20,180,25);
         currentPassword.setVisible(true);
 
         //Francis - Textfield for New Password
-        newPassword.setBounds(200,50,180,25);
+        JPasswordField newPassword = new JPasswordField();
+        newPassword.setBounds(200, 50, 180, 25);
         newPassword.setVisible(true);
 
         //Francis - Textfield for Confirm Password
-        confirmPassword.setBounds(200,80,180,25);
+        JPasswordField confirmPassword = new JPasswordField();
+        confirmPassword.setBounds(200, 80, 180, 25);
         confirmPassword.setVisible(true);
 
         //Francis - Confirm Button

@@ -8,27 +8,24 @@ import java.awt.event.WindowListener;
 
 public class Profile extends JFrame implements WindowListener, ActionListener
 {
-    DatabaseConnection connection;
+    private DatabaseConnection connection;
+    private final User user;
 
-    JLabel userId = new JLabel();
-    JLabel userName = new JLabel();
-    JLabel userType = new JLabel();
-    JLabel firstName = new JLabel();
-    JLabel middleName = new JLabel();
-    JLabel lastName = new JLabel();
-    JTextField newFirstname = new JTextField();
-    JTextField newMiddlename = new JTextField();
-    JTextField newLastname = new JTextField();
-    JButton edit1 = new JButton();
-    JButton confirm1 = new JButton();
-    JButton edit2 = new JButton();
-    JButton confirm2 = new JButton();
-    JButton edit3 = new JButton();
-    JButton confirm3 = new JButton();
-    JButton changePass = new JButton();
-    JButton close = new JButton();
+    private final JLabel firstName = new JLabel();
+    private final JLabel middleName = new JLabel();
+    private final JLabel lastName = new JLabel();
+    private final JTextField newFirstname = new JTextField();
+    private final JTextField newMiddlename = new JTextField();
+    private final JTextField newLastname = new JTextField();
+    private final JButton edit1 = new JButton();
+    private final JButton confirm1 = new JButton();
+    private final JButton edit2 = new JButton();
+    private final JButton confirm2 = new JButton();
+    private final JButton edit3 = new JButton();
+    private final JButton confirm3 = new JButton();
+    private final JButton changePass = new JButton();
+    private final JButton close = new JButton();
 
-    User user;
     public Profile(User user)
     {
 
@@ -42,16 +39,19 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         addWindowListener(this);
         setTitle("Profile");
 
+        JLabel userId = new JLabel();
         userId.setText("User ID: " + user.getUserID());
-        userId.setBounds(180,30,1000,25);
-        userId.setFont(new Font("Courier",Font.PLAIN,14));
+        userId.setBounds(180, 30, 1000, 25);
+        userId.setFont(new Font("Courier", Font.PLAIN, 14));
 
-        userName.setText("Username: "+ user.getUsername());
-        userName.setBounds(180,60,200,25);
-        userName.setFont(new Font("Courier",Font.PLAIN,14));
+        JLabel userName = new JLabel();
+        userName.setText("Username: " + user.getUsername());
+        userName.setBounds(180, 60, 200, 25);
+        userName.setFont(new Font("Courier", Font.PLAIN, 14));
 
-        userType.setBounds(180,90,200,25);
-        userType.setFont(new Font("Courier",Font.PLAIN,14));
+        JLabel userType = new JLabel();
+        userType.setBounds(180, 90, 200, 25);
+        userType.setFont(new Font("Courier", Font.PLAIN, 14));
         if(user.getUserID() / 100000 == 1)
         {
             userType.setText("User Type: Admin");
