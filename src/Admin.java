@@ -3,6 +3,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -177,29 +179,142 @@ public class Admin extends User implements ActionListener, DocumentListener
 
     private void manageApartment()
     {
+        JButton continuousButton;
+        JPanel continuousPanel;
+
         JPanel manageApartmentPanel = new JPanel();
-        manageApartmentPanel.setLayout(null);
+        manageApartmentPanel.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         manageApartmentPanel.setOpaque(true);
-        //TODO
+
+        continuousButton = new JButton();
+        continuousButton.setSize(50,50);
+        continuousButton.setFocusable(false);
 
         JLabel manageApartmentHeader = new JLabel("MANAGE APARTMENT");
         manageApartmentHeader.setBounds(50, 25, 400, 50);
         manageApartmentHeader.setFont(new Font("Arial", Font.BOLD, 32));
 
+        manageApartmentPanel.add(continuousButton);
         manageApartmentPanel.add(manageApartmentHeader);
         contentPanel.add("manageApartmentPanel", manageApartmentPanel);
     }
 
     private void manageTenants()
     {
+        DatabaseConnection connection;
+
+        DefaultTableModel defaultTableModeltt;
+        DefaultTableCellRenderer defaultTableCellRenderer;
+
+        JScrollPane panelScroll;
+        JTable detailTable;
+
         JPanel manageTenantsPanel = new JPanel();
         manageTenantsPanel.setLayout(null);
         manageTenantsPanel.setOpaque(true);
-        //TODO
+
         JLabel manageTenantsHeader= new JLabel("MANAGE TENANT");
         manageTenantsHeader.setBounds(50, 25, 400, 50);
         manageTenantsHeader.setFont(new Font("Arial", Font.BOLD, 32));
 
+        JLabel searchLabel = new JLabel("Search:");
+        searchLabel.setBounds(50, 75, 75, 25);
+
+        //Table Settings
+        defaultTableModeltt = new DefaultTableModel()
+        {
+            @Override
+            public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+        };
+
+        defaultTableCellRenderer = new DefaultTableCellRenderer();
+        defaultTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        detailTable = new JTable(defaultTableModeltt);
+        detailTable.getTableHeader().setResizingAllowed(false);
+        detailTable.getTableHeader().setReorderingAllowed(false);
+        detailTable.setOpaque(true);
+        detailTable.setModel(defaultTableModeltt);
+        detailTable.setBackground(Color.LIGHT_GRAY);
+        detailTable.setBounds(20,115,585,Integer.MAX_VALUE);
+
+        connection = DatabaseConnection.getInstance();
+        ResultSet resultSet = connection.getResult("SELECT * FROM users'" + "'");
+        try
+        {
+            int key;
+            int tenantRoom = 0;
+            String lastName;
+            String firstName;
+            String middleName;
+
+            defaultTableModeltt.setRowCount(0);
+            defaultTableModeltt.addColumn("ID");
+            defaultTableModeltt.addColumn("LAST NAME");
+            defaultTableModeltt.addColumn("FIRST NAME");
+            defaultTableModeltt.addColumn("MIDDLE NAME");
+            defaultTableModeltt.addColumn("ROOM");
+
+            while(resultSet.next())
+            {
+
+                key = resultSet.getInt("key");
+
+                if(key / 100000 == 2)
+                {
+                    lastName = resultSet.getString("last_name");
+                    firstName = resultSet.getString("first_name");
+                    middleName = resultSet.getString("middle_name");
+
+                    resultSet.close();
+
+                    ResultSet rs = connection.getResult("SELECT * FROM tenants WHERE room ='" + key +"'");
+
+                    if(rs.next())
+                    {
+                        int roomID = rs.getInt("room");
+                        rs.close();
+
+                        ResultSet roomSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
+                        tenantRoom = roomSet.getInt("room_number");
+                        roomSet.close();
+
+                    }
+                    defaultTableModeltt.addRow(new Object[]{key,lastName,firstName,middleName,tenantRoom});
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        for(int i = 0; i < 4; i++)
+        {
+            detailTable.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
+        }
+
+        panelScroll = new JScrollPane(detailTable);
+        panelScroll.setBounds(26,115,585,400);
+        panelScroll.setBackground(Color.LIGHT_GRAY);
+
+        searchField = new JTextField();
+        searchField.setBounds(125, 75, 350, 25);
+        searchField.setToolTipText("Enter tenant ID here.");
+
+        searchButton = new JButton("SELECT");
+        searchButton.setFont(new Font("Arial", Font.BOLD, 10));
+        searchButton.setFocusPainted(false);
+        searchButton.setBackground(Color.WHITE);
+        searchButton.setBounds(480, 75, 75, 24);
+        searchButton.addActionListener(this);
+
+        manageTenantsPanel.add(panelScroll);
+        manageTenantsPanel.add(searchLabel);
+        manageTenantsPanel.add(searchField);
+        manageTenantsPanel.add(searchButton);
         manageTenantsPanel.add(manageTenantsHeader);
 
         contentPanel.add("manageTenantsPanel", manageTenantsPanel);
