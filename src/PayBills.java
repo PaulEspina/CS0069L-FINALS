@@ -26,8 +26,11 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
 
     int key;
 
-    PayBills(int id)
+    Tenant tenant;
+
+    PayBills(Tenant tenant, int id)
     {
+        this.tenant = tenant;
         this.key = id;
 
         //Frame settings
@@ -140,6 +143,24 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
         {
             DatabaseConnection con = DatabaseConnection.getInstance();
             con.execute("UPDATE bills SET amount_paid='" + (Double.parseDouble(payBill.getText()) + amountPaid) + "'WHERE key= '" + key + "'");
+
+            try
+            {
+                ResultSet rs = con.getResult("SELECT * FROM bills WHERE key='" + key + "'");
+
+                if(rs.getDouble("amount_paid") < rs.getDouble("total_amount"))
+                {
+                    JOptionPane.showMessageDialog(null,"Payment Successful","Bill",JOptionPane.WARNING_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"Your bill is fully paid! Thank you!","Bill", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+            catch(Exception f)
+            {
+                f.printStackTrace();
+            }
             dispose();
         }
     }
@@ -155,8 +176,10 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
     }
 
     @Override
-    public void windowClosed(WindowEvent e) {
-
+    public void windowClosed(WindowEvent e)
+    {
+        tenant.getPay().setEnabled(true);
+        tenant.refresh();
     }
 
     @Override

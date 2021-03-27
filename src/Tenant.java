@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,9 +50,9 @@ public class Tenant extends User implements ActionListener
                 return false;
             }
         };
-        detailTable = new JTable(defaultTableModeltt);
         defaultTableCellRenderer = new DefaultTableCellRenderer();
         defaultTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        detailTable = new JTable(defaultTableModeltt);
         detailTable.getTableHeader().setResizingAllowed(false);
         detailTable.getTableHeader().setReorderingAllowed(false);
         detailTable.setOpaque(true);
@@ -174,7 +175,6 @@ public class Tenant extends User implements ActionListener
         logout.addActionListener(this);
 
         //Add things.
-
         detailPanel.add(panelScroll);
 
         picturePanel.add(logout);
@@ -209,21 +209,65 @@ public class Tenant extends User implements ActionListener
         {
             DatabaseConnection con = DatabaseConnection.getInstance();
             ResultSet rs = con.getResult("SELECT * FROM bills WHERE key='" + idText.getText() + "'");
+
             try
             {
-                if(rs.getDouble("amount_paid") >= rs.getDouble("total_amount"))
+                if(rs.getInt("recipient_id") == userID)
                 {
-                    JOptionPane.showMessageDialog(null,"Your bill is already paid!","Warning",JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    new PayBills(Integer.parseInt(idText.getText()));
+                    if (rs.getDouble("amount_paid") >= rs.getDouble("total_amount"))
+                    {
+                        JOptionPane.showMessageDialog(null, "Your bill is already paid!", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                    else
+                    {
+                        pay.setEnabled(false);
+                        new PayBills(this, Integer.parseInt(idText.getText()));
+                    }
                 }
             }
-            catch (Exception f)
+            catch (SQLException f)
             {
                 f.printStackTrace();
             }
         }
+    }
+
+    public void refresh()
+    {
+        connection = DatabaseConnection.getInstance();
+        ResultSet rs = connection.getResult("SELECT * FROM bills WHERE recipient_id='" + userID + "'");
+
+        try
+        {
+            defaultTableModeltt.setRowCount(0);
+
+            while (rs.next())
+            {
+                int billID = rs.getInt("key");
+                String dateIssue = rs.getString("date_issued");
+                String totalAmount = String.valueOf(rs.getInt("total_amount"));
+                String amountPaid = String.valueOf(rs.getInt("amount_paid"));
+
+                String status;
+                if(Double.parseDouble(amountPaid) >= Double.parseDouble(totalAmount))
+                {
+                    status = "Paid";
+                }
+                else
+                {
+                    status = "Unpaid";
+                }
+                defaultTableModeltt.addRow((new Object[]{billID,dateIssue,totalAmount,amountPaid,status}));
+            }
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+    }
+
+    public JButton getPay()
+    {
+        return pay;
     }
 }
