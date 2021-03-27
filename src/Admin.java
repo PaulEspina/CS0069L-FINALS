@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -65,6 +66,13 @@ public class Admin extends User implements ActionListener, DocumentListener
     JButton createUserButton;
     // Create User Variables
     File image;
+
+    // Manage Tenant Components
+    DefaultTableModel defaultTableModeltt;
+    DefaultTableCellRenderer defaultTableCellRenderer;
+
+    JScrollPane panelScroll;
+    JTable detailTable;
 
 
 
@@ -180,21 +188,166 @@ public class Admin extends User implements ActionListener, DocumentListener
     private void manageApartment()
     {
         JButton continuousButton;
+        JButton continuousButton1;
+        JButton continuousButton2;
+        JButton continuousButton3;
+        JButton continuousButton4;
+        JButton continuousButton5;
+        JButton continuousButton6;
+        JButton continuousButton7;
+        JButton continuousButton8;
+        JButton continuousButton9;
+        JButton continuousButton10;
+        JButton continuousButton11;
+        JButton continuousButton12;
+        JButton continuousButton13;
+        JButton continuousButton14;
+        JButton continuousButton15;
+        JButton continuousButton16;
+        JScrollPane panelScroll;
+        JPanel panelButton;
         JPanel continuousPanel;
 
         JPanel manageApartmentPanel = new JPanel();
-        manageApartmentPanel.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
+        manageApartmentPanel.setLayout(null);
         manageApartmentPanel.setOpaque(true);
 
         continuousButton = new JButton();
-        continuousButton.setSize(50,50);
+        continuousButton.setPreferredSize(new Dimension(100,100));
+        continuousButton.setBackground(Color.LIGHT_GRAY);
+        continuousButton.setOpaque(true);
         continuousButton.setFocusable(false);
+
+        continuousButton1 = new JButton();
+        continuousButton1.setPreferredSize(new Dimension(100,100));
+        continuousButton1.setBackground(Color.LIGHT_GRAY);
+        continuousButton1.setOpaque(true);
+        continuousButton1.setFocusable(false);
+
+        continuousButton2 = new JButton();
+        continuousButton2.setPreferredSize(new Dimension(100,100));
+        continuousButton2.setBackground(Color.LIGHT_GRAY);
+        continuousButton2.setOpaque(true);
+        continuousButton2.setFocusable(false);
+
+        continuousButton3 = new JButton();
+        continuousButton3.setPreferredSize(new Dimension(100,100));
+        continuousButton3.setBackground(Color.LIGHT_GRAY);
+        continuousButton3.setOpaque(true);
+        continuousButton3.setFocusable(false);
+
+        continuousButton4 = new JButton();
+        continuousButton4.setPreferredSize(new Dimension(100,100));
+        continuousButton4.setBackground(Color.LIGHT_GRAY);
+        continuousButton4.setOpaque(true);
+        continuousButton4.setFocusable(false);
+
+        continuousButton5 = new JButton();
+        continuousButton5.setPreferredSize(new Dimension(100,100));
+        continuousButton5.setBackground(Color.LIGHT_GRAY);
+        continuousButton5.setOpaque(true);
+        continuousButton5.setFocusable(false);
+
+        continuousButton6 = new JButton();
+        continuousButton6.setPreferredSize(new Dimension(100,100));
+        continuousButton6.setBackground(Color.LIGHT_GRAY);
+        continuousButton6.setOpaque(true);
+        continuousButton6.setFocusable(false);
+
+        continuousButton7 = new JButton();
+        continuousButton7.setPreferredSize(new Dimension(100,100));
+        continuousButton7.setBackground(Color.LIGHT_GRAY);
+        continuousButton7.setOpaque(true);
+        continuousButton7.setFocusable(false);
+
+        continuousButton8 = new JButton();
+        continuousButton8.setPreferredSize(new Dimension(100,100));
+        continuousButton8.setBackground(Color.LIGHT_GRAY);
+        continuousButton8.setOpaque(true);
+        continuousButton8.setFocusable(false);
+
+        continuousButton9 = new JButton();
+        continuousButton9.setPreferredSize(new Dimension(100,100));
+        continuousButton9.setBackground(Color.LIGHT_GRAY);
+        continuousButton9.setOpaque(true);
+        continuousButton9.setFocusable(false);
+
+        continuousButton10 = new JButton();
+        continuousButton10.setPreferredSize(new Dimension(100,100));
+        continuousButton10.setBackground(Color.LIGHT_GRAY);
+        continuousButton10.setOpaque(true);
+        continuousButton10.setFocusable(false);
+
+        continuousButton11 = new JButton();
+        continuousButton11.setPreferredSize(new Dimension(100,100));
+        continuousButton11.setBackground(Color.LIGHT_GRAY);
+        continuousButton11.setOpaque(true);
+        continuousButton11.setFocusable(false);
+
+        continuousButton12 = new JButton();
+        continuousButton12.setPreferredSize(new Dimension(100,100));
+        continuousButton12.setBackground(Color.LIGHT_GRAY);
+        continuousButton12.setOpaque(true);
+        continuousButton12.setFocusable(false);
+
+        continuousButton13 = new JButton();
+        continuousButton13.setPreferredSize(new Dimension(100,100));
+        continuousButton13.setBackground(Color.LIGHT_GRAY);
+        continuousButton13.setOpaque(true);
+        continuousButton13.setFocusable(false);
+
+        continuousButton14 = new JButton();
+        continuousButton14.setPreferredSize(new Dimension(100,100));
+        continuousButton14.setBackground(Color.LIGHT_GRAY);
+        continuousButton14.setOpaque(true);
+        continuousButton14.setFocusable(false);
+
+        continuousButton15 = new JButton();
+        continuousButton15.setPreferredSize(new Dimension(100,100));
+        continuousButton15.setBackground(Color.LIGHT_GRAY);
+        continuousButton15.setOpaque(true);
+        continuousButton15.setFocusable(false);
+
+        continuousButton16 = new JButton();
+        continuousButton16.setPreferredSize(new Dimension(100,100));
+        continuousButton16.setBackground(Color.LIGHT_GRAY);
+        continuousButton16.setOpaque(true);
+        continuousButton16.setFocusable(false);
+
+        panelButton = new JPanel();
+        panelButton.setLayout(new FlowLayout(FlowLayout.LEADING,25,25));
+        panelButton.setBorder(BorderFactory.createEmptyBorder(20,20,20,1));
+        panelButton.setBounds(0,100,550,Integer.MAX_VALUE);
 
         JLabel manageApartmentHeader = new JLabel("MANAGE APARTMENT");
         manageApartmentHeader.setBounds(50, 25, 400, 50);
         manageApartmentHeader.setFont(new Font("Arial", Font.BOLD, 32));
 
-        manageApartmentPanel.add(continuousButton);
+        panelScroll = new JScrollPane(panelButton);
+        panelScroll.setBounds(620,70,15,485);
+        panelButton.setBackground(Color.black);
+
+        manageApartmentPanel.add(panelScroll);
+
+        panelButton.add(continuousButton);
+        panelButton.add(continuousButton1);
+        panelButton.add(continuousButton2);
+        panelButton.add(continuousButton3);
+        panelButton.add(continuousButton4);
+        panelButton.add(continuousButton5);
+        panelButton.add(continuousButton6);
+        panelButton.add(continuousButton7);
+        panelButton.add(continuousButton8);
+        panelButton.add(continuousButton9);
+        panelButton.add(continuousButton10);
+        panelButton.add(continuousButton11);
+        panelButton.add(continuousButton12);
+        panelButton.add(continuousButton13);
+        panelButton.add(continuousButton14);
+        panelButton.add(continuousButton15);
+        panelButton.add(continuousButton16);
+
+        manageApartmentPanel.add(panelButton);
         manageApartmentPanel.add(manageApartmentHeader);
         contentPanel.add("manageApartmentPanel", manageApartmentPanel);
     }
@@ -203,11 +356,11 @@ public class Admin extends User implements ActionListener, DocumentListener
     {
         DatabaseConnection connection;
 
-        DefaultTableModel defaultTableModeltt;
-        DefaultTableCellRenderer defaultTableCellRenderer;
+        defaultTableModeltt = new DefaultTableModel();
+        defaultTableCellRenderer = new DefaultTableCellRenderer();
 
-        JScrollPane panelScroll;
-        JTable detailTable;
+        panelScroll = new JScrollPane();
+        detailTable = new JTable();
 
         JPanel manageTenantsPanel = new JPanel();
         manageTenantsPanel.setLayout(null);
@@ -291,7 +444,7 @@ public class Admin extends User implements ActionListener, DocumentListener
             e.printStackTrace();
         }
 
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < 5; i++)
         {
             detailTable.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
         }
@@ -836,6 +989,55 @@ public class Admin extends User implements ActionListener, DocumentListener
         }
         recipientTotalFee.setText("Total Fee: " + totalFee);
         createBillButton.setEnabled(true);
+    }
+
+    public void refresh()
+    {
+        connection = DatabaseConnection.getInstance();
+        ResultSet resultSet = connection.getResult("SELECT * FROM users'" + "'");
+        try
+        {
+            int key;
+            int tenantRoom = 0;
+            String lastName;
+            String firstName;
+            String middleName;
+
+            defaultTableModeltt.setRowCount(0);
+
+            while(resultSet.next())
+            {
+
+                key = resultSet.getInt("key");
+
+                if(key / 100000 == 2)
+                {
+                    lastName = resultSet.getString("last_name");
+                    firstName = resultSet.getString("first_name");
+                    middleName = resultSet.getString("middle_name");
+
+                    resultSet.close();
+
+                    ResultSet rs = connection.getResult("SELECT * FROM tenants WHERE room ='" + key +"'");
+
+                    if(rs.next())
+                    {
+                        int roomID = rs.getInt("room");
+                        rs.close();
+
+                        ResultSet roomSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
+                        tenantRoom = roomSet.getInt("room_number");
+                        roomSet.close();
+
+                    }
+                    defaultTableModeltt.addRow(new Object[]{key,lastName,firstName,middleName,tenantRoom});
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
