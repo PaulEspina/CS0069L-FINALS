@@ -178,9 +178,7 @@ public class Admin extends User implements ActionListener, DocumentListener
     private void manageTenants()
     {
         JPanel manageTenantsPanel = new JPanel();
-        manageTenantsPanel.setBackground(Color.GREEN);
-        manageTenantsPanel.setOpaque(true);
-        //TODO
+
 
         contentPanel.add("manageTenantsPanel", manageTenantsPanel);
     }
