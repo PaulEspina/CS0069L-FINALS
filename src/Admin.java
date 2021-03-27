@@ -287,7 +287,7 @@ public class Admin extends User implements ActionListener, DocumentListener
                     String firstName = user.get(2);
                     String middleName = user.get(3);
 
-                    resultSet = connection.getResult("SELECT * FROM tenants WHERE room ='" + key + "'");
+                    resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + key + "'");
                     if(resultSet.next())
                     {
                         roomID = resultSet.getInt("room");
@@ -343,7 +343,7 @@ public class Admin extends User implements ActionListener, DocumentListener
 
         //picture
         recipientPicture = new JLabel();
-        recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+        recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
         recipientPicture.setBounds(50, 140, recipientPicture.getIcon().getIconWidth(), recipientPicture.getIcon().getIconHeight());
         recipientPicture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -367,29 +367,29 @@ public class Admin extends User implements ActionListener, DocumentListener
 
 
         date = new JLabel("Date Issued: ");
-        date.setBounds(60, 325, 500, 25);
-
+        date.setBounds(60, 350, 500, 25);
         recipientRoomNumber = new JLabel("Room Number:");
-        recipientRoomNumber.setBounds(60, 350, 500, 25);
+        recipientRoomNumber.setBounds(60, 375, 500, 25);
         recipientRoomFee = new JLabel("Room Rent Fee:");
-        recipientRoomFee.setBounds(60, 375, 500, 25);
+        recipientRoomFee.setBounds(60, 400, 500, 25);
         JLabel miscFeeLabel = new JLabel("Miscellaneous Fee:");
-        miscFeeLabel.setBounds(60, 400, 150, 25);
-        recipientMiscFee = new JTextField("Enter miscellaneous fees here.");
+        miscFeeLabel.setBounds(60, 425, 150, 25);
+        recipientMiscFee = new JTextField();
+        recipientMiscFee.setToolTipText("Enter miscellaneous fees here.");
         recipientMiscFee.setEnabled(false);
-        recipientMiscFee.setBounds(175, 400, 385, 25);
+        recipientMiscFee.setBounds(175, 425, 385, 25);
         recipientMiscFee.getDocument().addDocumentListener(this);
         recipientTotalFee = new JLabel("Total Fee:");
-        recipientTotalFee.setBounds(60, 425, 500, 25);
+        recipientTotalFee.setBounds(60, 450, 500, 25);
 
         dbDate = new JLabel();
-        dbDate.setBounds(172,325,500,25);
+        dbDate.setBounds(172,350,500,25);
         dbRoomNumber = new JLabel();
-        dbRoomNumber.setBounds(175,350,500,25);
+        dbRoomNumber.setBounds(175,375,500,25);
         dbRoomFee = new JLabel();
-        dbRoomFee.setBounds(175,375,500,25);
+        dbRoomFee.setBounds(175,400,500,25);
         dbTotalFee = new JLabel();
-        dbTotalFee.setBounds(175,425,500,25);
+        dbTotalFee.setBounds(175,450,500,25);
 
         createBillResetButton = new JButton("Reset");
         createBillResetButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -445,7 +445,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         createUserHeader.setFont(new Font("Arial", Font.BOLD, 32));
 
         newPicture = new JLabel();
-        newPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+        newPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
         newPicture.setBounds(50, 100, newPicture.getIcon().getIconWidth(), newPicture.getIcon().getIconHeight());
         newPicture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -606,56 +606,58 @@ public class Admin extends User implements ActionListener, DocumentListener
                 if(id / 100000 == 2)
                 {
                     ResultSet resultSet = connection.getResult("SELECT * FROM users WHERE key='" + id + "'");
-                    if(!resultSet.next())
+                    if(resultSet.next())
+                    {
+                        int roomID = 0;
+                        int roomNumber;
+                        double rentAmount;
+                        String username = resultSet.getString("username");
+                        String firstName = resultSet.getString("first_name");
+                        String middleName = resultSet.getString("middle_name");
+                        String lastName = resultSet.getString("last_name");
+                        resultSet.close();
+
+                        resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + id + "'");
+                        if(resultSet.next())
+                        {
+                            roomID = resultSet.getInt("room");
+                        }
+                        resultSet.close();
+
+                        resultSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
+                        if(resultSet.next())
+                        {
+                            roomNumber = resultSet.getInt("room_number");
+                            rentAmount = resultSet.getDouble("rent_amount");
+                            LocalDate localDate = LocalDate.now();
+                            int month = localDate.getMonthValue();
+                            int day = localDate.getDayOfMonth();
+                            int year = localDate.getYear();
+                            dateString = String.format("%2d/%2d/%4d", month, day, year);
+                            dbDate.setText(dateString);
+                            dbUsername.setText(username);
+                            dbFirstName.setText(firstName);
+                            dbMiddleName.setText(middleName);
+                            dbLastName.setText(lastName);
+                            dbRoomNumber.setText(String.valueOf(roomNumber));
+                            dbRoomFee.setText(String.valueOf(rentAmount));
+                            recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/" + id).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+                            rentFee = rentAmount;
+                            recipientSearchField.setEnabled(false);
+                            recipientSearchButton.setEnabled(false);
+                            recipientMiscFee.setEnabled(true);
+                            createBillResetButton.setEnabled(true);
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null, "No room is assigned to this tenant. Please assign the tenant to a room first.", "Tenant does not have a room.", JOptionPane.ERROR_MESSAGE);
+                        }
+                        resultSet.close();
+                    }
+                    else
                     {
                         JOptionPane.showMessageDialog(null, "Please enter a valid recipient ID.", "Recipient not found.", JOptionPane.ERROR_MESSAGE);
-                        return;
                     }
-                    String username = resultSet.getString("username");
-                    String firstName = resultSet.getString("first_name");
-                    String middleName = resultSet.getString("middle_name");
-                    String lastName = resultSet.getString("last_name");
-                    resultSet.close();
-
-                    resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + id + "'");
-                    int roomID = resultSet.getInt("room");
-                    resultSet.close();
-
-                    resultSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
-                    int roomNumber = resultSet.getInt("room_number");
-                    double rentAmount = resultSet.getDouble("rent_amount");
-                    if(!resultSet.next())
-                    {
-                        JOptionPane.showMessageDialog(null, "No room is assigned to this tenant. Please assign the tenant to a room first.", "Tenant does not have a room.", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    resultSet.close();
-
-                    LocalDate localDate = LocalDate.now();
-                    int month = localDate.getMonthValue();
-                    int day = localDate.getDayOfMonth();
-                    int year = localDate.getYear();
-                    dateString = String.format("%2d/%2d/%4d", month, day, year);
-                    date.setText("Date Issued: ");
-                    dbDate.setText(dateString);
-                    recipientUsername.setText("Username:");
-                    dbUsername.setText(username);
-                    recipientFirstName.setText("First Name: ");
-                    dbFirstName.setText(firstName);
-                    recipientMiddleName.setText("Middle Name: ");
-                    dbMiddleName.setText(middleName);
-                    recipientLastName.setText("Last Name: ");
-                    dbLastName.setText(lastName);
-                    recipientRoomNumber.setText("Room Number: ");
-                    dbRoomNumber.setText(String.valueOf(roomNumber));
-                    recipientRoomFee.setText("Room Rent Fee: ");
-                    dbRoomFee.setText(String.valueOf(rentAmount));
-                    recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/" + id).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
-                    rentFee = rentAmount;
-                    recipientSearchField.setEnabled(false);
-                    recipientSearchButton.setEnabled(false);
-                    recipientMiscFee.setEnabled(true);
-                    createBillResetButton.setEnabled(true);
                 }
                 else
                 {
@@ -676,15 +678,16 @@ public class Admin extends User implements ActionListener, DocumentListener
         // Create Bill Reset Button
         if(e.getSource() == createBillResetButton)
         {
-            recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
-            recipientUsername.setText("Username: ");
-            recipientFirstName.setText("First Name: ");
-            recipientMiddleName.setText("Middle Name: ");
-            recipientLastName.setText("Last Name: ");
-            recipientRoomNumber.setText("Room Number: ");
-            recipientRoomFee.setText("Room Rent Fee: ");
+            recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+            dbDate.setText("");
+            dbUsername.setText("");
+            dbFirstName.setText("");
+            dbMiddleName.setText("");
+            dbLastName.setText("");
+            dbRoomNumber.setText("");
+            dbRoomFee.setText("");
             recipientMiscFee.setText("");
-            recipientTotalFee.setText("");
+            dbTotalFee.setText("");
             recipientSearchField.setText("");
             rentFee = 0;
             recipientSearchField.setEnabled(true);
@@ -704,15 +707,16 @@ public class Admin extends User implements ActionListener, DocumentListener
                                "'" + totalFee + "'," +
                                "'0'" +
                                ")");
-            recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
-            recipientUsername.setText("Username: ");
-            recipientFirstName.setText("First Name: ");
-            recipientMiddleName.setText("Middle Name: ");
-            recipientLastName.setText("Last Name: ");
-            recipientRoomNumber.setText("Room Number: ");
-            recipientRoomFee.setText("Room Rent Fee: ");
+            recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+            dbDate.setText("");
+            dbUsername.setText("");
+            dbFirstName.setText("");
+            dbMiddleName.setText("");
+            dbLastName.setText("");
+            dbRoomNumber.setText("");
+            dbRoomFee.setText("");
             recipientMiscFee.setText("");
-            recipientTotalFee.setText("");
+            dbTotalFee.setText("");
             recipientSearchField.setText("");
             rentFee = 0;
             recipientSearchField.setEnabled(true);
@@ -753,6 +757,10 @@ public class Admin extends User implements ActionListener, DocumentListener
         // Confirm Create User Button
         if(e.getSource() == createUserButton)
         {
+            if(image == null)
+            {
+                image = new File("image/default_pic.png");
+            }
             if(!enterUsername.getText().isEmpty() &&
                !String.valueOf(enterPassword.getPassword()).isEmpty() &&
                !String.valueOf(enterPassword.getPassword()).isEmpty() &&
