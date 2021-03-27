@@ -19,59 +19,59 @@ import java.util.Random;
 
 public class Admin extends User implements ActionListener, DocumentListener
 {
-    DatabaseConnection connection;
+    private DatabaseConnection connection;
     private JButton[] navButtons;
     private CardLayout contentCard;
 
     // Create Bill Components
-    JTextField recipientSearchField;
-    JButton recipientSearchButton;
-    JLabel recipientPicture;
-    JLabel recipientUsername;
-    JLabel recipientFirstName;
-    JLabel recipientLastName;
-    JLabel recipientMiddleName;
-    JLabel recipientRoomNumber;
-    JLabel recipientRoomFee;
-    JTextField recipientMiscFee;
-    JLabel recipientTotalFee;
-    JButton createBillResetButton;
-    JButton createBillButton;
-    JLabel date;
-    JLabel dbFirstName;
-    JLabel dbMiddleName;
-    JLabel dbLastName;
-    JLabel dbUsername;
-    JLabel dbRoomNumber;
-    JLabel dbRoomFee;
-    JLabel dbTotalFee;
-    JLabel dbDate;
+    private JTextField recipientSearchField;
+    private JButton recipientSearchButton;
+    private JLabel recipientPicture;
+    private JLabel recipientUsername;
+    private JLabel recipientFirstName;
+    private JLabel recipientLastName;
+    private JLabel recipientMiddleName;
+    private JLabel recipientRoomNumber;
+    private JLabel recipientRoomFee;
+    private JTextField recipientMiscFee;
+    private JLabel recipientTotalFee;
+    private JButton createBillResetButton;
+    private JButton createBillButton;
+    private JLabel date;
+    private JLabel dbFirstName;
+    private JLabel dbMiddleName;
+    private JLabel dbLastName;
+    private JLabel dbUsername;
+    private JLabel dbRoomNumber;
+    private JLabel dbRoomFee;
+    private JLabel dbTotalFee;
+    private JLabel dbDate;
     // Create Bill Variables
-    double rentFee = 0;
-    double totalFee = 0;
-    String dateString;
+    private double rentFee = 0;
+    private double totalFee = 0;
+    private String dateString;
 
     // Create User Components
-    JLabel newPicture;
-    JButton uploadPictureButton;
-    JTextField enterFirstName;
-    JTextField enterMiddleName;
-    JTextField enterLastName;
-    JTextField enterUsername;
-    JPasswordField enterPassword;
-    JPasswordField enterConfirmPassword;
-    JRadioButton tenantTypeButton;
-    JRadioButton adminTypeButton;
-    ButtonGroup accountTypeButton;
-    JButton createUserResetButton;
-    JButton createUserButton;
+    private JLabel newPicture;
+    private JButton uploadPictureButton;
+    private JTextField enterFirstName;
+    private JTextField enterMiddleName;
+    private JTextField enterLastName;
+    private JTextField enterUsername;
+    private JPasswordField enterPassword;
+    private JPasswordField enterConfirmPassword;
+    private JRadioButton tenantTypeButton;
+    private JRadioButton adminTypeButton;
+    private ButtonGroup accountTypeButton;
+    private JButton createUserResetButton;
+    private JButton createUserButton;
     // Create User Variables
-    File image;
+    private File image;
 
     // Manage Apartment Components
-    DefaultTableModel defaultTableModeltt;
-    JTextField tenantSearchField;
-    JButton tenantSearchButton;
+    private DefaultTableModel defaultTableModeltt;
+    private JTextField tenantSearchField;
+    private JButton tenantSearchButton;
 
     public Admin(int userID, String username, String firstName, String middleName, String lastName)
     {
@@ -366,7 +366,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         tenantSearchField.setBounds(125, 75, 350, 25);
         tenantSearchField.setToolTipText("Enter tenant ID here.");
 
-        tenantSearchButton = new JButton("SELECT");
+        tenantSearchButton = new JButton("SUBMIT");
         tenantSearchButton.setFont(new Font("Arial", Font.BOLD, 10));
         tenantSearchButton.setFocusPainted(false);
         tenantSearchButton.setBackground(Color.WHITE);
@@ -480,7 +480,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         recipientSearchField.setBounds(125, 75, 350, 25);
         recipientSearchField.setToolTipText("Enter tenant ID here.");
 
-        recipientSearchButton = new JButton("SELECT");
+        recipientSearchButton = new JButton("SUBMIT");
         recipientSearchButton.setFont(new Font("Arial", Font.BOLD, 10));
         recipientSearchButton.setFocusPainted(false);
         recipientSearchButton.setBackground(Color.WHITE);
@@ -958,17 +958,19 @@ public class Admin extends User implements ActionListener, DocumentListener
             {
                 JOptionPane.showMessageDialog(null, "Please fill all the fields.", "Insufficient Data", JOptionPane.ERROR_MESSAGE);
             }
+            refresh();
         }
 
         // Tenant Search Button
         if(e.getSource() == tenantSearchButton)
         {
+            tenantSearchButton.setEnabled(false);
             ResultSet resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + tenantSearchField.getText() + "'");
             try
             {
                 if(resultSet.next())
                 {
-                    new TenantDetails(Integer.parseInt(tenantSearchField.getText()));
+                    new TenantDetails(this, Integer.parseInt(tenantSearchField.getText()));
                 }
                 else
                 {
@@ -996,6 +998,63 @@ public class Admin extends User implements ActionListener, DocumentListener
         }
     }
 
+    public void refresh()
+    {
+        ResultSet resultSet = connection.getResult("SELECT * FROM users'" + "'");
+        try
+        {
+            defaultTableModeltt.setRowCount(0);
+            ArrayList<ArrayList<String>> users = new ArrayList<>();
+            while(resultSet.next())
+            {
+                ArrayList<String> user = new ArrayList<>();
+                user.add(String.valueOf(resultSet.getInt("key")));
+                user.add(resultSet.getString("last_name"));
+                user.add(resultSet.getString("first_name"));
+                user.add(resultSet.getString("middle_name"));
+                users.add(user);
+            }
+            resultSet.close();
+
+            for(ArrayList<String> user : users)
+            {
+                int key = Integer.parseInt(user.get(0));
+                if(key / 100000 == 2)
+                {
+                    int roomID = 0;
+                    int tenantRoom = 0;
+                    String lastName = user.get(1);
+                    String firstName = user.get(2);
+                    String middleName = user.get(3);
+
+                    resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + key + "'");
+                    if(resultSet.next())
+                    {
+                        roomID = resultSet.getInt("room");
+                    }
+                    resultSet.close();
+
+                    resultSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
+                    if(resultSet.next())
+                    {
+                        tenantRoom = resultSet.getInt("room_number");
+                    }
+                    resultSet.close();
+                    defaultTableModeltt.addRow(new Object[]{key, lastName, firstName, middleName, tenantRoom});
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void enableTenantSearchButton()
+    {
+        tenantSearchButton.setEnabled(true);
+    }
+
     public void changeTotalFee(DocumentEvent e)
     {
         totalFee = rentFee;
@@ -1011,54 +1070,6 @@ public class Admin extends User implements ActionListener, DocumentListener
         createBillButton.setEnabled(true);
     }
 
-    public void refresh()
-    {
-        connection = DatabaseConnection.getInstance();
-        ResultSet resultSet = connection.getResult("SELECT * FROM users'" + "'");
-        try
-        {
-            int key;
-            int tenantRoom = 0;
-            String lastName;
-            String firstName;
-            String middleName;
-
-            defaultTableModeltt.setRowCount(0);
-
-            while(resultSet.next())
-            {
-
-                key = resultSet.getInt("key");
-
-                if(key / 100000 == 2)
-                {
-                    lastName = resultSet.getString("last_name");
-                    firstName = resultSet.getString("first_name");
-                    middleName = resultSet.getString("middle_name");
-
-                    resultSet.close();
-
-                    ResultSet rs = connection.getResult("SELECT * FROM tenants WHERE room ='" + key +"'");
-
-                    if(rs.next())
-                    {
-                        int roomID = rs.getInt("room");
-                        rs.close();
-
-                        ResultSet roomSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
-                        tenantRoom = roomSet.getInt("room_number");
-                        roomSet.close();
-
-                    }
-                    defaultTableModeltt.addRow(new Object[]{key,lastName,firstName,middleName,tenantRoom});
-                }
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void insertUpdate(DocumentEvent e)
