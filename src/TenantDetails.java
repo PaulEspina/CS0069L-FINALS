@@ -1,3 +1,5 @@
+import jdk.nashorn.internal.scripts.JO;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,8 @@ import java.sql.SQLException;
 public class TenantDetails extends JFrame implements ActionListener, WindowListener
 {
     DatabaseConnection connection;
+
+    Admin admin;
 
     int tenantID;
     int roomNumber;
@@ -25,19 +29,23 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     JLabel firstNameValue;
     JLabel middleNameValue;
     JLabel lastNameValue;
-
+    JTextField newRoomField;
     JButton editRoomButton;
+    JButton confirmEditButton;
     JButton paymentStatusButton;
     JButton closeButton;
+    JButton removeButton;
 
-    public TenantDetails(int tenantID)
+    public TenantDetails(Admin admin, int tenantID)
     {
+        this.admin = admin;
         this.tenantID = tenantID;
 
         connection = DatabaseConnection.getInstance();
         ResultSet resultSet = connection.getResult("SELECT * FROM users WHERE key='" + tenantID + "'");
         try
         {
+            roomNumber = 0;
             int roomID = 0;
             if(resultSet.next())
             {
@@ -101,7 +109,7 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         tenantIDValue.setBounds(275, 35, 85, 25);
         usernameValue = new JLabel(username);
         usernameValue.setBounds(275, 60, 85, 25);
-        roomNumberValue = new JLabel(String.valueOf(roomNumber));
+        roomNumberValue = new JLabel(roomNumber == 0 ? "Vacant" : String.valueOf(roomNumber));
         roomNumberValue.setBounds(275, 85, 80, 25);
         firstNameValue = new JLabel(firstName);
         firstNameValue.setBounds(150, 135, 150, 25);
@@ -134,6 +142,28 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         closeButton.setBounds(400, 225, 50, 25);
         closeButton.addActionListener(this);
 
+        newRoomField = new JTextField();
+        newRoomField.setToolTipText("Enter new room for this tenant.");
+        newRoomField.setBounds(275, 85, 80, 25);
+        newRoomField.setVisible(false);
+
+        confirmEditButton = new JButton("Confirm");
+        confirmEditButton.setBackground(Color.WHITE);
+        confirmEditButton.setFont(new Font("Arial", Font.BOLD, 10));
+        confirmEditButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        confirmEditButton.setFocusPainted(false);
+        confirmEditButton.setBounds(360, 85, 50, 20);
+        confirmEditButton.addActionListener(this);
+        confirmEditButton.setVisible(false);
+
+        removeButton = new JButton("Remove");
+        removeButton.setBackground(Color.WHITE);
+        removeButton.setFont(new Font("Arial", Font.BOLD, 10));
+        removeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        removeButton.setFocusPainted(false);
+        removeButton.setBounds(50, 225, 75, 25);
+        removeButton.addActionListener(this);
+
         add(profilePicture);
         add(tenantIDText);
         add(usernameText);
@@ -150,13 +180,119 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         add(editRoomButton);
         add(paymentStatusButton);
         add(closeButton);
+        add(newRoomField);
+        add(editRoomButton);
+        add(confirmEditButton);
+        add(removeButton);
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        // Edit Room Button
+        if(e.getSource() == editRoomButton)
+        {
+            newRoomField.setVisible(true);
+            confirmEditButton.setVisible(true);
+            editRoomButton.setVisible(false);
+            roomNumberValue.setVisible(false);
+        }
 
+        // Confirm Edit Button
+        if(e.getSource() == confirmEditButton)
+        {
+            try
+            {
+                ResultSet resultSet = connection.getResult("SELECT * FROM tenants WHERE room='" + newRoomField.getText() + "'");
+                boolean exists = resultSet.next();
+                resultSet.close();
+
+                if(!exists || Integer.parseInt(newRoomField.getText()) == 0)
+                {
+                    resultSet = connection.getResult("SELECT * FROM rooms WHERE room_number='" + newRoomField.getText() + "'");
+                    exists = resultSet.next();
+                    resultSet.close();
+                    if(exists || Integer.parseInt(newRoomField.getText()) == 0)
+                    {
+                        connection.execute("UPDATE tenants SET room='" + newRoomField.getText() + "' WHERE key='" + tenantID + "'");
+                        resultSet = connection.getResult("SELECT * FROM users WHERE key='" + tenantID + "'");
+                        int roomID = 0;
+                        roomNumber = 0;
+                        if(resultSet.next())
+                        {
+                            username = resultSet.getString("username");
+                            firstName = resultSet.getString("first_name");
+                            middleName = resultSet.getString("middle_name");
+                            lastName = resultSet.getString("last_name");
+                        }
+                        resultSet.close();
+
+                        resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + tenantID + "'");
+                        if(resultSet.next())
+                        {
+                            roomID = resultSet.getInt("room");
+                        }
+                        resultSet.close();
+
+                        resultSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
+                        if(resultSet.next())
+                        {
+                            roomNumber = resultSet.getInt("room_number");
+                        }
+                        resultSet.close();
+
+                        usernameValue.setText(username);
+                        roomNumberValue.setText(roomNumber == 0 ? "Vacant" : String.valueOf(roomNumber));
+                        firstNameValue.setText(firstName);
+                        middleNameValue.setText(middleName);
+                        lastNameValue.setText(lastName);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "That room does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "That room is already occupied.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            catch(SQLException throwables)
+            {
+                throwables.printStackTrace();
+            }
+            newRoomField.setVisible(false);
+            confirmEditButton.setVisible(false);
+            editRoomButton.setVisible(true);
+            roomNumberValue.setVisible(true);
+        }
+
+        // Payment Status Button
+        if(e.getSource() == paymentStatusButton)
+        {
+            paymentStatusButton.setEnabled(false);
+            closeButton.setEnabled(false);
+            // create PaymentStatus Frame
+
+        }
+
+        // Remove Tenant Button
+        if(e.getSource() == removeButton)
+        {
+            int x = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove this tenant?", "Confirm Remove" , JOptionPane.YES_NO_OPTION);
+            if(x == JOptionPane.YES_OPTION)
+            {
+                connection.execute("DELETE FROM users WHERE key='" + tenantID + "'");
+                connection.execute("DELETE FROM tenants WHERE key='" + tenantID + "'");
+            }
+        }
+
+        // Close Button
+        if(e.getSource() == closeButton)
+        {
+            dispose();
+        }
     }
 
     @Override
@@ -174,7 +310,8 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     @Override
     public void windowClosed(WindowEvent e)
     {
-
+        admin.refresh();
+        admin.enableTenantSearchButton();
     }
 
     @Override
