@@ -34,6 +34,14 @@ public class Admin extends User implements ActionListener, DocumentListener
     JButton createBillResetButton;
     JButton createBillButton;
     JLabel date;
+    JLabel dbFirstName;
+    JLabel dbMiddleName;
+    JLabel dbLastName;
+    JLabel dbUsername;
+    JLabel dbRoomNumber;
+    JLabel dbRoomFee;
+    JLabel dbTotalFee;
+    JLabel dbDate;
     // Create Bill Variables
     double rentFee = 0;
     double totalFee = 0;
@@ -55,6 +63,8 @@ public class Admin extends User implements ActionListener, DocumentListener
     JButton createUserButton;
     // Create User Variables
     File image;
+
+
 
     public Admin(int userID, String username, String firstName, String middleName, String lastName)
     {
@@ -168,17 +178,29 @@ public class Admin extends User implements ActionListener, DocumentListener
     private void manageApartment()
     {
         JPanel manageApartmentPanel = new JPanel();
-        manageApartmentPanel.setBackground(Color.RED);
+        manageApartmentPanel.setLayout(null);
         manageApartmentPanel.setOpaque(true);
         //TODO
 
+        JLabel manageApartmentHeader = new JLabel("MANAGE APARTMENT");
+        manageApartmentHeader.setBounds(50, 25, 400, 50);
+        manageApartmentHeader.setFont(new Font("Arial", Font.BOLD, 32));
+
+        manageApartmentPanel.add(manageApartmentHeader);
         contentPanel.add("manageApartmentPanel", manageApartmentPanel);
     }
 
     private void manageTenants()
     {
         JPanel manageTenantsPanel = new JPanel();
+        manageTenantsPanel.setLayout(null);
+        manageTenantsPanel.setOpaque(true);
+        //TODO
+        JLabel manageTenantsHeader= new JLabel("MANAGE TENANT");
+        manageTenantsHeader.setBounds(50, 25, 400, 50);
+        manageTenantsHeader.setFont(new Font("Arial", Font.BOLD, 32));
 
+        manageTenantsPanel.add(manageTenantsHeader);
 
         contentPanel.add("manageTenantsPanel", manageTenantsPanel);
     }
@@ -188,33 +210,47 @@ public class Admin extends User implements ActionListener, DocumentListener
         JPanel createBillPanel = new JPanel();
         createBillPanel.setLayout(null);
 
+        JLabel createBillHeader = new JLabel("CREATE BILL");
+        createBillHeader.setBounds(50, 25, 400, 50);
+        createBillHeader.setFont(new Font("Arial", Font.BOLD, 32));
+
         JLabel recipientLabel = new JLabel("Recipient ID:");
-        recipientLabel.setBounds(50, 25, 75, 25);
+        recipientLabel.setBounds(50, 75, 75, 25);
 
         searchField = new JTextField();
-        searchField.setBounds(125, 25, 350, 25);
+        searchField.setBounds(125, 75, 350, 25);
         searchField.setToolTipText("Enter tenant ID here.");
 
         searchButton = new JButton("SELECT");
         searchButton.setFont(new Font("Arial", Font.BOLD, 10));
         searchButton.setFocusPainted(false);
         searchButton.setBackground(Color.WHITE);
-        searchButton.setBounds(480, 25, 75, 24);
+        searchButton.setBounds(480, 75, 75, 24);
         searchButton.addActionListener(this);
 
+        //picture
         recipientPicture = new JLabel();
         recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
-        recipientPicture.setBounds(50, 100, recipientPicture.getIcon().getIconWidth(), recipientPicture.getIcon().getIconHeight());
+        recipientPicture.setBounds(50, 140, recipientPicture.getIcon().getIconWidth(), recipientPicture.getIcon().getIconHeight());
         recipientPicture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         recipientUsername = new JLabel("Username:");
-        recipientUsername.setBounds(300, 100, 300, 25);
+        recipientUsername.setBounds(300, 140, 300, 25);
         recipientFirstName = new JLabel("First Name:");
-        recipientFirstName.setBounds(300, 125, 300, 25);
+        recipientFirstName.setBounds(300, 165, 300, 25);
         recipientMiddleName = new JLabel("Middle Name:");
-        recipientMiddleName.setBounds(300, 150, 300, 25);
+        recipientMiddleName.setBounds(300, 190, 300, 25);
         recipientLastName = new JLabel("Last Name:");
-        recipientLastName.setBounds(300, 175, 300, 25);
+        recipientLastName.setBounds(300, 215, 300, 25);
+
+        dbUsername = new JLabel();
+        dbUsername.setBounds(380,140,300,25);
+        dbFirstName = new JLabel();
+        dbFirstName.setBounds(380,165,300,25);
+        dbMiddleName = new JLabel();
+        dbMiddleName.setBounds(380, 190,300,25);
+        dbLastName = new JLabel();
+        dbLastName.setBounds(380,215,300,25);
 
 
         date = new JLabel("Date Issued: ");
@@ -233,6 +269,15 @@ public class Admin extends User implements ActionListener, DocumentListener
         recipientTotalFee = new JLabel("Total Fee:");
         recipientTotalFee.setBounds(60, 425, 500, 25);
 
+        dbDate = new JLabel();
+        dbDate.setBounds(172,325,500,25);
+        dbRoomNumber = new JLabel();
+        dbRoomNumber.setBounds(175,350,500,25);
+        dbRoomFee = new JLabel();
+        dbRoomFee.setBounds(175,375,500,25);
+        dbTotalFee = new JLabel();
+        dbTotalFee.setBounds(175,425,500,25);
+
         createBillResetButton = new JButton("Reset");
         createBillResetButton.setFont(new Font("Arial", Font.BOLD, 10));
         createBillResetButton.setFocusPainted(false);
@@ -249,6 +294,15 @@ public class Admin extends User implements ActionListener, DocumentListener
         createBillButton.setEnabled(false);
         createBillButton.addActionListener(this);
 
+        createBillPanel.add(dbDate);
+        createBillPanel.add(dbRoomNumber);
+        createBillPanel.add(dbRoomFee);
+        createBillPanel.add(dbTotalFee);
+        createBillPanel.add(dbFirstName);
+        createBillPanel.add(dbMiddleName);
+        createBillPanel.add(dbLastName);
+        createBillPanel.add(dbUsername);
+        createBillPanel.add(createBillHeader);
         createBillPanel.add(recipientLabel);
         createBillPanel.add(searchField);
         createBillPanel.add(searchButton);
@@ -469,13 +523,20 @@ public class Admin extends User implements ActionListener, DocumentListener
                     int day = localDate.getDayOfMonth();
                     int year = localDate.getYear();
                     dateString = String.format("%2d/%2d/%4d", month, day, year);
-                    date.setText("Date Issued: " + dateString);
-                    recipientUsername.setText("Username: " + username);
-                    recipientFirstName.setText("First Name: " + firstName);
-                    recipientMiddleName.setText("Middle Name: " + middleName);
-                    recipientLastName.setText("Last Name: " + lastName);
-                    recipientRoomNumber.setText("Room Number: " + roomNumber);
-                    recipientRoomFee.setText("Room Rent Fee: " + rentAmount);
+                    date.setText("Date Issued: ");
+                    dbDate.setText(dateString);
+                    recipientUsername.setText("Username:");
+                    dbUsername.setText(username);
+                    recipientFirstName.setText("First Name: ");
+                    dbFirstName.setText(firstName);
+                    recipientMiddleName.setText("Middle Name: ");
+                    dbMiddleName.setText(middleName);
+                    recipientLastName.setText("Last Name: ");
+                    dbLastName.setText(lastName);
+                    recipientRoomNumber.setText("Room Number: ");
+                    dbRoomNumber.setText(String.valueOf(roomNumber));
+                    recipientRoomFee.setText("Room Rent Fee: ");
+                    dbRoomFee.setText(String.valueOf(rentAmount));
                     recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/" + id).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
                     rentFee = rentAmount;
                     searchField.setEnabled(false);
