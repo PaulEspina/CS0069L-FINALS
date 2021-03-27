@@ -34,8 +34,6 @@ public class Admin extends User implements ActionListener, DocumentListener
     JButton createBillResetButton;
     JButton createBillButton;
     JLabel date;
-    //new JLabel
-
     JLabel dbFirstName;
     JLabel dbMiddleName;
     JLabel dbLastName;
