@@ -146,15 +146,18 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
 
             try
             {
-                ResultSet rs = con.getResult("SELECT * FROM bills WHERE key='" + key + "'");
 
-                if(rs.getDouble("amount_paid") < rs.getDouble("total_amount"))
+                ResultSet rs = con.getResult("SELECT * FROM bills WHERE key='" + key + "'");
+                if(rs.next())
                 {
-                    JOptionPane.showMessageDialog(null,"Payment Successful","Bill",JOptionPane.WARNING_MESSAGE);
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null,"Your bill is fully paid! Thank you!","Bill", JOptionPane.WARNING_MESSAGE);
+                    if(rs.getDouble("amount_paid") < rs.getDouble("total_amount"))
+                    {
+                        JOptionPane.showMessageDialog(null,"Payment Successful","Bill",JOptionPane.WARNING_MESSAGE);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null,"Your Bill Is Fully Paid! Thank you!","Bill", JOptionPane.WARNING_MESSAGE);
+                    }
                 }
             }
             catch(Exception f)

@@ -212,17 +212,28 @@ public class Tenant extends User implements ActionListener
 
             try
             {
-                if(rs.getInt("recipient_id") == userID)
+                if(rs.next())
                 {
-                    if (rs.getDouble("amount_paid") >= rs.getDouble("total_amount"))
+                    if(rs.getInt("recipient_id") == userID)
                     {
-                        JOptionPane.showMessageDialog(null, "Your bill is already paid!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        if (rs.getDouble("amount_paid") >= rs.getDouble("total_amount"))
+                        {
+                            JOptionPane.showMessageDialog(null, "Your Bill is Already Paid!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        }
+                        else
+                        {
+                            pay.setEnabled(false);
+                            new PayBills(this, Integer.parseInt(idText.getText()));
+                        }
                     }
                     else
                     {
-                        pay.setEnabled(false);
-                        new PayBills(this, Integer.parseInt(idText.getText()));
+                        JOptionPane.showMessageDialog(null,"No Existing Bill for this Tenant!","Warning",JOptionPane.WARNING_MESSAGE);
                     }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"This Bill Doesn't Exist!","Error",JOptionPane.ERROR_MESSAGE);
                 }
             }
             catch (SQLException f)
