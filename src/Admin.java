@@ -1,6 +1,5 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -19,25 +18,18 @@ import java.util.Random;
 
 public class Admin extends User implements ActionListener, DocumentListener
 {
-    private DatabaseConnection connection;
+    private final DatabaseConnection connection;
     private JButton[] navButtons;
-    private CardLayout contentCard;
+    private final CardLayout contentCard;
 
     // Create Bill Components
     private JTextField recipientSearchField;
     private JButton recipientSearchButton;
     private JLabel recipientPicture;
-    private JLabel recipientUsername;
-    private JLabel recipientFirstName;
-    private JLabel recipientLastName;
-    private JLabel recipientMiddleName;
-    private JLabel recipientRoomNumber;
-    private JLabel recipientRoomFee;
     private JTextField recipientMiscFee;
     private JLabel recipientTotalFee;
     private JButton createBillResetButton;
     private JButton createBillButton;
-    private JLabel date;
     private JLabel dbFirstName;
     private JLabel dbMiddleName;
     private JLabel dbLastName;
@@ -76,19 +68,14 @@ public class Admin extends User implements ActionListener, DocumentListener
     public Admin(int userID, String username, String firstName, String middleName, String lastName)
     {
         super(userID, username, firstName, middleName, lastName);
-        start();
-    }
-
-    public void start()
-    {
         connection = DatabaseConnection.getInstance();
         contentCard = new CardLayout();
         frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Apartment Management System");
         frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-        frame.setTitle("Apartment Management System");
         side();
         content();
         frame.add(sidePanel, BorderLayout.WEST);
@@ -96,6 +83,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         frame.setVisible(true);
     }
 
+    @Override
     protected void side()
     {
         sidePanel = new JPanel();
@@ -180,6 +168,20 @@ public class Admin extends User implements ActionListener, DocumentListener
         sidePanel.add(profilePanel);
         sidePanel.add(navigationPanel);
         sidePanel.add(logoutPanel);
+    }
+
+    @Override
+    protected void content()
+    {
+        contentPanel = new JPanel();
+        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setOpaque(true);
+        contentPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
+        contentPanel.setLayout(contentCard);
+        manageApartment();
+        manageTenants();
+        createBill();
+        createUser();
     }
 
     private void manageApartment()
@@ -360,17 +362,17 @@ public class Admin extends User implements ActionListener, DocumentListener
         manageTenantsHeader.setFont(new Font("Arial", Font.BOLD, 32));
 
         JLabel searchLabel = new JLabel("Search:");
-        searchLabel.setBounds(50, 75, 75, 25);
+        searchLabel.setBounds(300, 75, 50, 25);
 
         tenantSearchField = new JTextField();
-        tenantSearchField.setBounds(125, 75, 350, 25);
+        tenantSearchField.setBounds(350, 75, 160, 25);
         tenantSearchField.setToolTipText("Enter tenant ID here.");
 
         tenantSearchButton = new JButton("SUBMIT");
         tenantSearchButton.setFont(new Font("Arial", Font.BOLD, 10));
         tenantSearchButton.setFocusPainted(false);
         tenantSearchButton.setBackground(Color.WHITE);
-        tenantSearchButton.setBounds(480, 75, 75, 24);
+        tenantSearchButton.setBounds(520, 75, 75, 24);
         tenantSearchButton.addActionListener(this);
 
         //Table Settings
@@ -394,17 +396,19 @@ public class Admin extends User implements ActionListener, DocumentListener
         JTable detailTable = new JTable(defaultTableModeltt);
         detailTable.getTableHeader().setResizingAllowed(false);
         detailTable.getTableHeader().setReorderingAllowed(false);
+        detailTable.setDragEnabled(false);
+        detailTable.setCellSelectionEnabled(false);
+        detailTable.setFocusable(false);
         detailTable.setOpaque(true);
         detailTable.setModel(defaultTableModeltt);
-        detailTable.setBackground(Color.LIGHT_GRAY);
-        detailTable.setBounds(20,115,585,Integer.MAX_VALUE);
+        detailTable.setBounds(0,0,550,Integer.MAX_VALUE);
         for(int i = 0; i < 5; i++)
         {
             detailTable.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
         }
 
         JScrollPane panelScroll = new JScrollPane(detailTable);
-        panelScroll.setBounds(26,115,585,400);
+        panelScroll.setBounds(50,110,550,425);
         panelScroll.setBackground(Color.LIGHT_GRAY);
 
         ResultSet resultSet = connection.getResult("SELECT * FROM users'" + "'");
@@ -460,7 +464,6 @@ public class Admin extends User implements ActionListener, DocumentListener
         manageTenantsPanel.add(tenantSearchField);
         manageTenantsPanel.add(tenantSearchButton);
         manageTenantsPanel.add(manageTenantsHeader);
-
         contentPanel.add("manageTenantsPanel", manageTenantsPanel);
     }
 
@@ -493,13 +496,13 @@ public class Admin extends User implements ActionListener, DocumentListener
         recipientPicture.setBounds(50, 140, recipientPicture.getIcon().getIconWidth(), recipientPicture.getIcon().getIconHeight());
         recipientPicture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        recipientUsername = new JLabel("Username:");
+        JLabel recipientUsername = new JLabel("Username:");
         recipientUsername.setBounds(300, 140, 300, 25);
-        recipientFirstName = new JLabel("First Name:");
+        JLabel recipientFirstName = new JLabel("First Name:");
         recipientFirstName.setBounds(300, 165, 300, 25);
-        recipientMiddleName = new JLabel("Middle Name:");
+        JLabel recipientMiddleName = new JLabel("Middle Name:");
         recipientMiddleName.setBounds(300, 190, 300, 25);
-        recipientLastName = new JLabel("Last Name:");
+        JLabel recipientLastName = new JLabel("Last Name:");
         recipientLastName.setBounds(300, 215, 300, 25);
 
         dbUsername = new JLabel();
@@ -512,11 +515,11 @@ public class Admin extends User implements ActionListener, DocumentListener
         dbLastName.setBounds(380,215,300,25);
 
 
-        date = new JLabel("Date Issued: ");
+        JLabel date = new JLabel("Date Issued: ");
         date.setBounds(60, 350, 500, 25);
-        recipientRoomNumber = new JLabel("Room Number:");
+        JLabel recipientRoomNumber = new JLabel("Room Number:");
         recipientRoomNumber.setBounds(60, 375, 500, 25);
-        recipientRoomFee = new JLabel("Room Rent Fee:");
+        JLabel recipientRoomFee = new JLabel("Room Rent Fee:");
         recipientRoomFee.setBounds(60, 400, 500, 25);
         JLabel miscFeeLabel = new JLabel("Miscellaneous Fee:");
         miscFeeLabel.setBounds(60, 425, 150, 25);
@@ -674,19 +677,6 @@ public class Admin extends User implements ActionListener, DocumentListener
         createUser.add(createUserResetButton);
         createUser.add(createUserButton);
         contentPanel.add("createUser", createUser);
-    }
-
-    protected void content()
-    {
-        contentPanel = new JPanel();
-        contentPanel.setBackground(Color.WHITE);
-        contentPanel.setOpaque(true);
-        contentPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
-        contentPanel.setLayout(contentCard);
-        manageApartment();
-        manageTenants();
-        createBill();
-        createUser();
     }
 
     @Override
@@ -903,6 +893,18 @@ public class Admin extends User implements ActionListener, DocumentListener
         // Confirm Create User Button
         if(e.getSource() == createUserButton)
         {
+            boolean exists = false;
+            ResultSet resultSet = connection.getResult("SELECT * FROM users WHERE username='" + enterUsername.getText() + "'");
+            try
+            {
+                exists = resultSet.next();
+                resultSet.close();
+            }
+            catch(SQLException throwables)
+            {
+                throwables.printStackTrace();
+            }
+
             if(image == null)
             {
                 image = new File("image/default_pic.png");
@@ -914,44 +916,61 @@ public class Admin extends User implements ActionListener, DocumentListener
                !enterMiddleName.getText().isEmpty() &&
                !enterLastName.getText().isEmpty())
             {
-                if(String.valueOf(enterPassword.getPassword()).equals(String.valueOf(enterPassword.getPassword())))
+                if(!exists)
                 {
-                    int id = 0;
-                    if(adminTypeButton.isSelected())
+                    if(String.valueOf(enterPassword.getPassword()).equals(String.valueOf(enterConfirmPassword.getPassword())))
                     {
-                        id = 100000;
-                    }
-                    if(tenantTypeButton.isSelected())
-                    {
-                        id = 200000;
-                    }
-                    id += new Random().nextInt(100000);
-
-                    File save = new File("image/" + id);
-                    try
-                    {
-                        Files.copy(image.toPath(), save.toPath());
-                        connection.execute("INSERT INTO users VALUES(" +
-                                           "'" + id + "'," +
-                                           "'" + enterUsername.getText() + "'," +
-                                           "'" + String.valueOf(enterPassword.getPassword()) + "'," +
-                                           "'" + enterFirstName.getText() + "'," +
-                                           "'" + enterMiddleName.getText() + "'," +
-                                           "'" + enterLastName.getText() + "'" +
-                                           ")");
-                        if(tenantTypeButton.isSelected())
+                        int id = 0;
+                        if(adminTypeButton.isSelected())
                         {
-                            connection.execute("INSERT INTO tenants(key) VALUES('" + id + "')");
+                            id = 100000;
                         }
+                        else if(tenantTypeButton.isSelected())
+                        {
+                            id = 200000;
+                        }
+                        id += new Random().nextInt(100000);
+
+                        File save = new File("image/" + id);
+                        try
+                        {
+                            Files.copy(image.toPath(), save.toPath());
+                            connection.execute("INSERT INTO users VALUES(" +
+                                               "'" + id + "'," +
+                                               "'" + enterUsername.getText() + "'," +
+                                               "'" + String.valueOf(enterPassword.getPassword()) + "'," +
+                                               "'" + enterFirstName.getText() + "'," +
+                                               "'" + enterMiddleName.getText() + "'," +
+                                               "'" + enterLastName.getText() + "'" +
+                                               ")");
+                            if(tenantTypeButton.isSelected())
+                            {
+                                connection.execute("INSERT INTO tenants(key) VALUES('" + id + "')");
+                            }
+                        }
+                        catch(IOException ioException)
+                        {
+                            ioException.printStackTrace();
+                        }
+                        enterUsername.setText("");
+                        enterPassword.setText("");
+                        enterConfirmPassword.setText("");
+                        enterFirstName.setText("");
+                        enterMiddleName.setText("");
+                        enterLastName.setText("");
+                        accountTypeButton.clearSelection();
+                        newPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+                        image = null;
+                        JOptionPane.showMessageDialog(null, "The user is successfully created!", "User Created", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    catch(IOException ioException)
+                    else
                     {
-                        ioException.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "The password did not match.", "Password Mismatch", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "The password you entered did not match the the confirmation.", "Password Mismatch", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "The username you entered already exists.", "Username Exists", JOptionPane.ERROR_MESSAGE);
                 }
             }
             else
@@ -964,12 +983,12 @@ public class Admin extends User implements ActionListener, DocumentListener
         // Tenant Search Button
         if(e.getSource() == tenantSearchButton)
         {
-            tenantSearchButton.setEnabled(false);
             ResultSet resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + tenantSearchField.getText() + "'");
             try
             {
                 if(resultSet.next())
                 {
+                    tenantSearchButton.setEnabled(false);
                     new TenantDetails(this, Integer.parseInt(tenantSearchField.getText()));
                 }
                 else
