@@ -9,10 +9,11 @@ public class ChangePassword extends JFrame implements ActionListener
 {
     private final User user;
 
-    private final JButton confirm = new JButton();
     private final JPasswordField currentPasswordField;
     private final JPasswordField newPasswordField;
     private final JPasswordField confirmPasswordField;
+    private final JButton confirmButton;
+    private final JButton cancelButton;
 
     ChangePassword(User user)
     {
@@ -54,13 +55,22 @@ public class ChangePassword extends JFrame implements ActionListener
         confirmPasswordField.setBounds(175, 80, 175, 25);
 
         // Confirm Button
-        confirm.setText("Confirm");
-        confirm.setBackground(Color.WHITE);
-        confirm.setBounds(290,130, 80,25);
-        confirm.setFont(new Font("Arial", Font.PLAIN,10));
-        confirm.setFocusable(false);
-        confirm.setOpaque(true);
-        confirm.addActionListener(this);
+        confirmButton = new JButton("Confirm");
+        confirmButton.setBackground(Color.WHITE);
+        confirmButton.setBounds(275, 130, 75, 25);
+        confirmButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        confirmButton.setFocusable(false);
+        confirmButton.setOpaque(true);
+        confirmButton.addActionListener(this);
+
+        // Cancel Button
+        cancelButton = new JButton("Cancel");
+        cancelButton.setBackground(Color.WHITE);
+        cancelButton.setBounds(200, 130, 75, 25);
+        cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        cancelButton.setFocusable(false);
+        cancelButton.setOpaque(true);
+        cancelButton.addActionListener(this);
 
         add(currentPassLabel);
         add(newPassLabel);
@@ -68,16 +78,16 @@ public class ChangePassword extends JFrame implements ActionListener
         add(currentPasswordField);
         add(newPasswordField);
         add(confirmPasswordField);
-        add(confirm);
+        add(confirmButton);
+        add(cancelButton);
 
         setVisible(true);
     }
 
-    //Francis - All actions are here
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource() == confirm)
+        if(e.getSource() == confirmButton)
         {
             if(!String.valueOf(currentPasswordField.getPassword()).isEmpty() &&
                !String.valueOf(newPasswordField.getPassword()).isEmpty() &&
@@ -117,6 +127,11 @@ public class ChangePassword extends JFrame implements ActionListener
             {
                 JOptionPane.showMessageDialog(null, "Please fill all of the fields.", "Insuffiecient Data", JOptionPane.WARNING_MESSAGE);
             }
+        }
+
+        if(e.getSource() == cancelButton)
+        {
+            dispose();
         }
     }
 }
