@@ -173,7 +173,7 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
     @Override
     public void windowClosed(WindowEvent e)
     {
-        tenant.getPay().setEnabled(true);
+        tenant.enablePayButton();
         tenant.refresh();
     }
 

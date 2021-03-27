@@ -129,7 +129,7 @@ public class Tenant extends User implements ActionListener
         defaultTableModeltt.addColumn("Status");
 
         DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer();
-        defaultTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        defaultTableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
         JTable detailTable = new JTable(defaultTableModeltt);
         detailTable.getTableHeader().setResizingAllowed(false);
@@ -188,7 +188,7 @@ public class Tenant extends User implements ActionListener
         payButton.setFont(new Font("Arial", Font.BOLD, 10));
         payButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         payButton.setFocusPainted(false);
-        payButton.setBounds(535, 25, 60, 25);
+        payButton.setBounds(535, 25, 60, 24);
         payButton.addActionListener(this);
 
         contentPanel.add(enterID);

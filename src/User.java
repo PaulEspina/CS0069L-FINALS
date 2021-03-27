@@ -24,6 +24,10 @@ public abstract class User
         this.lastName = lastName;
     }
 
+    protected abstract void side();
+
+    protected abstract void content();
+
     // Setters
     protected void setUserID(int value)
     {
