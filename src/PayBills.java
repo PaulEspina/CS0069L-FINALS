@@ -13,8 +13,8 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
     private final int key;
 
     private final JTextField payBill;
-    private final JButton pay;
-    private final JButton close;
+    private final JButton payButton;
+    private final JButton closeButton;
 
     private double amountPaid;
 
@@ -22,77 +22,57 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
     {
         this.tenant = tenant;
         this.key = id;
-
         connection = DatabaseConnection.getInstance();
 
         //Frame settings
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setTitle("Pay your bills below!");
+        setTitle("Pay Bills");
         setLayout(null);
-        setSize(500,300);
+        setSize(400,300);
         setLocationRelativeTo(null);
         addWindowListener(this);
-        setVisible(true);
-
-        //Panel Settings
-        JPanel allDetailLabel = new JPanel();
-        allDetailLabel.setBounds(0, 0, 500, 300);
-        allDetailLabel.setLayout(null);
 
         //Label Settings
         JLabel recipientIDLabel = new JLabel();
-        recipientIDLabel.setLayout(null);
-        recipientIDLabel.setBounds(40, 20, 400, 25);
-        recipientIDLabel.setFont(new Font("Courier", Font.BOLD, 14));
+        recipientIDLabel.setBounds(25, 20, 375, 25);
 
         JLabel dateIssueLabel = new JLabel();
-        dateIssueLabel.setLayout(null);
-        dateIssueLabel.setBounds(40, 50, 400, 25);
-        dateIssueLabel.setFont(new Font("Courier", Font.BOLD, 14));
+        dateIssueLabel.setBounds(25, 50, 375, 25);
 
         JLabel totalAmountLabel = new JLabel();
-        totalAmountLabel.setLayout(null);
-        totalAmountLabel.setBounds(40, 80, 400, 25);
-        totalAmountLabel.setFont(new Font("Courier", Font.BOLD, 14));
+        totalAmountLabel.setBounds(25, 80, 375, 25);
 
         JLabel amountPaidLabel = new JLabel();
-        amountPaidLabel.setLayout(null);
-        amountPaidLabel.setBounds(40, 110, 400, 25);
-        amountPaidLabel.setFont(new Font("Courier", Font.BOLD, 14));
+        amountPaidLabel.setBounds(25, 110, 375, 25);
 
         JLabel balanceRemainLabel = new JLabel();
-        balanceRemainLabel.setLayout(null);
-        balanceRemainLabel.setBounds(40, 140, 400, 25);
-        balanceRemainLabel.setFont(new Font("Courier", Font.BOLD, 14));
+        balanceRemainLabel.setBounds(25, 140, 375, 25);
 
         JLabel enterAmount = new JLabel();
         enterAmount.setText("Enter Amount:");
-        enterAmount.setLayout(null);
-        enterAmount.setBounds(165, 220, 200, 25);
+        enterAmount.setBounds(70, 220, 100, 25);
 
         //Enter money settings
         payBill = new JTextField();
-        payBill.setBounds(250,220,70,24);
+        payBill.setBounds(170,220,100,25);
 
         //Pay button
-        pay = new JButton();
-        pay.setText("Pay");
-        pay.setBackground(Color.LIGHT_GRAY);
-        pay.setFocusable(false);
-        pay.setBorderPainted(false);
-        pay.setOpaque(true);
-        pay.setBounds(330,220,65,25);
-        pay.addActionListener(this);
+        payButton = new JButton("Pay");
+        payButton.setBackground(Color.WHITE);
+        payButton.setFont(new Font("Arial", Font.BOLD, 10));
+        payButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        payButton.setFocusPainted(false);
+        payButton.setBounds(272, 220, 50, 24);
+        payButton.addActionListener(this);
 
         //Close button
-        close = new JButton();
-        close.setText("Close");
-        close.setBackground(Color.LIGHT_GRAY);
-        close.setFocusable(false);
-        close.setBorderPainted(false);
-        close.setOpaque(true);
-        close.setBounds(400,220,70,25);
-        close.addActionListener(this);
+        closeButton = new JButton("Close");
+        closeButton.setBackground(Color.WHITE);
+        closeButton.setFont(new Font("Arial", Font.BOLD, 10));
+        closeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        closeButton.setFocusPainted(false);
+        closeButton.setBounds(325, 220, 50, 24);
+        closeButton.addActionListener(this);
 
         ResultSet rs = connection.getResult("SELECT * FROM bills WHERE key='" + id + "'");
         try
@@ -113,36 +93,30 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
             e.printStackTrace();
         }
 
-        allDetailLabel.add(enterAmount);
-        allDetailLabel.add(close);
-        allDetailLabel.add(pay);
-        allDetailLabel.add(payBill);
-        allDetailLabel.add(recipientIDLabel);
-        allDetailLabel.add(dateIssueLabel);
-        allDetailLabel.add(totalAmountLabel);
-        allDetailLabel.add(amountPaidLabel);
-        allDetailLabel.add(balanceRemainLabel);
-        add(allDetailLabel);
+        add(enterAmount);
+        add(closeButton);
+        add(payButton);
+        add(payBill);
+        add(recipientIDLabel);
+        add(dateIssueLabel);
+        add(totalAmountLabel);
+        add(amountPaidLabel);
+        add(balanceRemainLabel);
+        setVisible(true);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == close)
+    public void actionPerformed(ActionEvent e)
+    {
+        if(e.getSource() == payButton)
         {
-            dispose();
-        }
-        if(e.getSource() == pay)
-        {
-            DatabaseConnection con = DatabaseConnection.getInstance();
-            con.execute("UPDATE bills SET amount_paid='" + (Double.parseDouble(payBill.getText()) + amountPaid) + "'WHERE key= '" + key + "'");
-
+            connection.execute("UPDATE bills SET amount_paid='" + (Double.parseDouble(payBill.getText()) + amountPaid) + "'WHERE key= '" + key + "'");
+            ResultSet resultSet = connection.getResult("SELECT * FROM bills WHERE key='" + key + "'");
             try
             {
-
-                ResultSet rs = con.getResult("SELECT * FROM bills WHERE key='" + key + "'");
-                if(rs.next())
+                if(resultSet.next())
                 {
-                    if(rs.getDouble("amount_paid") < rs.getDouble("total_amount"))
+                    if(resultSet.getDouble("amount_paid") < resultSet.getDouble("total_amount"))
                     {
                         JOptionPane.showMessageDialog(null,"Payment Successful","Bill",JOptionPane.WARNING_MESSAGE);
                     }
@@ -151,11 +125,17 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
                         JOptionPane.showMessageDialog(null,"Your Bill Is Fully Paid! Thank you!","Bill", JOptionPane.WARNING_MESSAGE);
                     }
                 }
+                resultSet.close();
             }
             catch(Exception f)
             {
                 f.printStackTrace();
             }
+            dispose();
+        }
+
+        if(e.getSource() == closeButton)
+        {
             dispose();
         }
     }
