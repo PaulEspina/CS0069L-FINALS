@@ -56,6 +56,8 @@ public class Admin extends User implements ActionListener, DocumentListener
     // Create User Variables
     File image;
 
+
+
     public Admin(int userID, String username, String firstName, String middleName, String lastName)
     {
         super(userID, username, firstName, middleName, lastName);
@@ -168,19 +170,29 @@ public class Admin extends User implements ActionListener, DocumentListener
     private void manageApartment()
     {
         JPanel manageApartmentPanel = new JPanel();
-        manageApartmentPanel.setBackground(Color.RED);
+        manageApartmentPanel.setLayout(null);
         manageApartmentPanel.setOpaque(true);
         //TODO
 
+        JLabel manageApartmentHeader = new JLabel("MANAGE APARTMENT");
+        manageApartmentHeader.setBounds(50, 25, 400, 50);
+        manageApartmentHeader.setFont(new Font("Arial", Font.BOLD, 32));
+
+        manageApartmentPanel.add(manageApartmentHeader);
         contentPanel.add("manageApartmentPanel", manageApartmentPanel);
     }
 
     private void manageTenants()
     {
         JPanel manageTenantsPanel = new JPanel();
-        manageTenantsPanel.setBackground(Color.GREEN);
+        manageTenantsPanel.setLayout(null);
         manageTenantsPanel.setOpaque(true);
         //TODO
+        JLabel manageTenantsHeader= new JLabel("MANAGE TENANT");
+        manageTenantsHeader.setBounds(50, 25, 400, 50);
+        manageTenantsHeader.setFont(new Font("Arial", Font.BOLD, 32));
+
+        manageTenantsPanel.add(manageTenantsHeader);
 
         contentPanel.add("manageTenantsPanel", manageTenantsPanel);
     }
