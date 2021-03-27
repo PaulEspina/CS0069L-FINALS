@@ -81,21 +81,6 @@ public abstract class User
         return lastName;
     }
 
-    public JFrame getFrame()
-    {
-        return frame;
-    }
-
-    public JPanel getSidePanel()
-    {
-        return sidePanel;
-    }
-
-    public JPanel getContentPanel()
-    {
-        return contentPanel;
-    }
-
     public JButton getProfileButton()
     {
         return profileButton;
