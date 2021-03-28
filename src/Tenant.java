@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,36 +9,107 @@ import java.sql.SQLException;
 
 public class Tenant extends User implements ActionListener
 {
-    private JButton exit;
-    private JButton logout;
-    private JButton pay;
-    private JTextField idText;
-    private JScrollPane panelScroll;
-    private JTable detailTable;
+    private final DatabaseConnection connection;
 
-    private DefaultTableCellRenderer defaultTableCellRenderer;
+    private JButton payButton;
+    private JTextField searchField;
     private DefaultTableModel defaultTableModeltt;
-
-    DatabaseConnection connection;
 
     public Tenant(int userID, String username, String firstName, String middleName, String lastName)
     {
         super(userID, username, firstName, middleName, lastName);
-        start();
-    }
-
-    public void start() {
-
-        //Frame settings.
+        connection = DatabaseConnection.getInstance();
         frame = new JFrame();
         frame.setTitle("Apartment Management System");
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
-        frame.setLayout(null);
-        frame.setVisible(true);
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+        side();
+        content();
+        frame.add(sidePanel, BorderLayout.WEST);
+        frame.add(contentPanel, BorderLayout.CENTER);
+        frame.setVisible(true);
+    }
+
+    @Override
+    protected void side()
+    {
+        //Setting for profile panel.
+        sidePanel = new JPanel();
+        sidePanel.setPreferredSize(new Dimension(140, 600));
+        sidePanel.setLayout(new GridLayout(3, 1));
+        sidePanel.setBackground(Color.WHITE);
+        sidePanel.setOpaque(true);
+
+        // PROFILE PANEL STARTS
+        JPanel profilePanel = new JPanel();
+        profilePanel.setLayout(null);
+
+        JLabel profileLabel = new JLabel();
+        profileLabel.setBounds(5, 5, 130, 130);
+        profileLabel.setIcon(new ImageIcon(new ImageIcon("image/" + getUserID()).getImage().getScaledInstance(profileLabel.getWidth(), profileLabel.getHeight(), Image.SCALE_SMOOTH)));
+        profileLabel.setVerticalAlignment(JLabel.TOP);
+        profileLabel.setHorizontalAlignment(JLabel.CENTER);
+        profileLabel.setHorizontalTextPosition(JLabel.CENTER);
+        profileLabel.setVerticalTextPosition(JLabel.BOTTOM);
+
+        //Profile button
+        profileButton = new JButton(firstName + " " + lastName);
+        profileButton.setBackground(Color.WHITE);
+        profileButton.setFont(new Font("Arial", Font.BOLD, 10));
+        profileButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        profileButton.setFocusPainted(false);
+        profileButton.setBounds(25, 140, 90, 20);
+        profileButton.addActionListener(this);
+
+        profilePanel.add(profileLabel);
+        profilePanel.add(profileButton);
+        // PROFILE PANEL ENDS
+
+        // NAVIGATION PANEL START
+        JPanel navigationPanel = new JPanel(); // this is empty just so it is consistent with Admin's interface
+        // NAVIGATION PANEL ENDS
+
+        // LOGOUT PANEL STARTS
+        //Exit button
+        JPanel logoutPanel = new JPanel();
+        logoutPanel.setLayout(null);
+
+        logoutButton = new JButton("Logout");
+        logoutButton.setHorizontalAlignment(JButton.LEFT);
+        logoutButton.setBounds(0,120,80,20);
+        logoutButton.setBorderPainted(false);
+        logoutButton.setContentAreaFilled(false);
+        logoutButton.setOpaque(false);
+        logoutButton.setFocusable(false);
+        logoutButton.addActionListener(this);
+
+        exitButton = new JButton("Exit");
+        exitButton.setHorizontalAlignment(JButton.LEFT);
+        exitButton.setBounds(0,150,80,20);
+        exitButton.setBorderPainted(false);
+        exitButton.setContentAreaFilled(false);
+        exitButton.setOpaque(false);
+        exitButton.setFocusable(false);
+        exitButton.addActionListener(this);
+
+        logoutPanel.add(logoutButton);
+        logoutPanel.add(exitButton);
+        // LOGOUT PANEL ENDS
+
+        sidePanel.add(profilePanel);
+        sidePanel.add(navigationPanel);
+        sidePanel.add(logoutPanel);
+    }
+
+    @Override
+    protected void content()
+    {
+        contentPanel = new JPanel();
+        contentPanel.setOpaque(true);
+        contentPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
+        contentPanel.setLayout(null);
 
         //Table Settings
         defaultTableModeltt = new DefaultTableModel()
@@ -50,62 +120,50 @@ public class Tenant extends User implements ActionListener
                 return false;
             }
         };
-        defaultTableCellRenderer = new DefaultTableCellRenderer();
-        defaultTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
-        detailTable = new JTable(defaultTableModeltt);
+        defaultTableModeltt.setRowCount(0);
+        defaultTableModeltt.addColumn("ID");
+        defaultTableModeltt.addColumn("Date");
+        defaultTableModeltt.addColumn("Total Amount");
+        defaultTableModeltt.addColumn("Amount Paid");
+        defaultTableModeltt.addColumn("Status");
+
+        DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer();
+        defaultTableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JTable detailTable = new JTable(defaultTableModeltt);
         detailTable.getTableHeader().setResizingAllowed(false);
         detailTable.getTableHeader().setReorderingAllowed(false);
+        detailTable.setDragEnabled(false);
+        detailTable.setCellSelectionEnabled(false);
+        detailTable.setFocusable(false);
         detailTable.setOpaque(true);
         detailTable.setModel(defaultTableModeltt);
-        detailTable.setBackground(Color.LIGHT_GRAY);
-        detailTable.setBounds(0,0,585,Integer.MAX_VALUE);
+        detailTable.setBounds(0, 0, 550, Integer.MAX_VALUE);
+        for(int i = 0; i < 5; i++)
+        {
+            detailTable.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
+        }
 
-        //BILL MESSAGE
-        JLabel welcomeMessage = new JLabel();
-        welcomeMessage.setBounds(190,25,200,22);
-        welcomeMessage.setText("BILLS");
-        welcomeMessage.setFont(new Font("Courier", Font.BOLD, 25));
-
-        //Setting for profile panel.
-        JPanel picturePanel = new JPanel();
-        picturePanel.setLayout(null);
-        picturePanel.setBounds(0,0,160,600);
-        picturePanel.setBackground(Color.lightGray);
+        JScrollPane panelScroll = new JScrollPane(detailTable);
+        panelScroll.setBounds(0, 0, 550, 475);
 
         //Settings for detail panel.
         JPanel detailPanel = new JPanel();
         detailPanel.setLayout(null);
-        detailPanel.setBounds(180,60,585,490);
-        detailPanel.setBackground(Color.lightGray);
+        detailPanel.setBounds(50,55,580,475);
+        detailPanel.add(panelScroll);
 
         //bills statement of account
-        connection = DatabaseConnection.getInstance();
-        ResultSet rs = connection.getResult("SELECT * FROM bills WHERE recipient_id='" + userID + "'");
+        ResultSet resultSet = connection.getResult("SELECT * FROM bills WHERE recipient_id='" + userID + "'");
         try
         {
-            defaultTableModeltt.setRowCount(0);
-            defaultTableModeltt.addColumn("ID");
-            defaultTableModeltt.addColumn("Date");
-            defaultTableModeltt.addColumn("Total Amount");
-            defaultTableModeltt.addColumn("Amount Paid");
-            defaultTableModeltt.addColumn("Status");
-
-            while (rs.next())
+            while (resultSet.next())
             {
-                int billID = rs.getInt("key");
-                String dateIssue = rs.getString("date_issued");
-                String totalAmount = String.valueOf(rs.getInt("total_amount"));
-                String amountPaid = String.valueOf(rs.getInt("amount_paid"));
-
-                String status;
-                if(Double.parseDouble(amountPaid) >= Double.parseDouble(totalAmount))
-                {
-                    status = "Paid";
-                }
-                else
-                {
-                    status = "Unpaid";
-                }
+                int billID = resultSet.getInt("key");
+                String dateIssue = resultSet.getString("date_issued");
+                String totalAmount = String.valueOf(resultSet.getDouble("total_amount"));
+                String amountPaid = String.valueOf(resultSet.getDouble("amount_paid"));
+                String status = Double.parseDouble(amountPaid) >= Double.parseDouble(totalAmount) ? "Paid" : "Unpaid";
                 defaultTableModeltt.addRow((new Object[]{billID,dateIssue,totalAmount,amountPaid,status}));
             }
         }
@@ -114,116 +172,71 @@ public class Tenant extends User implements ActionListener
             throwables.printStackTrace();
         }
 
-        for(int i = 0; i < 5; i++)
-        {
-            detailTable.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
-        }
-
-        panelScroll = new JScrollPane(detailTable);
-        panelScroll.setBounds(0,0,585,490);
-        panelScroll.setBackground(Color.LIGHT_GRAY);
-
-        //This is where ID input for pay bills.
-        idText = new JTextField();
-        idText.setBounds(590,36,100,20);
-
         //Enter ID for textfield
         JLabel enterID = new JLabel();
-        enterID.setText("Please enter ID:");
-        enterID.setFont(new Font("Courier",Font.PLAIN,14));
-        enterID.setBounds(480,35, 200,20);
+        enterID.setText("Bill ID:");
+        enterID.setBounds(300,25, 75,25);
+
+        //This is where ID input for pay bills.
+        searchField = new JTextField();
+        searchField.setBounds(375, 25, 150, 25);
 
         //Pay Button
-        pay = new JButton();
-        pay.setText("Pay");
-        pay.setBackground(Color.WHITE);
-        pay.setFont(new Font("Courier", Font.PLAIN,14));
-        pay.setBounds(702,35,60,20);
-        pay.setFocusable(false);
-        pay.setOpaque(true);
-        pay.addActionListener(this);
+        payButton = new JButton("Pay");
+        payButton.setBackground(Color.WHITE);
+        payButton.setFont(new Font("Arial", Font.BOLD, 10));
+        payButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        payButton.setFocusPainted(false);
+        payButton.setBounds(535, 25, 60, 24);
+        payButton.addActionListener(this);
 
-        //Profile button
-        profileButton = new JButton();
-        profileButton.setText(username);
-        profileButton.setBounds(25,180,110,20);
-        profileButton.setBackground(Color.WHITE);
-        profileButton.setBorderPainted(true);
-        profileButton.setContentAreaFilled(false);
-        profileButton.setOpaque(true);
-        profileButton.setFocusable(false);
-        profileButton.addActionListener(this);
-
-        //Exit button
-        exit = new JButton();
-        exit.setText("Exit");
-        exit.setBounds(5,530,55,20);
-        exit.setBorderPainted(false);
-        exit.setContentAreaFilled(false);
-        exit.setOpaque(false);
-        exit.setFocusable(false);
-        exit.addActionListener(this);
-
-        //Logout button
-        logout = new JButton();
-        logout.setText("Logout");
-        logout.setBounds(0,510,80,20);
-        logout.setBorderPainted(false);
-        logout.setContentAreaFilled(false);
-        logout.setOpaque(false);
-        logout.setFocusable(false);
-        logout.addActionListener(this);
-
-        //Add things.
-        detailPanel.add(panelScroll);
-
-        picturePanel.add(logout);
-        picturePanel.add(exit);
-        picturePanel.add(profileButton);
-
-        frame.add(enterID);
-        frame.add(idText);
-        frame.add(pay);
-        frame.add(detailPanel);
-        frame.add(picturePanel);
-        frame.add(welcomeMessage);
+        contentPanel.add(enterID);
+        contentPanel.add(searchField);
+        contentPanel.add(payButton);
+        contentPanel.add(detailPanel);
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        // Profile Button
         if(e.getSource() == profileButton)
         {
             new Profile(this);
         }
-        if(e.getSource() == exit)
+
+        // Exit Button
+        if(e.getSource() == exitButton)
         {
             frame.dispose();
         }
-        if(e.getSource() == logout)
+
+        // Logout Button
+        if(e.getSource() == logoutButton)
         {
             frame.dispose();
             new Login();
         }
-        if(e.getSource() == pay)
-        {
-            DatabaseConnection con = DatabaseConnection.getInstance();
-            ResultSet rs = con.getResult("SELECT * FROM bills WHERE key='" + idText.getText() + "'");
 
+        // Pay Button
+        if(e.getSource() == payButton)
+        {
+            ResultSet resultSet = connection.getResult("SELECT * FROM bills WHERE key='" + searchField.getText() + "'");
             try
             {
-                if(rs.next())
+                if(resultSet.next())
                 {
-                    if(rs.getInt("recipient_id") == userID)
+                    if(resultSet.getInt("recipient_id") == userID)
                     {
-                        if (rs.getDouble("amount_paid") >= rs.getDouble("total_amount"))
+                        if (resultSet.getDouble("amount_paid") >= resultSet.getDouble("total_amount"))
                         {
                             JOptionPane.showMessageDialog(null, "Your Bill is Already Paid!", "Warning", JOptionPane.WARNING_MESSAGE);
+                            //TODO: disable pay button on PayBills instead.
                         }
                         else
                         {
-                            pay.setEnabled(false);
-                            new PayBills(this, Integer.parseInt(idText.getText()));
+                            payButton.setEnabled(false);
+                            new PayBills(this, Integer.parseInt(searchField.getText()));
                         }
                     }
                     else
@@ -240,34 +253,23 @@ public class Tenant extends User implements ActionListener
             {
                 f.printStackTrace();
             }
+            searchField.setText("");
         }
     }
 
     public void refresh()
     {
-        connection = DatabaseConnection.getInstance();
+        defaultTableModeltt.setRowCount(0);
         ResultSet rs = connection.getResult("SELECT * FROM bills WHERE recipient_id='" + userID + "'");
-
         try
         {
-            defaultTableModeltt.setRowCount(0);
-
             while (rs.next())
             {
                 int billID = rs.getInt("key");
                 String dateIssue = rs.getString("date_issued");
-                String totalAmount = String.valueOf(rs.getInt("total_amount"));
-                String amountPaid = String.valueOf(rs.getInt("amount_paid"));
-
-                String status;
-                if(Double.parseDouble(amountPaid) >= Double.parseDouble(totalAmount))
-                {
-                    status = "Paid";
-                }
-                else
-                {
-                    status = "Unpaid";
-                }
+                String totalAmount = String.valueOf(rs.getDouble("total_amount"));
+                String amountPaid = String.valueOf(rs.getDouble("amount_paid"));
+                String status = Double.parseDouble(amountPaid) >= Double.parseDouble(totalAmount) ? "Paid" : "Unpaid";
                 defaultTableModeltt.addRow((new Object[]{billID,dateIssue,totalAmount,amountPaid,status}));
             }
         }
@@ -277,8 +279,8 @@ public class Tenant extends User implements ActionListener
         }
     }
 
-    public JButton getPay()
+    public void enablePayButton()
     {
-        return pay;
+        payButton.setEnabled(true);
     }
 }

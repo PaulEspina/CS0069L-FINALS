@@ -7,29 +7,27 @@ import java.awt.event.WindowListener;
 
 public class RoomDetails extends JFrame implements WindowListener, ActionListener
 {
-    DatabaseConnection connection = DatabaseConnection.getInstance();
-
-    JLabel roomNumber = new JLabel();
-    JLabel rentFee = new JLabel();
-    JLabel tenantID = new JLabel();
-    JLabel tenantName = new JLabel();
-    JLabel dbRoomNumber = new JLabel();
-    JLabel dbRentFee = new JLabel();
-    JLabel dbTenantID = new JLabel();
-    JLabel dbTenantName = new JLabel();
-    JButton editRoomNumber = new JButton();
-    JButton confirmRoomNumber = new JButton();
-    JButton editRentFee = new JButton();
-    JButton confirmRentFee = new JButton();
-    JButton editTenantID = new JButton();
-    JButton confirmTenantID = new JButton();
-    JButton editTenantName = new JButton();
-    JButton confirmTenantName = new JButton();
-    JTextField number = new JTextField();
-    JTextField fee = new JTextField();
-    JTextField id = new JTextField();
-    JTextField name = new JTextField();
-    JButton close = new JButton("Close");
+    private final JLabel roomNumber = new JLabel();
+    private final JLabel rentFee = new JLabel();
+    private final JLabel tenantID = new JLabel();
+    private final JLabel tenantName = new JLabel();
+    private final JLabel dbRoomNumber = new JLabel();
+    private final JLabel dbRentFee = new JLabel();
+    private final JLabel dbTenantID = new JLabel();
+    private final JLabel dbTenantName = new JLabel();
+    private final JButton editRoomNumber = new JButton();
+    private final JButton confirmRoomNumber = new JButton();
+    private final JButton editRentFee = new JButton();
+    private final JButton confirmRentFee = new JButton();
+    private final JButton editTenantID = new JButton();
+    private final JButton confirmTenantID = new JButton();
+    private final JButton editTenantName = new JButton();
+    private final JButton confirmTenantName = new JButton();
+    private final JTextField number = new JTextField();
+    private final JTextField fee = new JTextField();
+    private final JTextField id = new JTextField();
+    private final JTextField name = new JTextField();
+    private final JButton close = new JButton("Close");
 
 //    ManageApartment apartment;
     User user;
@@ -37,6 +35,7 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
     {
         this.user = user;
 //        this.apartment = apartment;
+        DatabaseConnection connection = DatabaseConnection.getInstance();
 
         //frame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
