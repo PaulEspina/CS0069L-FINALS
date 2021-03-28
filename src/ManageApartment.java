@@ -11,6 +11,24 @@ public class ManageApartment extends JPanel implements ActionListener
     private final JPanel panelButton;
     private final JScrollPane panelScroll2;
 
+    JButton continuousButton;
+    JButton continuousButton1;
+    JButton continuousButton2;
+    JButton continuousButton3;
+    JButton continuousButton4;
+    JButton continuousButton5;
+    JButton continuousButton6;
+    JButton continuousButton7;
+    JButton continuousButton8;
+    JButton continuousButton9;
+    JButton continuousButton10;
+    JButton continuousButton11;
+    JButton continuousButton12;
+    JButton continuousButton13;
+    JButton continuousButton14;
+    JButton continuousButton15;
+    JButton continuousButton16;
+
     public ManageApartment(Admin admin)
     {
         this.admin = admin;
@@ -24,25 +42,10 @@ public class ManageApartment extends JPanel implements ActionListener
         manageApartmentHeader.setFont(new Font("Arial", Font.BOLD, 32));
         //TODO: Manage Apartment
 
-        JButton continuousButton;
-        JButton continuousButton1;
-        JButton continuousButton2;
-        JButton continuousButton3;
-        JButton continuousButton4;
-        JButton continuousButton5;
-        JButton continuousButton6;
-        JButton continuousButton7;
-        JButton continuousButton8;
-        JButton continuousButton9;
-        JButton continuousButton10;
-        JButton continuousButton11;
-        JButton continuousButton12;
-        JButton continuousButton13;
-        JButton continuousButton14;
-        JButton continuousButton15;
-        JButton continuousButton16;
-
-        JPanel continuousPanel;
+        panelButton = new JPanel();
+        panelButton.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
+        panelButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        panelButton.setPreferredSize(new Dimension(550, 500));
 
         continuousButton = new JButton();
         continuousButton.setPreferredSize(new Dimension(100,100));
@@ -146,17 +149,6 @@ public class ManageApartment extends JPanel implements ActionListener
         continuousButton16.setOpaque(true);
         continuousButton16.setFocusable(false);
 
-        panelButton = new JPanel();
-        panelButton.setLayout(new FlowLayout(FlowLayout.LEADING,30,25));
-        panelButton.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-        panelButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panelButton.setBounds(30,100,550,Integer.MAX_VALUE);
-
-        panelScroll2 = new JScrollPane(panelButton);
-        panelScroll2.setBounds(26,115,585,400);
-        panelScroll2.setBackground(Color.LIGHT_GRAY);
-        panelScroll2.setVisible(true);
-
         panelButton.add(continuousButton);
         panelButton.add(continuousButton1);
         panelButton.add(continuousButton2);
@@ -175,9 +167,13 @@ public class ManageApartment extends JPanel implements ActionListener
         panelButton.add(continuousButton15);
         panelButton.add(continuousButton16);
 
-        add(panelScroll2);
+        panelScroll2 = new JScrollPane(panelButton, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        panelScroll2.setBounds(50,100,550,450);
+        panelScroll2.setBackground(Color.LIGHT_GRAY);
+        panelScroll2.setVisible(true);
 
         add(manageApartmentHeader);
+        add(panelScroll2);
     }
 
     @Override
