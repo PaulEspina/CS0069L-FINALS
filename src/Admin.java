@@ -69,9 +69,15 @@ public class Admin extends User implements ActionListener, DocumentListener
     File image;
 
     // Manage Apartment Components
+    JPanel panelButton;
+    JScrollPane panelScroll2;
+
+    // Manage Tenant Components
     DefaultTableModel defaultTableModeltt;
     JTextField tenantSearchField;
     JButton tenantSearchButton;
+
+
 
     public Admin(int userID, String username, String firstName, String middleName, String lastName)
     {
@@ -201,8 +207,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         JButton continuousButton14;
         JButton continuousButton15;
         JButton continuousButton16;
-        JScrollPane panelScroll;
-        JPanel panelButton;
+
         JPanel continuousPanel;
 
         JPanel manageApartmentPanel = new JPanel();
@@ -311,20 +316,20 @@ public class Admin extends User implements ActionListener, DocumentListener
         continuousButton16.setOpaque(true);
         continuousButton16.setFocusable(false);
 
-        panelButton = new JPanel();
-        panelButton.setLayout(new FlowLayout(FlowLayout.LEADING,25,25));
-        panelButton.setBorder(BorderFactory.createEmptyBorder(20,20,20,1));
-        panelButton.setBounds(0,100,550,Integer.MAX_VALUE);
-
         JLabel manageApartmentHeader = new JLabel("MANAGE APARTMENT");
-        manageApartmentHeader.setBounds(50, 25, 400, 50);
+        manageApartmentHeader.setBounds(60, 25, 400, 50);
         manageApartmentHeader.setFont(new Font("Arial", Font.BOLD, 32));
 
-        panelScroll = new JScrollPane(panelButton);
-        panelScroll.setBounds(620,70,15,485);
-        panelButton.setBackground(Color.black);
+        panelButton = new JPanel();
+        panelButton.setLayout(new FlowLayout(FlowLayout.LEADING,30,25));
+        panelButton.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        panelButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        panelButton.setBounds(30,100,550,Integer.MAX_VALUE);
 
-        manageApartmentPanel.add(panelScroll);
+        panelScroll2 = new JScrollPane(panelButton);
+        panelScroll2.setBounds(26,115,585,400);
+        panelScroll2.setBackground(Color.LIGHT_GRAY);
+        panelScroll2.setVisible(true);
 
         panelButton.add(continuousButton);
         panelButton.add(continuousButton1);
@@ -344,7 +349,8 @@ public class Admin extends User implements ActionListener, DocumentListener
         panelButton.add(continuousButton15);
         panelButton.add(continuousButton16);
 
-        manageApartmentPanel.add(panelButton);
+        manageApartmentPanel.add(panelScroll2);
+
         manageApartmentPanel.add(manageApartmentHeader);
         contentPanel.add("manageApartmentPanel", manageApartmentPanel);
     }
