@@ -44,10 +44,6 @@ public class ManageApartment extends JPanel implements ActionListener
 
         JPanel continuousPanel;
 
-        JPanel manageApartmentPanel = new JPanel();
-        manageApartmentPanel.setLayout(null);
-        manageApartmentPanel.setOpaque(true);
-
         continuousButton = new JButton();
         continuousButton.setPreferredSize(new Dimension(100,100));
         continuousButton.setBackground(Color.LIGHT_GRAY);
@@ -161,27 +157,27 @@ public class ManageApartment extends JPanel implements ActionListener
         panelScroll2.setBackground(Color.LIGHT_GRAY);
         panelScroll2.setVisible(true);
 
-        add(continuousButton);
-        add(continuousButton1);
-        add(continuousButton2);
-        add(continuousButton3);
-        add(continuousButton4);
-        add(continuousButton5);
-        add(continuousButton6);
-        add(continuousButton7);
-        add(continuousButton8);
-        add(continuousButton9);
-        add(continuousButton10);
-        add(continuousButton11);
-        add(continuousButton12);
-        add(continuousButton13);
-        add(continuousButton14);
-        add(continuousButton15);
-        add(continuousButton16);
+        panelButton.add(continuousButton);
+        panelButton.add(continuousButton1);
+        panelButton.add(continuousButton2);
+        panelButton.add(continuousButton3);
+        panelButton.add(continuousButton4);
+        panelButton.add(continuousButton5);
+        panelButton.add(continuousButton6);
+        panelButton.add(continuousButton7);
+        panelButton.add(continuousButton8);
+        panelButton.add(continuousButton9);
+        panelButton.add(continuousButton10);
+        panelButton.add(continuousButton11);
+        panelButton.add(continuousButton12);
+        panelButton.add(continuousButton13);
+        panelButton.add(continuousButton14);
+        panelButton.add(continuousButton15);
+        panelButton.add(continuousButton16);
 
-        manageApartmentPanel.add(panelScroll2);
+        add(panelScroll2);
 
-        manageApartmentPanel.add(manageApartmentHeader);
+        add(manageApartmentHeader);
     }
 
     @Override
