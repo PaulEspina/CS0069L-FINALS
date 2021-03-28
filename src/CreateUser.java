@@ -154,7 +154,7 @@ public class CreateUser extends JPanel implements ActionListener
             enterMiddleName.setText("");
             enterLastName.setText("");
             accountTypeButton.clearSelection();
-            newPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+            newPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
             image = null;
         }
 
@@ -227,7 +227,7 @@ public class CreateUser extends JPanel implements ActionListener
                         enterMiddleName.setText("");
                         enterLastName.setText("");
                         accountTypeButton.clearSelection();
-                        newPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+                        newPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
                         image = null;
                         JOptionPane.showMessageDialog(null, "The user is successfully created!", "User Created", JOptionPane.INFORMATION_MESSAGE);
                     }

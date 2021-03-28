@@ -13,7 +13,6 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
     DatabaseConnection connection;
     public final Admin admin;
 
-    // Create Bill Components
     private final JTextField recipientSearchField;
     private final JButton recipientSearchButton;
     private final JLabel recipientPicture;
@@ -29,7 +28,6 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
     private final JLabel dbRoomFee;
     private final JLabel dbTotalFee;
     private final JLabel dbDate;
-    // Create Bill Variables
     private double rentFee = 0;
     private double totalFee = 0;
     private String dateString;

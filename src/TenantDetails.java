@@ -12,7 +12,7 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
 {
     private final DatabaseConnection connection;
 
-    private final Admin admin;
+    private final ManageTenants manageTenants;
 
     private final int tenantID;
     private int roomNumber;
@@ -33,9 +33,9 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     private final JButton closeButton;
     private final JButton removeButton;
 
-    public TenantDetails(Admin admin, int tenantID)
+    public TenantDetails(ManageTenants manageTenants, int tenantID)
     {
-        this.admin = admin;
+        this.manageTenants = manageTenants;
         this.tenantID = tenantID;
 
         connection = DatabaseConnection.getInstance();
@@ -311,8 +311,8 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     @Override
     public void windowClosed(WindowEvent e)
     {
-        admin.refresh();
-        admin.enableTenantSearchButton();
+        manageTenants.refresh();
+        manageTenants.enableTenantSearchButton();
     }
 
     @Override

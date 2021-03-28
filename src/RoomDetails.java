@@ -7,8 +7,6 @@ import java.awt.event.WindowListener;
 
 public class RoomDetails extends JFrame implements WindowListener, ActionListener
 {
-    private DatabaseConnection connection;
-
     private final JLabel roomNumber = new JLabel();
     private final JLabel rentFee = new JLabel();
     private final JLabel tenantID = new JLabel();
@@ -37,7 +35,7 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
     {
         this.user = user;
 //        this.apartment = apartment;
-        connection = DatabaseConnection.getInstance();
+        DatabaseConnection connection = DatabaseConnection.getInstance();
 
         //frame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
