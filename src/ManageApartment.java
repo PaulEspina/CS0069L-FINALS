@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 
 public class ManageApartment extends JPanel implements ActionListener
@@ -46,6 +48,7 @@ public class ManageApartment extends JPanel implements ActionListener
         {
             throwables.printStackTrace();
         }
+        rooms.sort(new RoomComparator());
 
         JLabel manageApartmentHeader = new JLabel("MANAGE APARTMENT");
         manageApartmentHeader.setBounds(50, 25, 400, 50);
@@ -163,4 +166,13 @@ class Room
     int key;
     int roomNumber;
     double roomFee;
+}
+
+class RoomComparator implements Comparator<Room>
+{
+    @Override
+    public int compare(Room o1, Room o2)
+    {
+        return o1.roomNumber - o2.roomNumber;
+    }
 }
