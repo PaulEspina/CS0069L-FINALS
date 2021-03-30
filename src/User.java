@@ -24,6 +24,10 @@ public abstract class User
         this.lastName = lastName;
     }
 
+    protected abstract void side();
+
+    protected abstract void content();
+
     // Setters
     protected void setUserID(int value)
     {
@@ -75,21 +79,6 @@ public abstract class User
 
     {
         return lastName;
-    }
-
-    public JFrame getFrame()
-    {
-        return frame;
-    }
-
-    public JPanel getSidePanel()
-    {
-        return sidePanel;
-    }
-
-    public JPanel getContentPanel()
-    {
-        return contentPanel;
     }
 
     public JButton getProfileButton()

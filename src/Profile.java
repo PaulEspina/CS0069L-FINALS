@@ -9,32 +9,36 @@ import java.awt.event.WindowListener;
 public class Profile extends JFrame implements WindowListener, ActionListener
 {
     DatabaseConnection connection;
+    private final User user;
 
-    JLabel userId = new JLabel();
-    JLabel userName = new JLabel();
-    JLabel userType = new JLabel();
-    JLabel firstName = new JLabel();
-    JLabel middleName = new JLabel();
-    JLabel lastName = new JLabel();
-    JTextField newFirstname = new JTextField();
-    JTextField newMiddlename = new JTextField();
-    JTextField newLastname = new JTextField();
-    JButton edit1 = new JButton();
-    JButton confirm1 = new JButton();
-    JButton edit2 = new JButton();
-    JButton confirm2 = new JButton();
-    JButton edit3 = new JButton();
-    JButton confirm3 = new JButton();
-    JButton changePass = new JButton();
-    JButton close = new JButton();
+    private final JTextField firstNameField;
+    private final JTextField middleNameField;
+    private final JTextField lastNameField;
+    private final JLabel firstNameValue;
+    private final JLabel middleNameValue;
+    private final JLabel lastNameValue;
+    private final JButton editFirstNameButton;
+    private final JButton confirmFirstNameButton;
+    private final JButton editMiddleNameButton;
+    private final JButton confirmMiddleNameButton;
+    private final JButton editLastNameButton;
+    private final JButton confirmLastNameButton;
+    private final JButton changePassButton;
+    private final JButton closeButton;
 
-    ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
-
-    User user;
     public Profile(User user)
     {
-
+        connection = DatabaseConnection.getInstance();
         this.user = user;
+
+        JLabel profileLabel = new JLabel();
+        profileLabel.setBounds(25, 25, 100, 100);
+        profileLabel.setIcon(new ImageIcon(new ImageIcon("image/" + user.getUserID()).getImage().getScaledInstance(profileLabel.getWidth(), profileLabel.getHeight(), Image.SCALE_SMOOTH)));
+        profileLabel.setVerticalAlignment(JLabel.TOP);
+        profileLabel.setHorizontalAlignment(JLabel.CENTER);
+        profileLabel.setHorizontalTextPosition(JLabel.CENTER);
+        profileLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        profileLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -43,230 +47,224 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         setLocationRelativeTo(null);
         addWindowListener(this);
         setTitle("Profile");
-        setIconImage(logo.getImage());
 
-        userId.setText("User ID: " + user.getUserID());
-        userId.setBounds(180,30,1000,25);
-        userId.setFont(new Font("Courier",Font.PLAIN,14));
+        JLabel userIDText = new JLabel("User ID:");
+        userIDText.setBounds(150, 30, 100, 25);
+        JLabel userIDValue = new JLabel(String.valueOf(user.getUserID()));
+        userIDValue.setBounds(250, 30, 200, 25);
 
-        userName.setText("Username: "+ user.getUsername());
-        userName.setBounds(180,60,200,25);
-        userName.setFont(new Font("Courier",Font.PLAIN,14));
 
-        userType.setBounds(180,90,200,25);
-        userType.setFont(new Font("Courier",Font.PLAIN,14));
-        if(user.getUserID() / 100000 == 1)
-        {
-            userType.setText("User Type: Admin");
-        }
-        else
-        {
-            userType.setText("User Type: Tenant");
-        }
+        JLabel usernameText = new JLabel("Username:");
+        usernameText.setBounds(150, 60, 100, 25);
+        JLabel usernameValue = new JLabel(user.getUsername());
+        usernameValue.setBounds(250, 60, 200, 25);
 
-        firstName.setText("First Name: "+ user.getFirstName());
-        firstName.setBounds(30,140,200,25);
-        firstName.setFont(new Font("Courier",Font.PLAIN,14));
+        JLabel userTypeText = new JLabel("User Type:");
+        userTypeText.setBounds(150, 90, 100, 25);
+        JLabel userTypeValue = new JLabel(user.getUserID() / 100000 == 1 ? "Admin" : "Tenant");
+        userTypeValue.setBounds(250, 90, 200, 25);
 
-        middleName.setText("Middle Name: "+ user.getMiddleName());
-        middleName.setBounds(30,170,200,25);
-        middleName.setFont(new Font("Courier",Font.PLAIN,14));
+        JLabel firstNameText = new JLabel("First Name:");
+        firstNameText.setBounds(25, 140, 100, 25);
+        firstNameValue = new JLabel(user.getFirstName());
+        firstNameValue.setBounds(125, 140, 200, 25);
 
-        lastName.setText("Last Name: "+ user.getLastName());
-        lastName.setBounds(30,200,200,25);
-        lastName.setFont(new Font("Courier",Font.PLAIN,14));
+        JLabel middleNameText = new JLabel("Middle Name:");
+        middleNameText.setBounds(25,170,100,25);
+        middleNameValue = new JLabel(user.getMiddleName());
+        middleNameValue.setBounds(125, 170, 200, 25);
 
-        //edit button for first name
-        newFirstname.setBounds(130,140,200,25);
-        newFirstname.setVisible(false);
-        edit1.setText("Edit");
-        edit1.setFocusable(false);
-        edit1.setLayout(null);
-        edit1.setFont(new Font("Courier",Font.PLAIN,10));
-        edit1.setBounds(340,145,55,20);
-        edit1.setBackground(Color.GRAY);
-        edit1.setOpaque(true);
-        edit1.addActionListener(this);
-        confirm1.setVisible(false);
-        confirm1.setText("Confirm");
-        confirm1.setFocusable(false);
-        confirm1.setLayout(null);
-        confirm1.setFont(new Font("Courier",Font.PLAIN,10));
-        confirm1.setBounds(340,143,80,20);
-        confirm1.setBackground(Color.GRAY);
-        confirm1.setOpaque(true);
-        confirm1.addActionListener(this);
+        JLabel lastNameText = new JLabel("Last Name:");
+        lastNameText.setBounds(25,200,100,25);
+        lastNameValue = new JLabel(user.getLastName());
+        lastNameValue.setBounds(125, 200, 200, 25);
 
-        //edit button for middle name
-        newMiddlename.setBounds(130,170,200,25);
-        newMiddlename.setVisible(false);
-        edit2.setText("Edit");
-        edit2.setFocusable(false);
-        edit2.setLayout(null);
-        edit2.setFont(new Font("Courier",Font.PLAIN,10));
-        edit2.setBounds(340,175,55,20);
-        edit2.setBackground(Color.GRAY);
-        edit2.setOpaque(true);
-        edit2.addActionListener(this);
-        confirm2.setVisible(false);
-        confirm2.setText("Confirm");
-        confirm2.setFocusable(false);
-        confirm2.setLayout(null);
-        confirm2.setFont(new Font("Courier",Font.PLAIN,10));
-        confirm2.setBounds(340,173,80,20);
-        confirm2.setBackground(Color.GRAY);
-        confirm2.setOpaque(true);
-        confirm2.addActionListener(this);
+        firstNameField = new JTextField();
+        firstNameField.setBounds(125, 140, 200, 25);
+        firstNameField.setVisible(false);
+        middleNameField = new JTextField();
+        middleNameField.setBounds(125, 170, 200, 25);
+        middleNameField.setVisible(false);
+        lastNameField = new JTextField();
+        lastNameField.setBounds(125, 200, 200, 25);
+        lastNameField.setVisible(false);
 
-        //edit button for last name
-        newLastname.setBounds(130,200,200,25);
-        newLastname.setVisible(false);
-        edit3.setText("Edit");
-        edit3.setFocusable(false);
-        edit3.setLayout(null);
-        edit3.setFont(new Font("Courier",Font.PLAIN,10));
-        edit3.setBounds(340,205,55,20);
-        edit3.setBackground(Color.GRAY);
-        edit3.setOpaque(true);
-        edit3.addActionListener(this);
-        confirm3.setVisible(false);
-        confirm3.setText("Confirm");
-        confirm3.setFocusable(false);
-        confirm3.setLayout(null);
-        confirm3.setFont(new Font("Courier",Font.PLAIN,10));
-        confirm3.setBounds(340,203,80,20);
-        confirm3.setBackground(Color.GRAY);
-        confirm3.setOpaque(true);
-        confirm3.addActionListener(this);
+        editFirstNameButton = new JButton("Edit");
+        editFirstNameButton.setBackground(Color.WHITE);
+        editFirstNameButton.setFont(new Font("Arial", Font.BOLD, 10));
+        editFirstNameButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        editFirstNameButton.setFocusPainted(false);
+        editFirstNameButton.setBounds(340, 145, 55, 20);
+        editFirstNameButton.addActionListener(this);
+
+        confirmFirstNameButton = new JButton("Confirm");
+        confirmFirstNameButton.setBackground(Color.WHITE);
+        confirmFirstNameButton.setFont(new Font("Arial", Font.BOLD, 10));
+        confirmFirstNameButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        confirmFirstNameButton.setFocusPainted(false);
+        confirmFirstNameButton.setVisible(false);
+        confirmFirstNameButton.setBounds(340, 143, 80, 20);
+        confirmFirstNameButton.addActionListener(this);
+
+        editMiddleNameButton = new JButton("Edit");
+        editMiddleNameButton.setBackground(Color.WHITE);
+        editMiddleNameButton.setFont(new Font("Arial", Font.BOLD, 10));
+        editMiddleNameButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        editMiddleNameButton.setFocusPainted(false);
+        editMiddleNameButton.setBounds(340, 175, 55, 20);
+        editMiddleNameButton.addActionListener(this);
+
+        confirmMiddleNameButton = new JButton("Confirm");
+        confirmMiddleNameButton.setBackground(Color.WHITE);
+        confirmMiddleNameButton.setFont(new Font("Arial", Font.BOLD, 10));
+        confirmMiddleNameButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        confirmMiddleNameButton.setFocusPainted(false);
+        confirmMiddleNameButton.setVisible(false);
+        confirmMiddleNameButton.setBounds(340, 173, 80, 20);
+        confirmMiddleNameButton.addActionListener(this);
+
+        editLastNameButton = new JButton("Edit");
+        editLastNameButton.setBackground(Color.WHITE);
+        editLastNameButton.setFont(new Font("Arial", Font.BOLD, 10));
+        editLastNameButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        editLastNameButton.setFocusPainted(false);
+        editLastNameButton.setBounds(340, 205, 55, 20);
+        editLastNameButton.addActionListener(this);
+
+        confirmLastNameButton = new JButton("Confirm");
+        confirmLastNameButton.setBackground(Color.WHITE);
+        confirmLastNameButton.setFont(new Font("Arial", Font.BOLD, 10));
+        confirmLastNameButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        confirmLastNameButton.setFocusPainted(false);
+        confirmLastNameButton.setVisible(false);
+        confirmLastNameButton.setBounds(340, 203, 80, 20);
+        confirmLastNameButton.addActionListener(this);
 
         //Change password
-        changePass.setText("Change Password");
-        changePass.setFocusable(false);
-        changePass.setFont(new Font("Courier", Font.PLAIN,10));
-        changePass.setBounds(30,230,120,20);
-        changePass.setBackground(Color.GRAY);
-        changePass.setOpaque(true);
-        changePass.addActionListener(this);
+        changePassButton = new JButton("Change Password");
+        changePassButton.setBackground(Color.WHITE);
+        changePassButton.setFont(new Font("Arial", Font.BOLD, 10));
+        changePassButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        changePassButton.setFocusPainted(false);
+        changePassButton.setBounds(25, 230, 120, 20);
+        changePassButton.addActionListener(this);
 
         //Close Button
-        close.setText("Close");
-        close.setFocusable(false);
-        close.setFont(new Font("Courier", Font.PLAIN,10));
-        close.setBounds(410,230,60,20);
-        close.setBackground(Color.GRAY);
-        close.setOpaque(true);
-        close.addActionListener(this);
+        closeButton = new JButton("Close");
+        closeButton.setBackground(Color.WHITE);
+        closeButton.setFont(new Font("Arial", Font.BOLD, 10));
+        closeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        closeButton.setFocusPainted(false);
+        closeButton.setBounds(410, 230, 60, 20);
+        closeButton.addActionListener(this);
 
         setVisible(true);
 
         //added list
-        add(userId);
-        add(userName);
-        add(userType);
-        add(firstName);
-        add(middleName);
-        add(lastName);
-        add(edit1);
-        add(confirm1);
-        add(newFirstname);
-        add(edit2);
-        add(confirm2);
-        add(newMiddlename);
-        add(confirm3);
-        add(edit3);
-        add(newLastname);
-        add(changePass);
-        add(close);
+        add(profileLabel);
+        add(userIDText);
+        add(usernameText);
+        add(userTypeText);
+        add(firstNameText);
+        add(middleNameText);
+        add(lastNameText);
+        add(editFirstNameButton);
+        add(confirmFirstNameButton);
+        add(firstNameField);
+        add(editMiddleNameButton);
+        add(confirmMiddleNameButton);
+        add(middleNameField);
+        add(confirmLastNameButton);
+        add(editLastNameButton);
+        add(lastNameField);
+        add(changePassButton);
+        add(closeButton);
+        add(userIDValue);
+        add(usernameValue);
+        add(userTypeValue);
+        add(firstNameValue);
+        add(middleNameValue);
+        add(lastNameValue);
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource() == edit1)
+        if(e.getSource() == editFirstNameButton)
         {
-            edit1.setVisible(false);
-            confirm1.setVisible(true);
-            newFirstname.setVisible(true);
-            firstName.setText("First Name: ");
+            editFirstNameButton.setVisible(false);
+            confirmFirstNameButton.setVisible(true);
+            firstNameField.setVisible(true);
+            firstNameValue.setVisible(false);
+        }
 
-        }
-        if(e.getSource() == confirm1)
+        if(e.getSource() == confirmFirstNameButton)
         {
-            if(newFirstname.getText().length() < 1)
+            if(!firstNameField.getText().isEmpty())
             {
-                JOptionPane.showMessageDialog(null,"Please newpass atleast 1 characters !","ERROR", JOptionPane.WARNING_MESSAGE);
+                connection.execute("UPDATE users SET first_name='" + firstNameField.getText() + "' WHERE key= '" + user.getUserID() + "'");
+                firstNameValue.setText(firstNameField.getText());
+                user.setFirstName(firstNameField.getText());
             }
-            else
-            {
-                edit1.setEnabled(true);
-                edit1.setVisible(true);
-                confirm1.setVisible(false);
-                newFirstname.setVisible(false);
-                firstName.setText("First Name: " + newFirstname.getText());
-                user.setFirstName(newFirstname.getText());
+            editFirstNameButton.setEnabled(true);
+            editFirstNameButton.setVisible(true);
+            confirmFirstNameButton.setVisible(false);
+            firstNameField.setVisible(false);
+            firstNameValue.setVisible(true);
+        }
 
-                connection = DatabaseConnection.getInstance();
-                connection.execute("UPDATE users SET first_name='" + newFirstname.getText() + "' WHERE key= '" + user.getUserID() + "'");
-            }
-        }
-        if(e.getSource() == edit2)
+        if(e.getSource() == editMiddleNameButton)
         {
-            edit2.setVisible(false);
-            confirm2.setVisible(true);
-            newMiddlename.setVisible(true);
-            middleName.setText("Middle Name: ");
+            editMiddleNameButton.setVisible(false);
+            confirmMiddleNameButton.setVisible(true);
+            middleNameField.setVisible(true);
+            middleNameValue.setVisible(false);
         }
-        if(e.getSource() == confirm2)
-        {
-            if(newMiddlename.getText().length() < 1)
-            {
-                JOptionPane.showMessageDialog(null,"Please newpass atleast 1 characters !","ERROR", JOptionPane.WARNING_MESSAGE);
-            }
-            else
-            {
-                edit2.setEnabled(true);
-                edit2.setVisible(true);
-                confirm2.setVisible(false);
-                newMiddlename.setVisible(false);
-                middleName.setText("Middle Name: " + newMiddlename.getText());
-                user.setMiddleName(newMiddlename.getText());
 
-                connection = DatabaseConnection.getInstance();
-                connection.execute("UPDATE users SET middle_name='" + newMiddlename.getText() + "' WHERE key= '" + user.getUserID() + "'");
-            }
-        }
-        if(e.getSource() == edit3)
+        if(e.getSource() == confirmMiddleNameButton)
         {
-            edit3.setVisible(false);
-            confirm3.setVisible(true);
-            newLastname.setVisible(true);
-            lastName.setText("Last Name: ");
-
+            if(!middleNameField.getText().isEmpty())
+            {
+                connection.execute("UPDATE users SET middle_name='" + middleNameField.getText() + "' WHERE key= '" + user.getUserID() + "'");
+                middleNameValue.setText("Middle Name: " + middleNameField.getText());
+                user.setMiddleName(middleNameField.getText());
+            }
+            editMiddleNameButton.setEnabled(true);
+            editMiddleNameButton.setVisible(true);
+            confirmMiddleNameButton.setVisible(false);
+            middleNameField.setVisible(false);
+            middleNameValue.setVisible(true);
         }
-        if(e.getSource() == confirm3)
+
+        if(e.getSource() == editLastNameButton)
         {
-            if(newLastname.getText().length() < 1)
-            {
-                JOptionPane.showMessageDialog(null,"Please newpass atleast 1 characters !","ERROR", JOptionPane.WARNING_MESSAGE);
-            }
-            else
-            {
-                edit3.setEnabled(true);
-                edit3.setVisible(true);
-                confirm3.setVisible(false);
-                newLastname.setVisible(false);
-                lastName.setText("Last Name: " + newLastname.getText());
-                user.setLastName(newLastname.getText());
-
-                connection = DatabaseConnection.getInstance();
-                connection.execute("UPDATE users SET last_name='" + newLastname.getText() + "' WHERE key= '" + user.getUserID() + "'");
-            }
+            editLastNameButton.setVisible(false);
+            confirmLastNameButton.setVisible(true);
+            lastNameField.setVisible(true);
+            lastNameValue.setVisible(false);
         }
-        if(e.getSource() == changePass)
+
+        if(e.getSource() == confirmLastNameButton)
+        {
+            if(!lastNameField.getText().isEmpty())
+            {
+                connection.execute("UPDATE users SET last_name='" + lastNameField.getText() + "' WHERE key= '" + user.getUserID() + "'");
+                lastNameValue.setText("Last Name: " + lastNameField.getText());
+                user.setLastName(lastNameField.getText());
+            }
+            editLastNameButton.setEnabled(true);
+            editLastNameButton.setVisible(true);
+            confirmLastNameButton.setVisible(false);
+            lastNameField.setVisible(false);
+            lastNameValue.setVisible(true);
+        }
+
+        if(e.getSource() == changePassButton)
         {
             new ChangePassword(user);
         }
-        if(e.getSource() == close)
+
+        if(e.getSource() == closeButton)
         {
             dispose();
         }
