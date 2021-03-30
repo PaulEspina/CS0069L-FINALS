@@ -107,23 +107,19 @@ public class ManageApartment extends JPanel implements ActionListener
             roomButton.add(roomTenant, BorderLayout.NORTH);
             roomButtons.add(roomButton);
             roomPanel.add(roomButton, gbc);
-
-            if(i == rooms.size() - 1)
-            {
-                int last = i + 1;
-                gbc.gridy = last / 4;
-                addButton = new JButton("+");
-                addButton.setHorizontalTextPosition(JButton.CENTER);
-                addButton.setFont(new Font("Arial", Font.PLAIN, 32));
-                addButton.setPreferredSize(new Dimension(120,120));
-                addButton.setBackground(Color.LIGHT_GRAY);
-                addButton.setOpaque(true);
-                addButton.setFocusable(false);
-                addButton.setLayout(new BorderLayout());
-                addButton.addActionListener(this);
-                roomPanel.add(addButton, gbc);
-            }
         }
+
+        gbc.gridy = rooms.size() / 4;
+        addButton = new JButton("+");
+        addButton.setHorizontalTextPosition(JButton.CENTER);
+        addButton.setFont(new Font("Arial", Font.PLAIN, 32));
+        addButton.setPreferredSize(new Dimension(120,120));
+        addButton.setBackground(Color.LIGHT_GRAY);
+        addButton.setOpaque(true);
+        addButton.setFocusable(false);
+        addButton.setLayout(new BorderLayout());
+        addButton.addActionListener(this);
+        roomPanel.add(addButton, gbc);
 
         scrollPane = new JScrollPane(roomPanel);
         scrollPane.setBounds(50, 100, 550, 450);
