@@ -10,21 +10,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PaymentStatus extends JFrame implements ActionListener, WindowListener {
-    private DatabaseConnection connection;
+    private final DatabaseConnection connection;
 
-    private DefaultTableModel defaultTableModeltt;
-    private JButton close;
-    private JLabel bills;
-    private JPanel detailPanel;
-    private JScrollPane panelScroll;
-    private JTable detailTable;
+    private final JButton close;
 
+    private final int tenantID;
     private final TenantDetails tenantDetails;
 
 
-    PaymentStatus(TenantDetails tenantDetails)
+    PaymentStatus(TenantDetails tenantDetails, int tenantID)
     {
         this.tenantDetails = tenantDetails;
+        this.tenantID = tenantID;
 
         connection = DatabaseConnection.getInstance();
 
@@ -35,12 +32,13 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
         setLayout(null);
         addWindowListener(this);
         setLocationRelativeTo(null);
+        setTitle("Payment Status");
 
         //Label Bill
-        bills = new JLabel();
+        JLabel bills = new JLabel();
         bills.setText("BILLS");
-        bills.setFont(new Font("Arial", Font.BOLD,20));
-        bills.setBounds(30,5,75,75);
+        bills.setFont(new Font("Arial", Font.BOLD, 20));
+        bills.setBounds(30, 5, 75, 75);
 
         //close Button
         close = new JButton("Close");
@@ -52,7 +50,7 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
         close.addActionListener(this);
 
         //Table Settings
-        defaultTableModeltt = new DefaultTableModel()
+        DefaultTableModel defaultTableModeltt = new DefaultTableModel()
         {
             @Override
             public boolean isCellEditable(int row, int column)
@@ -60,7 +58,6 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
                 return false;
             }
         };
-
         defaultTableModeltt.setRowCount(0);
         defaultTableModeltt.addColumn("ID");
         defaultTableModeltt.addColumn("Date");
@@ -71,7 +68,7 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
         DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer();
         defaultTableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        detailTable = new JTable(defaultTableModeltt);
+        JTable detailTable = new JTable(defaultTableModeltt);
         detailTable.getTableHeader().setResizingAllowed(false);
         detailTable.getTableHeader().setReorderingAllowed(false);
         detailTable.setDragEnabled(false);
@@ -86,19 +83,20 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
             detailTable.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
         }
 
-        panelScroll = new JScrollPane(detailTable);
+        JScrollPane panelScroll = new JScrollPane(detailTable);
         panelScroll.setBounds(0, 0, 435, 180);
 
         //Settings for detail panel.
-        detailPanel = new JPanel();
+        JPanel detailPanel = new JPanel();
         detailPanel.setLayout(null);
-        detailPanel.setBounds(30,55,580,475);
+        detailPanel.setBounds(30, 55, 580, 475);
+        detailPanel.add(panelScroll);
 
         //bills statement of account
-        ResultSet resultSet = connection.getResult("SELECT * FROM bills WHERE recipient_id='" + tenantDetails + "'");
+        ResultSet resultSet = connection.getResult("SELECT * FROM bills WHERE recipient_id='" + tenantID + "'");
         try
         {
-            while (resultSet.next())
+            while(resultSet.next())
             {
                 int billID = resultSet.getInt("key");
                 String dateIssue = resultSet.getString("date_issued");
@@ -106,15 +104,13 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
                 String amountPaid = String.valueOf(resultSet.getDouble("amount_paid"));
                 String status = Double.parseDouble(amountPaid) >= Double.parseDouble(totalAmount) ? "Paid" : "Unpaid";
 
-                defaultTableModeltt.addRow((new Object[]{billID,dateIssue,totalAmount,amountPaid,status}));
+                defaultTableModeltt.addRow((new Object[]{billID, dateIssue, totalAmount, amountPaid, status}));
             }
         }
         catch (SQLException throwables)
         {
             throwables.printStackTrace();
         }
-
-        detailPanel.add(panelScroll);
 
         add(bills);
         add(detailPanel);
