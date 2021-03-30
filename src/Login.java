@@ -13,6 +13,8 @@ public class Login extends JFrame implements ActionListener
 
     private int attempts;
 
+    ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
+
     public Login()
     {
         attempts = 0;
@@ -21,6 +23,9 @@ public class Login extends JFrame implements ActionListener
         setSize(400, 200);
         setLocationRelativeTo(null);
         setTitle("Login");
+        setIconImage(logo.getImage());
+
+
 
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(null);

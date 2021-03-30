@@ -21,6 +21,8 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
     JButton pay;
     JButton close;
 
+    ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
+
     double totalAmount;
     double amountPaid;
 
@@ -38,6 +40,7 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
         setLocationRelativeTo(null);
         addWindowListener(this);
         setVisible(true);
+        setIconImage(logo.getImage());
 
         //Panel Settings
         allDetailLabel = new JPanel();

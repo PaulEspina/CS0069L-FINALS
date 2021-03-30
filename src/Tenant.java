@@ -16,6 +16,8 @@ public class Tenant extends User implements ActionListener
     private JScrollPane panelScroll;
     private JTable detailTable;
 
+    private ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
+
     private DefaultTableCellRenderer defaultTableCellRenderer;
     private DefaultTableModel defaultTableModeltt;
 
@@ -37,6 +39,7 @@ public class Tenant extends User implements ActionListener
         frame.setSize(800, 600);
         frame.setLayout(null);
         frame.setVisible(true);
+        frame.setIconImage(logo.getImage());
 
         frame.setLocationRelativeTo(null);
 

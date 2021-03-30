@@ -18,6 +18,8 @@ public class ChangePassword extends JFrame implements ActionListener
     JLabel newPass = new JLabel();
     JLabel confirmPass = new JLabel();
 
+    ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
+
     DatabaseConnection connection;
 
     User user;
@@ -33,6 +35,7 @@ public class ChangePassword extends JFrame implements ActionListener
         setLayout(null);
         setLocationRelativeTo(null);
         setTitle("Change Password");
+        setIconImage(logo.getImage());
 
         //Francis - Current Password Message
         currentPass.setText("Please enter current password: ");

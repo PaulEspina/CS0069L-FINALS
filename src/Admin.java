@@ -64,6 +64,9 @@ public class Admin extends User implements ActionListener, DocumentListener
     // Create User Variables
     File image;
 
+    //JFrame icon
+    ImageIcon logo = new ImageIcon(".//images//icon48.png");
+
     public Admin(int userID, String username, String firstName, String middleName, String lastName)
     {
         super(userID, username, firstName, middleName, lastName);
@@ -80,6 +83,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setTitle("Apartment Management System");
+        frame.setIconImage(logo.getImage());
         side();
         content();
         frame.add(sidePanel, BorderLayout.WEST);
@@ -469,7 +473,7 @@ public class Admin extends User implements ActionListener, DocumentListener
         if(e.getSource() == profileButton)
         {
             profileButton.setEnabled(false);
-            new Profile(this);
+            new RoomDetails(this);
         }
 
         // Search Recipient Button

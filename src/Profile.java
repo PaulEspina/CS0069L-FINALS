@@ -28,6 +28,8 @@ public class Profile extends JFrame implements WindowListener, ActionListener
     JButton changePass = new JButton();
     JButton close = new JButton();
 
+    ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
+
     User user;
     public Profile(User user)
     {
@@ -41,6 +43,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
         setLocationRelativeTo(null);
         addWindowListener(this);
         setTitle("Profile");
+        setIconImage(logo.getImage());
 
         userId.setText("User ID: " + user.getUserID());
         userId.setBounds(180,30,1000,25);
