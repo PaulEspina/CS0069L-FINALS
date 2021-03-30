@@ -26,7 +26,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     private final JLabel firstNameValue;
     private final JLabel middleNameValue;
     private final JLabel lastNameValue;
-    private final JTextField newRoomField;
     private final JButton paymentStatusButton;
     private final JButton closeButton;
     private final JButton removeButton;
@@ -129,11 +128,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         closeButton.setBounds(400, 225, 50, 25);
         closeButton.addActionListener(this);
 
-        newRoomField = new JTextField();
-        newRoomField.setToolTipText("Enter new room for this tenant.");
-        newRoomField.setBounds(275, 85, 80, 25);
-        newRoomField.setVisible(false);
-
         removeButton = new JButton("Remove");
         removeButton.setBackground(Color.WHITE);
         removeButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -157,7 +151,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         add(lastNameValue);
         add(paymentStatusButton);
         add(closeButton);
-        add(newRoomField);
         add(removeButton);
         setVisible(true);
     }
