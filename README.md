@@ -1,7 +1,3 @@
-### Project Details
-Topic: Apartment Management System
-A system that keeps track of the tenants and their payment status. Can be used by tenants to pay and administrators to manage the apartment.
-
 ### Coding Convention
 1. Use tab size 4 (four spaces).
 2. Paki indent ng maayos ung code para malinaw basahin.
@@ -12,47 +8,3 @@ A system that keeps track of the tenants and their payment status. Can be used b
 7. Camelcase for function names. (example: functionName)
 8. Camelcase for variable names. 
 9. Use class name as file name.
-
-### Admin GUI Map
-![](images/AdminMapGUI.png)
-
-### Tenant GUI Map
-![](images/TenantMapGUI.png)
-
-### GUI Design
-#### Main Tenant Screen
-Dimension: 800x600
-![](images/GUIDesign/Tenant.png)
-#### Bill Details
-Dimension: 500x300
-![](images/GUIDesign/Bill.png)
-#### Main Admin Screen
-Dimension: 800x600
-![](images/GUIDesign/Admin.png)
-#### Admin Manage Apartment
-Dimension: 800x600
-![](images/GUIDesign/AdminManageApartment.png)
-#### Admin Manage Tenants
-Dimension: 800x600
-![](images/GUIDesign/AdminManageTenants.png)
-#### Admin Create Bill
-Dimension: 800x600
-![](images/GUIDesign/AdminCreateBill.png)
-#### Admin Create User
-Dimension: 800x600
-![](images/GUIDesign/AdminCreateUser.png)
-#### Room Details
-Dimension: 500x300
-![](images/GUIDesign/Room.png)
-#### Tenant Details
-Dimension: 500x300
-![](images/GUIDesign/TenantDetails.png)
-#### Payment Status
-Dimension: 500x300
-![](images/GUIDesign/PaymentStatus.png)
-#### Profile Screen
-Dimension: 500x300
-![](images/GUIDesign/Profile.png)
-#### Login Screen
-Dimension: 400x200
-![](images/GUIDesign/Login.png)
