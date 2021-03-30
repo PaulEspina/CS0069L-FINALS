@@ -60,6 +60,7 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
                 return false;
             }
         };
+
         defaultTableModeltt.setRowCount(0);
         defaultTableModeltt.addColumn("ID");
         defaultTableModeltt.addColumn("Date");
