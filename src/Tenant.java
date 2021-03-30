@@ -140,6 +140,7 @@ public class Tenant extends User implements ActionListener
         detailTable.setOpaque(true);
         detailTable.setModel(defaultTableModeltt);
         detailTable.setBounds(0, 0, 550, Integer.MAX_VALUE);
+
         for(int i = 0; i < 5; i++)
         {
             detailTable.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);

@@ -159,8 +159,7 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         {
             paymentStatusButton.setEnabled(false);
             closeButton.setEnabled(false);
-            // create PaymentStatus Frame
-
+            new PaymentStatus(this);
         }
 
         // Remove Tenant Button
@@ -226,5 +225,11 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     public void windowDeactivated(WindowEvent e)
     {
 
+    }
+
+    public void enablePaymentStatus()
+    {
+        paymentStatusButton.setEnabled(true);
+        closeButton.setEnabled(true);
     }
 }
