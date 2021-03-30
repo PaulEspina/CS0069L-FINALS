@@ -41,7 +41,7 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         setLayout(null);
         setLocationRelativeTo(null);
         addWindowListener(this);
-        setTitle("Room");
+        setTitle("Room " + room.roomNumber);
 
         int tenantID = 0;
         String tenantFirstName = "";
@@ -227,7 +227,24 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
             }
             else
             {
-                connection.execute("UPDATE rooms SET room_number='" + roomNumberField.getText() + "' WHERE key='" + room.key + "'");
+                try
+                {
+                    ResultSet resultSet = connection.getResult("SELECT * FROM rooms WHERE room_number='" + roomNumberField.getText() + "'");
+                    if(!resultSet.next())
+                    {
+                        connection.execute("UPDATE rooms SET room_number='" + roomNumberField.getText() + "' WHERE key='" + room.key + "'");
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "The room number you entered is already taken.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                    resultSet.close();
+                }
+                catch(SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+
                 editRoomNumber.setEnabled(true);
                 editRoomNumber.setVisible(true);
                 confirmRoomNumber.setVisible(false);
@@ -247,16 +264,25 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         {
             if (roomFeeField.getText().isEmpty())
             {
-                JOptionPane.showMessageDialog(null, "ERROR: No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
             else
             {
-                connection.execute("UPDATE rooms SET rent_amount='" + roomFeeField.getText() + "' WHERE key='" + room.key + "'");
-                editRentFee.setEnabled(true);
-                editRentFee.setVisible(true);
-                confirmRentFee.setVisible(false);
-                roomFeeField.setVisible(false);
-                dbRentFee.setText(roomFeeField.getText());
+                double amount;
+                try
+                {
+                    amount = Double.parseDouble(roomFeeField.getText());
+                    connection.execute("UPDATE rooms SET rent_amount='" + amount + "' WHERE key='" + room.key + "'");
+                    editRentFee.setEnabled(true);
+                    editRentFee.setVisible(true);
+                    confirmRentFee.setVisible(false);
+                    roomFeeField.setVisible(false);
+                    dbRentFee.setText(roomFeeField.getText());
+                }
+                catch(NumberFormatException ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Invalid input for rent. Please enter a number.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
 
@@ -271,23 +297,43 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         {
             if(tenantField.getText().isEmpty())
             {
-                JOptionPane.showMessageDialog(null, "ERROR: No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
             else
             {
-                connection.execute("UPDATE tenants SET room='0' WHERE room='" + room.key + "'");
-                connection.execute("UPDATE tenants SET room='" + room.key + "' WHERE key='" + tenantField.getText() + "'");
-                editTenantID.setEnabled(true);
-                editTenantID.setVisible(true);
-                confirmTenantID.setVisible(false);
-                tenantField.setVisible(false);
-                dbTenantID.setText(tenantField.getText());
-
+                int tenantID = Integer.parseInt(tenantField.getText());
                 try
                 {
-                    ResultSet resultSet = connection.getResult("SELECT first_name, last_name FROM users WHERE key='" + tenantField.getText() + "'");
-                    dbTenantName.setText(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
-                    resultSet.close();
+                    ResultSet resultSet = connection.getResult("SELECT * FROM users WHERE key='" + tenantID + "'");
+                    if(resultSet.next() || tenantID == 0)
+                    {
+                        resultSet.close();
+                        connection.execute("UPDATE tenants SET room='0' WHERE room='" + room.key + "'");
+                        connection.execute("UPDATE tenants SET room='" + (tenantID == 0 ? "0" : room.key) + "' WHERE key='" + tenantID + "'");
+                        editTenantID.setEnabled(true);
+                        editTenantID.setVisible(true);
+                        confirmTenantID.setVisible(false);
+                        tenantField.setVisible(false);
+                        dbTenantID.setText(String.valueOf(tenantID));
+                        resultSet = connection.getResult("SELECT first_name, last_name FROM users WHERE key='" + tenantID + "'");
+                        if(resultSet.next())
+                        {
+                            dbTenantName.setText(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
+                        }
+                        else if(tenantID == 0)
+                        {
+                            dbTenantName.setText("");
+                        }
+                        resultSet.close();
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Tenant not found.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                catch(NumberFormatException ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Invalid input for tenant. Please enter a number.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
                 catch(SQLException ex)
                 {
