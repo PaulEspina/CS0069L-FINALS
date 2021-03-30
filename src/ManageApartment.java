@@ -9,7 +9,6 @@ import java.util.Vector;
 public class ManageApartment extends JPanel implements ActionListener
 {
     private final DatabaseConnection connection;
-    private final Admin admin;
 
     private JPanel roomPanel;
     private JScrollPane scrollPane;
@@ -18,9 +17,8 @@ public class ManageApartment extends JPanel implements ActionListener
     Vector<JButton> roomButtons;
     JButton addButton;
 
-    public ManageApartment(Admin admin)
+    public ManageApartment()
     {
-        this.admin = admin;
         connection = DatabaseConnection.getInstance();
         setLayout(null);
         create();
