@@ -4,13 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class RoomDetails extends JFrame implements WindowListener, ActionListener
 {
-    private final JLabel roomNumber = new JLabel();
-    private final JLabel rentFee = new JLabel();
-    private final JLabel tenantID = new JLabel();
-    private final JLabel tenantName = new JLabel();
+    private final DatabaseConnection connection;
     private final JLabel dbRoomNumber = new JLabel();
     private final JLabel dbRentFee = new JLabel();
     private final JLabel dbTenantID = new JLabel();
@@ -21,21 +20,18 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
     private final JButton confirmRentFee = new JButton();
     private final JButton editTenantID = new JButton();
     private final JButton confirmTenantID = new JButton();
-    private final JButton editTenantName = new JButton();
-    private final JButton confirmTenantName = new JButton();
-    private final JTextField number = new JTextField();
-    private final JTextField fee = new JTextField();
-    private final JTextField id = new JTextField();
-    private final JTextField name = new JTextField();
+    private final JTextField roomNumberField = new JTextField();
+    private final JTextField roomFeeField = new JTextField();
+    private final JTextField tenantField = new JTextField();
     private final JButton close = new JButton("Close");
 
-//    ManageApartment apartment;
-    User user;
-    public RoomDetails(User user)
+    ManageApartment manageApartment;
+    Room room;
+    public RoomDetails(ManageApartment manageApartment, Room room)
     {
-        this.user = user;
-//        this.apartment = apartment;
-        DatabaseConnection connection = DatabaseConnection.getInstance();
+        this.manageApartment = manageApartment;
+        this.room = room;
+        connection = DatabaseConnection.getInstance();
 
         //frame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -46,29 +42,62 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         addWindowListener(this);
         setTitle("Room");
 
+        int tenantID = 0;
+        String tenantFirstName = "";
+        String tenantLastName = "";
+        try
+        {
+            ResultSet resultSet = connection.getResult("SELECT key FROM tenants WHERE room='" + room.key + "'");
+            if(resultSet.next())
+            {
+                tenantID = resultSet.getInt("key");
+            }
+            resultSet.close();
+
+            resultSet = connection.getResult("SELECT first_name, last_name FROM users WHERE key='" + tenantID +"'");
+            if(resultSet.next())
+            {
+                tenantFirstName = resultSet.getString("first_name");
+                tenantLastName = resultSet.getString("last_name");
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
         //text
-        roomNumber.setText("Room Number:");
-        roomNumber.setBounds(30,30,200,25);
+        JLabel roomNumberText = new JLabel("Room Number:");
+        roomNumberText.setBounds(30,30,200,25);
+
+        JLabel rentFeeText = new JLabel("Rent Fee:");
+        rentFeeText.setBounds(30,60,200,25);
+
+        JLabel tenantIDText = new JLabel("TenantID:");
+        tenantIDText.setBounds(30,120,200,25);
+
+        JLabel tenantNameText = new JLabel("Tenant Name:");
+        tenantNameText.setBounds(30,150,200,25);
+
+        dbRoomNumber.setText(String.valueOf(room.roomNumber));
         dbRoomNumber.setBounds(120,30,200,25);
-        rentFee.setText("Rent Fee:");
-        rentFee.setBounds(30,60,200,25);
+
+        dbRentFee.setText(String.valueOf(room.roomFee));
         dbRentFee.setBounds(120,60,200,25);
-        tenantID.setText("TenantID:");
-        tenantID.setBounds(30,120,200,25);
+
+        dbTenantID.setText(String.valueOf(tenantID));
         dbTenantID.setBounds(120,120,200,25);
-        tenantName.setText("Tenant Name:");
-        tenantName.setBounds(30,150,200,25);
+
+        dbTenantName.setText(tenantFirstName + " " + tenantLastName);
         dbTenantName.setBounds(120,150,200,25);
 
         //JTextField
-        number.setBounds(120,30,200,25);
-        number.setVisible(false);
-        fee.setBounds(120,60,200,25);
-        fee.setVisible(false);
-        id.setBounds(120,120,200,25);
-        id.setVisible(false);
-        name.setBounds(120,150,200,25);
-        name.setVisible(false);
+        roomNumberField.setBounds(120, 30, 200, 25);
+        roomNumberField.setVisible(false);
+        roomFeeField.setBounds(120, 60, 200, 25);
+        roomFeeField.setVisible(false);
+        tenantField.setBounds(120, 120, 200, 25);
+        tenantField.setVisible(false);
 
         //edit button
         editRoomNumber.setText("Edit");
@@ -97,15 +126,6 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         editTenantID.setBackground(Color.GRAY);
         editTenantID.setOpaque(true);
         editTenantID.addActionListener(this);
-
-        editTenantName.setText("Edit");
-        editTenantName.setFocusable(false);
-        editTenantName.setLayout(null);
-        editTenantName.setFont(new Font("Courier",Font.PLAIN, 10));
-        editTenantName.setBounds(340,155,55,20);
-        editTenantName.setBackground(Color.GRAY);
-        editTenantName.setOpaque(true);
-        editTenantName.addActionListener(this);
 
         //confirm button
         confirmRoomNumber.setVisible(false);
@@ -138,16 +158,6 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         confirmTenantID.setOpaque(true);
         confirmTenantID.addActionListener(this);
 
-        confirmTenantName.setVisible(false);
-        confirmTenantName.setText("Confirm");
-        confirmTenantName.setFocusable(false);
-        confirmTenantName.setLayout(null);
-        confirmTenantName.setFont(new Font("Courier",Font.PLAIN,10));
-        confirmTenantName.setBounds(340,153,80,20);
-        confirmTenantName.setBackground(Color.GRAY);
-        confirmTenantName.setOpaque(true);
-        confirmTenantName.addActionListener(this);
-
         //close button
         close.setText("Close");
         close.setFocusable(false);
@@ -159,10 +169,10 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
 
         setVisible(true);
 
-        add(roomNumber);
-        add(rentFee);
-        add(tenantID);
-        add(tenantName);
+        add(roomNumberText);
+        add(rentFeeText);
+        add(tenantIDText);
+        add(tenantNameText);
         add(dbRoomNumber);
         add(dbRentFee);
         add(dbTenantID);
@@ -173,12 +183,9 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         add(confirmRentFee);
         add(editTenantID);
         add(confirmTenantID);
-        add(editTenantName);
-        add(confirmTenantName);
-        add(number);
-        add(fee);
-        add(id);
-        add(name);
+        add(roomNumberField);
+        add(roomFeeField);
+        add(tenantField);
         add(close);
     }
 
@@ -189,92 +196,78 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         {
             editRoomNumber.setVisible(false);
             confirmRoomNumber.setVisible(true);
-            number.setVisible(true);
-            roomNumber.setText("Room Number: ");
+            roomNumberField.setVisible(true);
         }
         if(e.getSource() == confirmRoomNumber)
         {
-            if(number.getText().length() < 1)
+            if(roomNumberField.getText().isEmpty())
             {
                 JOptionPane.showMessageDialog(null, "ERROR: No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
             else
             {
+                connection.execute("UPDATE rooms SET room_number='" + roomNumberField.getText() + "' WHERE key='" + room.key + "'");
                 editRoomNumber.setEnabled(true);
                 editRoomNumber.setVisible(true);
                 confirmRoomNumber.setVisible(false);
-                number.setVisible(false);
-                dbRoomNumber.setText(number.getText());
-                //roomNumber.setText("Room Number: " + number.getText());
+                roomNumberField.setVisible(false);
+                dbRoomNumber.setText(roomNumberField.getText());
             }
         }
         if(e.getSource() == editRentFee)
         {
             editRentFee.setVisible(false);
             confirmRentFee.setVisible(true);
-            fee.setVisible(true);
-            rentFee.setText("Rent Fee: ");
+            roomFeeField.setVisible(true);
         }
         if(e.getSource() == confirmRentFee)
         {
-            if (fee.getText().length() < 1)
+            if (roomFeeField.getText().isEmpty())
             {
                 JOptionPane.showMessageDialog(null, "ERROR: No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
             else
             {
+                connection.execute("UPDATE rooms SET rent_amount='" + roomFeeField.getText() + "' WHERE key='" + room.key + "'");
                 editRentFee.setEnabled(true);
                 editRentFee.setVisible(true);
                 confirmRentFee.setVisible(false);
-                fee.setVisible(false);
-                dbRentFee.setText(fee.getText());
-                //rentFee.setText("Rent Fee: " + fee.getText());
+                roomFeeField.setVisible(false);
+                dbRentFee.setText(roomFeeField.getText());
             }
         }
         if(e.getSource() == editTenantID)
         {
             editTenantID.setVisible(false);
             confirmTenantID.setVisible(true);
-            id.setVisible(true);
-            tenantID.setText("Tenant ID: ");
+            tenantField.setVisible(true);
         }
         if(e.getSource() == confirmTenantID)
         {
-            if(id.getText().length() < 1)
+            if(tenantField.getText().isEmpty())
             {
                 JOptionPane.showMessageDialog(null, "ERROR: No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
             else
             {
+                connection.execute("UPDATE tenants SET room='0' WHERE room='" + room.key + "'");
+                connection.execute("UPDATE tenants SET room='" + room.key + "' WHERE key='" + tenantField.getText() + "'");
                 editTenantID.setEnabled(true);
                 editTenantID.setVisible(true);
                 confirmTenantID.setVisible(false);
-                id.setVisible(false);
-                dbTenantID.setText(id.getText());
-                //tenantID.setText("Tenant ID: " + id.getText());
-            }
-        }
-        if(e.getSource() == editTenantName)
-        {
-            editTenantName.setVisible(false);
-            confirmTenantName.setVisible(true);
-            name.setVisible(true);
-            tenantName.setText("Tenant Name: ");
-        }
-        if(e.getSource() == confirmTenantName)
-        {
-            if(name.getText().length() < 1)
-            {
-                JOptionPane.showMessageDialog(null, "ERROR: No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
-            }
-            else
-            {
-                editTenantName.setEnabled(true);
-                editTenantName.setVisible(true);
-                confirmTenantName.setVisible(false);
-                name.setVisible(false);
-                dbTenantName.setText(name.getText());
-                //tenantName.setText("Tenant Name: " + name.getText());
+                tenantField.setVisible(false);
+                dbTenantID.setText(tenantField.getText());
+
+                try
+                {
+                    ResultSet resultSet = connection.getResult("SELECT first_name, last_name FROM users WHERE key='" + tenantField.getText() + "'");
+                    dbTenantName.setText(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
+                    resultSet.close();
+                }
+                catch(SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
             }
         }
         if(e.getSource() == close)
@@ -298,7 +291,10 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
     @Override
     public void windowClosed(WindowEvent e)
     {
-
+        manageApartment.removeAll();
+        manageApartment.revalidate();
+        manageApartment.repaint();
+        manageApartment.create();
     }
 
     @Override
