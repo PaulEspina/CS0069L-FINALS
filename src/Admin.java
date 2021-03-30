@@ -12,6 +12,8 @@ public class Admin extends User implements ActionListener
     private CreateBill createBill;
     private CreateUser createUser;
 
+    private ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
+
     public Admin(int userID, String username, String firstName, String middleName, String lastName)
     {
         super(userID, username, firstName, middleName, lastName);
@@ -27,6 +29,7 @@ public class Admin extends User implements ActionListener
         frame.add(sidePanel, BorderLayout.WEST);
         frame.add(contentPanel, BorderLayout.CENTER);
         frame.setVisible(true);
+        frame.setIconImage(logo.getImage());
     }
 
     @Override

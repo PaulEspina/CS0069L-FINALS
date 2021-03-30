@@ -26,6 +26,7 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
     private final JButton closeButton;
     private final JButton removeButton;
 
+    ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
     ManageApartment manageApartment;
     Room room;
     public RoomDetails(ManageApartment manageApartment, Room room)
@@ -42,6 +43,7 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         setLocationRelativeTo(null);
         addWindowListener(this);
         setTitle("Room " + room.roomNumber);
+        setIconImage(logo.getImage());
 
         int tenantID = 0;
         String tenantFirstName = "";
