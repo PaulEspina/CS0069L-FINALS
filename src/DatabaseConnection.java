@@ -65,7 +65,7 @@ public class DatabaseConnection
             resultSet = statement.executeQuery("SELECT username FROM users WHERE username='admin'");
             if(!resultSet.next())
             {
-                statement.execute("INSERT INTO users VALUES('100000', 'admin', 'admin', '', '', '')");
+                statement.execute("INSERT INTO users VALUES('100000', 'admin', 'admin', 'Admin', '', '')");
             }
             resultSet.close();
 

@@ -1,14 +1,33 @@
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Main
 {
     public boolean loggedIn;
 
     public static void main(String[] args)
     {
+        try
+        {
+            Path path = Paths.get("image");
+            Files.createDirectories(path);
+            File image = new File("default_pic.png");
+            File save = new File("image/100000");
+            if(!save.isFile())
+            {
+                Files.copy(image.toPath(), save.toPath());
+            }
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+
         DatabaseConnection dbCon = DatabaseConnection.getInstance();
         dbCon.init();
-//        dbCon.execute("INSERT INTO users(key, username, password, first_name, middle_name, last_name) VALUES('200000', 'tenant', 'tenant', 'Paul', 'Rendon', 'Espina')");
-//        dbCon.execute("INSERT INTO tenants(key, room) VALUES('200000', '1')");
-//        dbCon.execute("INSERT INTO rooms(room_number, rent_amount) VALUES('1', '3000')");
         new Login();
     }
 }

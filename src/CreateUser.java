@@ -44,7 +44,7 @@ public class CreateUser extends JPanel implements ActionListener
         createUserHeader.setFont(new Font("Arial", Font.BOLD, 32));
 
         newPicture = new JLabel();
-        newPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+        newPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
         newPicture.setBounds(50, 100, newPicture.getIcon().getIconWidth(), newPicture.getIcon().getIconHeight());
         newPicture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -154,7 +154,7 @@ public class CreateUser extends JPanel implements ActionListener
             enterMiddleName.setText("");
             enterLastName.setText("");
             accountTypeButton.clearSelection();
-            newPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+            newPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
             image = null;
         }
 
@@ -175,7 +175,7 @@ public class CreateUser extends JPanel implements ActionListener
 
             if(image == null)
             {
-                image = new File("image/default_pic.png");
+                image = new File("default_pic.png");
             }
             if(!enterUsername.getText().isEmpty() &&
                !String.valueOf(enterPassword.getPassword()).isEmpty() &&
@@ -227,7 +227,7 @@ public class CreateUser extends JPanel implements ActionListener
                         enterMiddleName.setText("");
                         enterLastName.setText("");
                         accountTypeButton.clearSelection();
-                        newPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+                        newPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
                         image = null;
                         JOptionPane.showMessageDialog(null, "The user is successfully created!", "User Created", JOptionPane.INFORMATION_MESSAGE);
                     }

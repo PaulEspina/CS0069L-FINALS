@@ -11,16 +11,13 @@ import java.util.ArrayList;
 public class ManageTenants extends JPanel implements ActionListener
 {
     private final DatabaseConnection connection;
-    private final Admin admin;
 
     private final DefaultTableModel defaultTableModeltt;
     private final JTextField tenantSearchField;
     private final JButton tenantSearchButton;
 
-    public ManageTenants(Admin admin)
+    public ManageTenants()
     {
-        this.admin = admin;
-
         connection = DatabaseConnection.getInstance();
 
         setLayout(null);

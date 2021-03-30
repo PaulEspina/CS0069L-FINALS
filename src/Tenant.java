@@ -25,6 +25,7 @@ public class Tenant extends User implements ActionListener
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+        frame.setIconImage(new ImageIcon("icon48.png").getImage());
         side();
         content();
         frame.add(sidePanel, BorderLayout.WEST);

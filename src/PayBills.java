@@ -31,6 +31,7 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
         setSize(400,300);
         setLocationRelativeTo(null);
         addWindowListener(this);
+        setIconImage(new ImageIcon("icon48.png").getImage());
 
         //Label Settings
         JLabel recipientIDLabel = new JLabel();

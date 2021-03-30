@@ -26,6 +26,7 @@ public class ChangePassword extends JFrame implements ActionListener
         setLayout(null);
         setLocationRelativeTo(null);
         setTitle("Change Password");
+        setIconImage(new ImageIcon("icon48.png").getImage());
 
         // Current Password Message
         JLabel currentPassLabel = new JLabel();
@@ -109,7 +110,7 @@ public class ChangePassword extends JFrame implements ActionListener
                 {
                     if(String.valueOf(newPasswordField.getPassword()).equals(String.valueOf(confirmPasswordField.getPassword())))
                     {
-                        connection.execute("UPDATE users SET password='" + String.valueOf(currentPasswordField.getPassword()) + "' WHERE key ='" + user.getUserID() + "'");
+                        connection.execute("UPDATE users SET password='" + String.valueOf(newPasswordField.getPassword()) + "' WHERE key ='" + user.getUserID() + "'");
                         JOptionPane.showMessageDialog(null, "Password Updated!", "Congratulations", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
                     }

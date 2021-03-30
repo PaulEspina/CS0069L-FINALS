@@ -60,7 +60,7 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
 
         //picture
         recipientPicture = new JLabel();
-        recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+        recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
         recipientPicture.setBounds(50, 140, recipientPicture.getIcon().getIconWidth(), recipientPicture.getIcon().getIconHeight());
         recipientPicture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -235,7 +235,7 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
         // Create Bill Reset Button
         if(e.getSource() == createBillResetButton)
         {
-            recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+            recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
             dbDate.setText("");
             dbUsername.setText("");
             dbFirstName.setText("");
@@ -264,7 +264,7 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
                                "'" + totalFee + "'," +
                                "'0'" +
                                ")");
-            recipientPicture.setIcon(new ImageIcon(new ImageIcon("image/default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+            recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
             dbDate.setText("");
             dbUsername.setText("");
             dbFirstName.setText("");
