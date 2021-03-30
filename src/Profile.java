@@ -227,7 +227,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
             if(!middleNameField.getText().isEmpty())
             {
                 connection.execute("UPDATE users SET middle_name='" + middleNameField.getText() + "' WHERE key= '" + user.getUserID() + "'");
-                middleNameValue.setText("Middle Name: " + middleNameField.getText());
+                middleNameValue.setText(middleNameField.getText());
                 user.setMiddleName(middleNameField.getText());
             }
             editMiddleNameButton.setEnabled(true);
@@ -250,7 +250,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
             if(!lastNameField.getText().isEmpty())
             {
                 connection.execute("UPDATE users SET last_name='" + lastNameField.getText() + "' WHERE key= '" + user.getUserID() + "'");
-                lastNameValue.setText("Last Name: " + lastNameField.getText());
+                lastNameValue.setText(lastNameField.getText());
                 user.setLastName(lastNameField.getText());
             }
             editLastNameButton.setEnabled(true);
