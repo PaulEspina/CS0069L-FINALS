@@ -15,6 +15,7 @@ public class ChangePassword extends JFrame implements ActionListener
     private final JButton confirmButton;
     private final JButton cancelButton;
 
+    ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
     ChangePassword(User user)
     {
         this.user = user;
@@ -26,6 +27,7 @@ public class ChangePassword extends JFrame implements ActionListener
         setLayout(null);
         setLocationRelativeTo(null);
         setTitle("Change Password");
+        setIconImage(logo.getImage());
 
         // Current Password Message
         JLabel currentPassLabel = new JLabel();

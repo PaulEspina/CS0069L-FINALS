@@ -18,6 +18,8 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
 
     private double amountPaid;
 
+    ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
+
     PayBills(Tenant tenant, int id)
     {
         this.tenant = tenant;
@@ -31,6 +33,7 @@ public class PayBills extends JFrame implements WindowListener, ActionListener
         setSize(400,300);
         setLocationRelativeTo(null);
         addWindowListener(this);
+        setIconImage(logo.getImage());
 
         //Label Settings
         JLabel recipientIDLabel = new JLabel();

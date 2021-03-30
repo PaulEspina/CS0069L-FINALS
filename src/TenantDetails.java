@@ -27,8 +27,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     private final JLabel middleNameValue;
     private final JLabel lastNameValue;
     private final JTextField newRoomField;
-    private final JButton editRoomButton;
-    private final JButton confirmEditButton;
     private final JButton paymentStatusButton;
     private final JButton closeButton;
     private final JButton removeButton;
@@ -115,14 +113,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         lastNameValue = new JLabel(lastName);
         lastNameValue.setBounds(150, 185, 150, 25);
 
-        editRoomButton = new JButton("Edit");
-        editRoomButton.setBackground(Color.WHITE);
-        editRoomButton.setFont(new Font("Arial", Font.BOLD, 10));
-        editRoomButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        editRoomButton.setFocusPainted(false);
-        editRoomButton.setBounds(360, 85, 50, 20);
-        editRoomButton.addActionListener(this);
-
         paymentStatusButton = new JButton("Payment Status");
         paymentStatusButton.setBackground(Color.WHITE);
         paymentStatusButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -143,15 +133,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         newRoomField.setToolTipText("Enter new room for this tenant.");
         newRoomField.setBounds(275, 85, 80, 25);
         newRoomField.setVisible(false);
-
-        confirmEditButton = new JButton("Confirm");
-        confirmEditButton.setBackground(Color.WHITE);
-        confirmEditButton.setFont(new Font("Arial", Font.BOLD, 10));
-        confirmEditButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        confirmEditButton.setFocusPainted(false);
-        confirmEditButton.setBounds(360, 85, 50, 20);
-        confirmEditButton.addActionListener(this);
-        confirmEditButton.setVisible(false);
 
         removeButton = new JButton("Remove");
         removeButton.setBackground(Color.WHITE);
@@ -174,12 +155,9 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         add(firstNameValue);
         add(middleNameValue);
         add(lastNameValue);
-        add(editRoomButton);
         add(paymentStatusButton);
         add(closeButton);
         add(newRoomField);
-        add(editRoomButton);
-        add(confirmEditButton);
         add(removeButton);
         setVisible(true);
     }
@@ -187,84 +165,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        // Edit Room Button
-        if(e.getSource() == editRoomButton)
-        {
-            newRoomField.setVisible(true);
-            confirmEditButton.setVisible(true);
-            editRoomButton.setVisible(false);
-            roomNumberValue.setVisible(false);
-        }
-
-        // Confirm Edit Button
-        if(e.getSource() == confirmEditButton)
-        {
-            try
-            {
-                ResultSet resultSet = connection.getResult("SELECT * FROM tenants WHERE room='" + newRoomField.getText() + "'");
-                boolean exists = resultSet.next();
-                resultSet.close();
-
-                if(!exists || Integer.parseInt(newRoomField.getText()) == 0)
-                {
-                    resultSet = connection.getResult("SELECT * FROM rooms WHERE room_number='" + newRoomField.getText() + "'");
-                    exists = resultSet.next();
-                    resultSet.close();
-                    if(exists || Integer.parseInt(newRoomField.getText()) == 0)
-                    {
-                        connection.execute("UPDATE tenants SET room='" + newRoomField.getText() + "' WHERE key='" + tenantID + "'");
-                        resultSet = connection.getResult("SELECT * FROM users WHERE key='" + tenantID + "'");
-                        int roomID = 0;
-                        roomNumber = 0;
-                        if(resultSet.next())
-                        {
-                            username = resultSet.getString("username");
-                            firstName = resultSet.getString("first_name");
-                            middleName = resultSet.getString("middle_name");
-                            lastName = resultSet.getString("last_name");
-                        }
-                        resultSet.close();
-
-                        resultSet = connection.getResult("SELECT * FROM tenants WHERE key='" + tenantID + "'");
-                        if(resultSet.next())
-                        {
-                            roomID = resultSet.getInt("room");
-                        }
-                        resultSet.close();
-
-                        resultSet = connection.getResult("SELECT * FROM rooms WHERE key='" + roomID + "'");
-                        if(resultSet.next())
-                        {
-                            roomNumber = resultSet.getInt("room_number");
-                        }
-                        resultSet.close();
-
-                        usernameValue.setText(username);
-                        roomNumberValue.setText(roomNumber == 0 ? "N/A" : String.valueOf(roomNumber));
-                        firstNameValue.setText(firstName);
-                        middleNameValue.setText(middleName);
-                        lastNameValue.setText(lastName);
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(null, "That room does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null, "That room is already occupied.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-            catch(SQLException throwables)
-            {
-                throwables.printStackTrace();
-            }
-            newRoomField.setVisible(false);
-            confirmEditButton.setVisible(false);
-            editRoomButton.setVisible(true);
-            roomNumberValue.setVisible(true);
-        }
-
         // Payment Status Button
         if(e.getSource() == paymentStatusButton)
         {
