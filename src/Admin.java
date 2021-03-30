@@ -123,8 +123,8 @@ public class Admin extends User implements ActionListener
         contentPanel.setOpaque(true);
         contentPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         contentPanel.setLayout(contentCard);
-        manageApartment = new ManageApartment(this);
-        manageTenants = new ManageTenants(this);
+        manageApartment = new ManageApartment();
+        manageTenants = new ManageTenants();
         createBill = new CreateBill(this);
         createUser = new CreateUser(this);
         contentPanel.add("manageApartmentPanel", manageApartment);
