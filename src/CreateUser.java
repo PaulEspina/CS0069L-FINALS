@@ -182,7 +182,8 @@ public class CreateUser extends JPanel implements ActionListener
                !String.valueOf(enterPassword.getPassword()).isEmpty() &&
                !enterFirstName.getText().isEmpty() &&
                !enterMiddleName.getText().isEmpty() &&
-               !enterLastName.getText().isEmpty())
+               !enterLastName.getText().isEmpty() &&
+               (tenantTypeButton.isSelected() || adminTypeButton.isSelected()))
             {
                 if(!exists)
                 {
