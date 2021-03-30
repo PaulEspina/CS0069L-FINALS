@@ -14,6 +14,7 @@ public class Tenant extends User implements ActionListener
     private JButton payButton;
     private JTextField searchField;
     private DefaultTableModel defaultTableModeltt;
+    private ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
 
     public Tenant(int userID, String username, String firstName, String middleName, String lastName)
     {
@@ -25,6 +26,7 @@ public class Tenant extends User implements ActionListener
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+        frame.setIconImage(logo.getImage());
         side();
         content();
         frame.add(sidePanel, BorderLayout.WEST);
