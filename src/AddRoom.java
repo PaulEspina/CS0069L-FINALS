@@ -49,7 +49,7 @@ public class AddRoom extends JFrame implements ActionListener, WindowListener
         confirmButton = new JButton("Confirm");
         confirmButton.setFocusable(false);
         confirmButton.setFont(new Font("Arial", Font.PLAIN, 10));
-        confirmButton.setBounds(290, 140, 80, 20);
+        confirmButton.setBounds(290, 135, 80, 20);
         confirmButton.setBackground(Color.WHITE);
         confirmButton.setOpaque(true);
         confirmButton.addActionListener(this);
@@ -58,7 +58,7 @@ public class AddRoom extends JFrame implements ActionListener, WindowListener
         cancelButton = new JButton("Cancel");
         cancelButton.setFocusable(false);
         cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
-        cancelButton.setBounds(210, 140, 70, 20);
+        cancelButton.setBounds(210, 135, 70, 20);
         cancelButton.setBackground(Color.WHITE);
         cancelButton.setOpaque(true);
         cancelButton.addActionListener(this);
