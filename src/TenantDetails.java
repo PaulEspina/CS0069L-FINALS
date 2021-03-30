@@ -21,11 +21,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     private String middleName;
     private String lastName;
 
-    private final JLabel usernameValue;
-    private final JLabel roomNumberValue;
-    private final JLabel firstNameValue;
-    private final JLabel middleNameValue;
-    private final JLabel lastNameValue;
     private final JButton paymentStatusButton;
     private final JButton closeButton;
     private final JButton removeButton;
@@ -34,6 +29,15 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     {
         this.manageTenants = manageTenants;
         this.tenantID = tenantID;
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setResizable(false);
+        setSize(500, 300);
+        setLayout(null);
+        setLocationRelativeTo(null);
+        addWindowListener(this);
+        setIconImage(new ImageIcon("icon48.png").getImage());
+        setTitle("Tenant: " + username);
 
         connection = DatabaseConnection.getInstance();
         ResultSet resultSet = connection.getResult("SELECT * FROM users WHERE key='" + tenantID + "'");
@@ -69,14 +73,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
             throwables.printStackTrace();
         }
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setResizable(false);
-        setSize(500, 300);
-        setLayout(null);
-        setLocationRelativeTo(null);
-        addWindowListener(this);
-        setTitle("Tenant: " + username);
-
         JLabel profilePicture = new JLabel();
         profilePicture.setIcon(new ImageIcon(new ImageIcon("image/" + tenantID).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
         profilePicture.setVerticalAlignment(JLabel.TOP);
@@ -101,15 +97,15 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
 
         JLabel tenantIDValue = new JLabel(String.valueOf(tenantID));
         tenantIDValue.setBounds(275, 35, 85, 25);
-        usernameValue = new JLabel(username);
+        JLabel usernameValue = new JLabel(username);
         usernameValue.setBounds(275, 60, 85, 25);
-        roomNumberValue = new JLabel(roomNumber == 0 ? "N/A" : String.valueOf(roomNumber));
+        JLabel roomNumberValue = new JLabel(roomNumber == 0 ? "N/A" : String.valueOf(roomNumber));
         roomNumberValue.setBounds(275, 85, 80, 25);
-        firstNameValue = new JLabel(firstName);
+        JLabel firstNameValue = new JLabel(firstName);
         firstNameValue.setBounds(150, 135, 150, 25);
-        middleNameValue = new JLabel(middleName);
+        JLabel middleNameValue = new JLabel(middleName);
         middleNameValue.setBounds(150, 160, 150, 25);
-        lastNameValue = new JLabel(lastName);
+        JLabel lastNameValue = new JLabel(lastName);
         lastNameValue.setBounds(150, 185, 150, 25);
 
         paymentStatusButton = new JButton("Payment Status");

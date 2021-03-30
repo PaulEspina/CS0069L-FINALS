@@ -29,6 +29,7 @@ public class AddRoom extends JFrame implements ActionListener, WindowListener
         setLocationRelativeTo(null);
         addWindowListener(this);
         setTitle("Room");
+        setIconImage(new ImageIcon("icon48.png").getImage());
 
         //text
         JLabel roomNumberText = new JLabel("Room Number:");
