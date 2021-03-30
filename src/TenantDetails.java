@@ -37,7 +37,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         setLocationRelativeTo(null);
         addWindowListener(this);
         setIconImage(new ImageIcon("icon48.png").getImage());
-        setTitle("Tenant: " + username);
 
         connection = DatabaseConnection.getInstance();
         ResultSet resultSet = connection.getResult("SELECT * FROM users WHERE key='" + tenantID + "'");
@@ -72,6 +71,8 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
         {
             throwables.printStackTrace();
         }
+
+        setTitle("Tenant: " + username);
 
         JLabel profilePicture = new JLabel();
         profilePicture.setIcon(new ImageIcon(new ImageIcon("image/" + tenantID).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
