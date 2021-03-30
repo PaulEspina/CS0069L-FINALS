@@ -27,11 +27,13 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
         this.tenantDetails = tenantDetails;
 
         connection = DatabaseConnection.getInstance();
+
         //Frame Settings
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
         setSize(500, 300);
         setLayout(null);
+        addWindowListener(this);
         setLocationRelativeTo(null);
 
         //Label Bill
@@ -46,7 +48,7 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
         close.setFont(new Font("Arial", Font.BOLD, 10));
         close.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         close.setFocusPainted(false);
-        close.setBounds(400, 225, 50, 25);
+        close.setBounds(400, 240, 50, 25);
         close.addActionListener(this);
 
         //Table Settings
@@ -112,6 +114,7 @@ public class PaymentStatus extends JFrame implements ActionListener, WindowListe
         }
 
         detailPanel.add(panelScroll);
+
         add(bills);
         add(detailPanel);
         add(close);

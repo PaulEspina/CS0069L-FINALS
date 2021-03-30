@@ -341,5 +341,6 @@ public class TenantDetails extends JFrame implements ActionListener, WindowListe
     public void enablePaymentStatus()
     {
         paymentStatusButton.setEnabled(true);
+        closeButton.setEnabled(true);
     }
 }
