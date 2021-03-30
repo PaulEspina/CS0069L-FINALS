@@ -16,6 +16,7 @@ public class ManageApartment extends JPanel implements ActionListener
 
     Vector<Room> rooms;
     Vector<JButton> roomButtons;
+    JButton addButton;
 
     public ManageApartment(Admin admin)
     {
@@ -106,6 +107,22 @@ public class ManageApartment extends JPanel implements ActionListener
             roomButton.add(roomTenant, BorderLayout.NORTH);
             roomButtons.add(roomButton);
             roomPanel.add(roomButton, gbc);
+
+            if(i == rooms.size() - 1)
+            {
+                int last = i + 1;
+                gbc.gridy = last / 4;
+                addButton = new JButton("+");
+                addButton.setHorizontalTextPosition(JButton.CENTER);
+                addButton.setFont(new Font("Arial", Font.PLAIN, 32));
+                addButton.setPreferredSize(new Dimension(120,120));
+                addButton.setBackground(Color.LIGHT_GRAY);
+                addButton.setOpaque(true);
+                addButton.setFocusable(false);
+                addButton.setLayout(new BorderLayout());
+                addButton.addActionListener(this);
+                roomPanel.add(addButton, gbc);
+            }
         }
 
         scrollPane = new JScrollPane(roomPanel);
@@ -130,6 +147,15 @@ public class ManageApartment extends JPanel implements ActionListener
                 }
                 new RoomDetails(this, rooms.get(i));
             }
+        }
+
+        if(e.getSource() == addButton)
+        {
+            for(JButton button : roomButtons)
+            {
+                button.setEnabled(false);
+            }
+            new AddRoom(this);
         }
     }
 }

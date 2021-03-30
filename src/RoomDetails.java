@@ -10,20 +10,21 @@ import java.sql.SQLException;
 public class RoomDetails extends JFrame implements WindowListener, ActionListener
 {
     private final DatabaseConnection connection;
-    private final JLabel dbRoomNumber = new JLabel();
-    private final JLabel dbRentFee = new JLabel();
-    private final JLabel dbTenantID = new JLabel();
-    private final JLabel dbTenantName = new JLabel();
-    private final JButton editRoomNumber = new JButton();
-    private final JButton confirmRoomNumber = new JButton();
-    private final JButton editRentFee = new JButton();
-    private final JButton confirmRentFee = new JButton();
-    private final JButton editTenantID = new JButton();
-    private final JButton confirmTenantID = new JButton();
-    private final JTextField roomNumberField = new JTextField();
-    private final JTextField roomFeeField = new JTextField();
-    private final JTextField tenantField = new JTextField();
-    private final JButton close = new JButton("Close");
+    private final JLabel dbRoomNumber;
+    private final JLabel dbRentFee;
+    private final JLabel dbTenantID;
+    private final JLabel dbTenantName;
+    private final JButton editRoomNumber;
+    private final JButton confirmRoomNumber;
+    private final JButton editRentFee;
+    private final JButton confirmRentFee;
+    private final JButton editTenantID;
+    private final JButton confirmTenantID;
+    private final JTextField roomNumberField;
+    private final JTextField roomFeeField;
+    private final JTextField tenantField;
+    private final JButton closeButton;
+    private final JButton removeButton;
 
     ImageIcon logo = new ImageIcon(".\\images\\icon48.png");
     ManageApartment manageApartment;
@@ -41,7 +42,7 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         setLayout(null);
         setLocationRelativeTo(null);
         addWindowListener(this);
-        setTitle("Room");
+        setTitle("Room " + room.roomNumber);
         setIconImage(logo.getImage());
 
         int tenantID = 0;
@@ -81,93 +82,111 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         JLabel tenantNameText = new JLabel("Tenant Name:");
         tenantNameText.setBounds(30,150,200,25);
 
+        dbRoomNumber = new JLabel();
         dbRoomNumber.setText(String.valueOf(room.roomNumber));
         dbRoomNumber.setBounds(120,30,200,25);
 
+        dbRentFee = new JLabel();
         dbRentFee.setText(String.valueOf(room.roomFee));
         dbRentFee.setBounds(120,60,200,25);
 
+        dbTenantID = new JLabel();
         dbTenantID.setText(String.valueOf(tenantID));
         dbTenantID.setBounds(120,120,200,25);
 
+        dbTenantName = new JLabel();
         dbTenantName.setText(tenantFirstName + " " + tenantLastName);
         dbTenantName.setBounds(120,150,200,25);
 
         //JTextField
+        roomNumberField = new JTextField();
         roomNumberField.setBounds(120, 30, 200, 25);
         roomNumberField.setVisible(false);
+
+        roomFeeField = new JTextField();
         roomFeeField.setBounds(120, 60, 200, 25);
         roomFeeField.setVisible(false);
+
+        tenantField = new JTextField();
         tenantField.setBounds(120, 120, 200, 25);
         tenantField.setVisible(false);
 
         //edit button
-        editRoomNumber.setText("Edit");
+        editRoomNumber = new JButton("Edit");
         editRoomNumber.setFocusable(false);
         editRoomNumber.setLayout(null);
-        editRoomNumber.setFont(new Font("Courier",Font.PLAIN,10));
+        editRoomNumber.setFont(new Font("Arial",Font.PLAIN,10));
         editRoomNumber.setBounds(340,35,55,20);
-        editRoomNumber.setBackground(Color.GRAY);
+        editRoomNumber.setBackground(Color.WHITE);
         editRoomNumber.setOpaque(true);
         editRoomNumber.addActionListener(this);
 
-        editRentFee.setText("Edit");
+        editRentFee = new JButton("Edit");
         editRentFee.setFocusable(false);
         editRentFee.setLayout(null);
-        editRentFee.setFont(new Font("Courier",Font.PLAIN, 10));
+        editRentFee.setFont(new Font("Arial",Font.PLAIN, 10));
         editRentFee.setBounds(340,65,55,20);
-        editRentFee.setBackground(Color.GRAY);
+        editRentFee.setBackground(Color.WHITE);
         editRentFee.setOpaque(true);
         editRentFee.addActionListener(this);
 
-        editTenantID.setText("Edit");
+        editTenantID = new JButton("Edit");
         editTenantID.setFocusable(false);
         editTenantID.setLayout(null);
-        editTenantID.setFont(new Font("Courier",Font.PLAIN, 10));
+        editTenantID.setFont(new Font("Arial",Font.PLAIN, 10));
         editTenantID.setBounds(340,125,55,20);
-        editTenantID.setBackground(Color.GRAY);
+        editTenantID.setBackground(Color.WHITE);
         editTenantID.setOpaque(true);
         editTenantID.addActionListener(this);
 
         //confirm button
+        confirmRoomNumber = new JButton("Confirm");
         confirmRoomNumber.setVisible(false);
-        confirmRoomNumber.setText("Confirm");
         confirmRoomNumber.setFocusable(false);
         confirmRoomNumber.setLayout(null);
-        confirmRoomNumber.setFont(new Font("Courier",Font.PLAIN,10));
+        confirmRoomNumber.setFont(new Font("Arial",Font.PLAIN,10));
         confirmRoomNumber.setBounds(340,33,80,20);
-        confirmRoomNumber.setBackground(Color.GRAY);
+        confirmRoomNumber.setBackground(Color.WHITE);
         confirmRoomNumber.setOpaque(true);
         confirmRoomNumber.addActionListener(this);
 
+        confirmRentFee = new JButton("Confirm");
         confirmRentFee.setVisible(false);
-        confirmRentFee.setText("Confirm");
         confirmRentFee.setFocusable(false);
         confirmRentFee.setLayout(null);
-        confirmRentFee.setFont(new Font("Courier",Font.PLAIN,10));
+        confirmRentFee.setFont(new Font("Arial",Font.PLAIN,10));
         confirmRentFee.setBounds(340,63,80,20);
-        confirmRentFee.setBackground(Color.GRAY);
+        confirmRentFee.setBackground(Color.WHITE);
         confirmRentFee.setOpaque(true);
         confirmRentFee.addActionListener(this);
 
+        confirmTenantID = new JButton("Confirm");
         confirmTenantID.setVisible(false);
-        confirmTenantID.setText("Confirm");
         confirmTenantID.setFocusable(false);
         confirmTenantID.setLayout(null);
-        confirmTenantID.setFont(new Font("Courier",Font.PLAIN,10));
+        confirmTenantID.setFont(new Font("Arial",Font.PLAIN,10));
         confirmTenantID.setBounds(340,123,80,20);
-        confirmTenantID.setBackground(Color.GRAY);
+        confirmTenantID.setBackground(Color.WHITE);
         confirmTenantID.setOpaque(true);
         confirmTenantID.addActionListener(this);
 
         //close button
-        close.setText("Close");
-        close.setFocusable(false);
-        close.setFont(new Font("Courier", Font.PLAIN, 10));
-        close.setBounds(410,230,60,20);
-        close.setBackground(Color.GRAY);
-        close.setOpaque(true);
-        close.addActionListener(this);
+        closeButton = new JButton("Close");
+        closeButton.setFocusable(false);
+        closeButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        closeButton.setBounds(410, 230, 60, 20);
+        closeButton.setBackground(Color.WHITE);
+        closeButton.setOpaque(true);
+        closeButton.addActionListener(this);
+
+        //remove button
+        removeButton = new JButton("Remove");
+        removeButton.setFocusable(false);
+        removeButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        removeButton.setBounds(320, 230, 80, 20);
+        removeButton.setBackground(Color.WHITE);
+        removeButton.setOpaque(true);
+        removeButton.addActionListener(this);
 
         setVisible(true);
 
@@ -188,7 +207,8 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         add(roomNumberField);
         add(roomFeeField);
         add(tenantField);
-        add(close);
+        add(closeButton);
+        add(removeButton);
     }
 
     @Override
@@ -200,6 +220,7 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
             confirmRoomNumber.setVisible(true);
             roomNumberField.setVisible(true);
         }
+
         if(e.getSource() == confirmRoomNumber)
         {
             if(roomNumberField.getText().isEmpty())
@@ -208,7 +229,24 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
             }
             else
             {
-                connection.execute("UPDATE rooms SET room_number='" + roomNumberField.getText() + "' WHERE key='" + room.key + "'");
+                try
+                {
+                    ResultSet resultSet = connection.getResult("SELECT * FROM rooms WHERE room_number='" + roomNumberField.getText() + "'");
+                    if(!resultSet.next())
+                    {
+                        connection.execute("UPDATE rooms SET room_number='" + roomNumberField.getText() + "' WHERE key='" + room.key + "'");
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "The room number you entered is already taken.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                    resultSet.close();
+                }
+                catch(SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+
                 editRoomNumber.setEnabled(true);
                 editRoomNumber.setVisible(true);
                 confirmRoomNumber.setVisible(false);
@@ -216,55 +254,88 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
                 dbRoomNumber.setText(roomNumberField.getText());
             }
         }
+
         if(e.getSource() == editRentFee)
         {
             editRentFee.setVisible(false);
             confirmRentFee.setVisible(true);
             roomFeeField.setVisible(true);
         }
+
         if(e.getSource() == confirmRentFee)
         {
             if (roomFeeField.getText().isEmpty())
             {
-                JOptionPane.showMessageDialog(null, "ERROR: No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
             else
             {
-                connection.execute("UPDATE rooms SET rent_amount='" + roomFeeField.getText() + "' WHERE key='" + room.key + "'");
-                editRentFee.setEnabled(true);
-                editRentFee.setVisible(true);
-                confirmRentFee.setVisible(false);
-                roomFeeField.setVisible(false);
-                dbRentFee.setText(roomFeeField.getText());
+                double amount;
+                try
+                {
+                    amount = Double.parseDouble(roomFeeField.getText());
+                    connection.execute("UPDATE rooms SET rent_amount='" + amount + "' WHERE key='" + room.key + "'");
+                    editRentFee.setEnabled(true);
+                    editRentFee.setVisible(true);
+                    confirmRentFee.setVisible(false);
+                    roomFeeField.setVisible(false);
+                    dbRentFee.setText(roomFeeField.getText());
+                }
+                catch(NumberFormatException ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Invalid input for rent. Please enter a number.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
+
         if(e.getSource() == editTenantID)
         {
             editTenantID.setVisible(false);
             confirmTenantID.setVisible(true);
             tenantField.setVisible(true);
         }
+
         if(e.getSource() == confirmTenantID)
         {
             if(tenantField.getText().isEmpty())
             {
-                JOptionPane.showMessageDialog(null, "ERROR: No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
             else
             {
-                connection.execute("UPDATE tenants SET room='0' WHERE room='" + room.key + "'");
-                connection.execute("UPDATE tenants SET room='" + room.key + "' WHERE key='" + tenantField.getText() + "'");
-                editTenantID.setEnabled(true);
-                editTenantID.setVisible(true);
-                confirmTenantID.setVisible(false);
-                tenantField.setVisible(false);
-                dbTenantID.setText(tenantField.getText());
-
+                int tenantID = Integer.parseInt(tenantField.getText());
                 try
                 {
-                    ResultSet resultSet = connection.getResult("SELECT first_name, last_name FROM users WHERE key='" + tenantField.getText() + "'");
-                    dbTenantName.setText(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
-                    resultSet.close();
+                    ResultSet resultSet = connection.getResult("SELECT * FROM users WHERE key='" + tenantID + "'");
+                    if(resultSet.next() || tenantID == 0)
+                    {
+                        resultSet.close();
+                        connection.execute("UPDATE tenants SET room='0' WHERE room='" + room.key + "'");
+                        connection.execute("UPDATE tenants SET room='" + (tenantID == 0 ? "0" : room.key) + "' WHERE key='" + tenantID + "'");
+                        editTenantID.setEnabled(true);
+                        editTenantID.setVisible(true);
+                        confirmTenantID.setVisible(false);
+                        tenantField.setVisible(false);
+                        dbTenantID.setText(String.valueOf(tenantID));
+                        resultSet = connection.getResult("SELECT first_name, last_name FROM users WHERE key='" + tenantID + "'");
+                        if(resultSet.next())
+                        {
+                            dbTenantName.setText(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
+                        }
+                        else if(tenantID == 0)
+                        {
+                            dbTenantName.setText("");
+                        }
+                        resultSet.close();
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Tenant not found.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                catch(NumberFormatException ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Invalid input for tenant. Please enter a number.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
                 catch(SQLException ex)
                 {
@@ -272,8 +343,16 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
                 }
             }
         }
-        if(e.getSource() == close)
+
+        if(e.getSource() == closeButton)
         {
+            dispose();
+        }
+
+        if(e.getSource() == removeButton)
+        {
+            connection.execute("UPDATE tenants SET room='0' WHERE room='" + room.key + "'");
+            connection.execute("DELETE FROM rooms WHERE key='" + room.key + "'");
             dispose();
         }
     }
