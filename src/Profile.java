@@ -212,6 +212,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
             confirmFirstNameButton.setVisible(false);
             firstNameField.setVisible(false);
             firstNameValue.setVisible(true);
+            firstNameField.setText("");
         }
 
         if(e.getSource() == editMiddleNameButton)
@@ -235,6 +236,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
             confirmMiddleNameButton.setVisible(false);
             middleNameField.setVisible(false);
             middleNameValue.setVisible(true);
+            middleNameField.setText("");
         }
 
         if(e.getSource() == editLastNameButton)
@@ -258,6 +260,7 @@ public class Profile extends JFrame implements WindowListener, ActionListener
             confirmLastNameButton.setVisible(false);
             lastNameField.setVisible(false);
             lastNameValue.setVisible(true);
+            lastNameField.setText("");
         }
 
         if(e.getSource() == changePassButton)

@@ -218,15 +218,12 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
             editRoomNumber.setVisible(false);
             confirmRoomNumber.setVisible(true);
             roomNumberField.setVisible(true);
+            dbRoomNumber.setVisible(false);
         }
 
         if(e.getSource() == confirmRoomNumber)
         {
-            if(roomNumberField.getText().isEmpty())
-            {
-                JOptionPane.showMessageDialog(null, "ERROR: No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
-            }
-            else
+            if(!roomNumberField.getText().isEmpty())
             {
                 try
                 {
@@ -234,6 +231,7 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
                     if(!resultSet.next())
                     {
                         connection.execute("UPDATE rooms SET room_number='" + roomNumberField.getText() + "' WHERE key='" + room.key + "'");
+                        dbRoomNumber.setText(roomNumberField.getText());
                     }
                     else
                     {
@@ -245,13 +243,12 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
                 {
                     ex.printStackTrace();
                 }
-
-                editRoomNumber.setEnabled(true);
-                editRoomNumber.setVisible(true);
-                confirmRoomNumber.setVisible(false);
-                roomNumberField.setVisible(false);
-                dbRoomNumber.setText(roomNumberField.getText());
             }
+            dbRoomNumber.setVisible(true);
+            editRoomNumber.setVisible(true);
+            confirmRoomNumber.setVisible(false);
+            roomNumberField.setVisible(false);
+            roomNumberField.setText("");
         }
 
         if(e.getSource() == editRentFee)
@@ -259,25 +256,18 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
             editRentFee.setVisible(false);
             confirmRentFee.setVisible(true);
             roomFeeField.setVisible(true);
+            dbRentFee.setVisible(false);
         }
 
         if(e.getSource() == confirmRentFee)
         {
-            if (roomFeeField.getText().isEmpty())
-            {
-                JOptionPane.showMessageDialog(null, "No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
-            }
-            else
+            if(!roomFeeField.getText().isEmpty())
             {
                 double amount;
                 try
                 {
                     amount = Double.parseDouble(roomFeeField.getText());
                     connection.execute("UPDATE rooms SET rent_amount='" + amount + "' WHERE key='" + room.key + "'");
-                    editRentFee.setEnabled(true);
-                    editRentFee.setVisible(true);
-                    confirmRentFee.setVisible(false);
-                    roomFeeField.setVisible(false);
                     dbRentFee.setText(roomFeeField.getText());
                 }
                 catch(NumberFormatException ex)
@@ -285,6 +275,11 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
                     JOptionPane.showMessageDialog(null, "Invalid input for rent. Please enter a number.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            dbRentFee.setVisible(true);
+            editRentFee.setVisible(true);
+            confirmRentFee.setVisible(false);
+            roomFeeField.setVisible(false);
+            roomFeeField.setText("");
         }
 
         if(e.getSource() == editTenantID)
@@ -292,15 +287,12 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
             editTenantID.setVisible(false);
             confirmTenantID.setVisible(true);
             tenantField.setVisible(true);
+            dbTenantID.setVisible(false);
         }
 
         if(e.getSource() == confirmTenantID)
         {
-            if(tenantField.getText().isEmpty())
-            {
-                JOptionPane.showMessageDialog(null, "No character input.", "ERROR", JOptionPane.WARNING_MESSAGE);
-            }
-            else
+            if(!tenantField.getText().isEmpty())
             {
                 int tenantID = Integer.parseInt(tenantField.getText());
                 try
@@ -311,10 +303,6 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
                         resultSet.close();
                         connection.execute("UPDATE tenants SET room='0' WHERE room='" + room.key + "'");
                         connection.execute("UPDATE tenants SET room='" + (tenantID == 0 ? "0" : room.key) + "' WHERE key='" + tenantID + "'");
-                        editTenantID.setEnabled(true);
-                        editTenantID.setVisible(true);
-                        confirmTenantID.setVisible(false);
-                        tenantField.setVisible(false);
                         dbTenantID.setText(String.valueOf(tenantID));
                         resultSet = connection.getResult("SELECT first_name, last_name FROM users WHERE key='" + tenantID + "'");
                         if(resultSet.next())
@@ -341,6 +329,10 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
                     ex.printStackTrace();
                 }
             }
+            dbTenantID.setVisible(true);
+            editTenantID.setVisible(true);
+            confirmTenantID.setVisible(false);
+            tenantField.setVisible(false);
         }
 
         if(e.getSource() == closeButton)

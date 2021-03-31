@@ -157,6 +157,7 @@ public class Admin extends User implements ActionListener
             }
             navButtons[1].setBackground(Color.LIGHT_GRAY);
             contentCard.show(contentPanel, "manageTenantsPanel");
+            manageTenants.refresh();
         }
 
         // Create Bill Button
