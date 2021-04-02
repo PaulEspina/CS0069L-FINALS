@@ -9,8 +9,8 @@ public abstract class User
     protected String lastName;
 
     protected JFrame frame;
-    protected SidePanel sidePanel;
-    protected ContentPanel contentPanel;
+    protected JPanel sidePanel;
+    protected JPanel contentPanel;
     protected JButton profileButton;
     protected JButton logoutButton;
     protected JButton exitButton;
@@ -22,14 +22,6 @@ public abstract class User
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
-        frame = new JFrame();
-        frame.setTitle("Apartment Management System");
-        frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        sidePanel = new SidePanel();
-        contentPanel = new ContentPanel();
     }
 
     protected abstract void side();
