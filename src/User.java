@@ -45,6 +45,8 @@ public abstract class User
 
     protected abstract void content();
 
+    protected abstract void refresh();
+
     // Setters
     protected void setUserID(int value)
     {
