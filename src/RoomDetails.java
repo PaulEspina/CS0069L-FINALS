@@ -26,8 +26,8 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
     private final JButton closeButton;
     private final JButton removeButton;
 
-    ManageApartment manageApartment;
-    Room room;
+    private final ManageApartment manageApartment;
+    private final Room room;
     public RoomDetails(ManageApartment manageApartment, Room room)
     {
         this.manageApartment = manageApartment;
@@ -366,7 +366,7 @@ public class RoomDetails extends JFrame implements WindowListener, ActionListene
         manageApartment.removeAll();
         manageApartment.revalidate();
         manageApartment.repaint();
-        manageApartment.create();
+        manageApartment.init();
     }
 
     @Override

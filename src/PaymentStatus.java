@@ -10,20 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PaymentStatus extends JFrame implements ActionListener, WindowListener {
-    private final DatabaseConnection connection;
 
     private final JButton close;
-
-    private final int tenantID;
     private final TenantDetails tenantDetails;
-
 
     PaymentStatus(TenantDetails tenantDetails, int tenantID)
     {
         this.tenantDetails = tenantDetails;
-        this.tenantID = tenantID;
 
-        connection = DatabaseConnection.getInstance();
+        DatabaseConnection connection = DatabaseConnection.getInstance();
 
         //Frame Settings
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

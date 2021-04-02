@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class CreateUser extends JPanel implements ActionListener
 {
-    DatabaseConnection connection;
+    private final DatabaseConnection connection;
     private final Admin admin;
 
     private final JLabel newPicture;

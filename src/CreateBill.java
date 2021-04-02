@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public class CreateBill extends JPanel implements ActionListener, DocumentListener
 {
-    DatabaseConnection connection;
+    public final DatabaseConnection connection;
     public final Admin admin;
 
     private final JTextField recipientSearchField;
@@ -18,8 +18,6 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
     private final JLabel recipientPicture;
     private final JTextField recipientMiscFee;
     private final JLabel recipientTotalFee;
-    private final JButton createBillResetButton;
-    private final JButton createBillButton;
     private final JLabel dbFirstName;
     private final JLabel dbMiddleName;
     private final JLabel dbLastName;
@@ -28,6 +26,8 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
     private final JLabel dbRoomFee;
     private final JLabel dbTotalFee;
     private final JLabel dbDate;
+    private final JButton resetButton;
+    private final JButton createButton;
     private double rentFee = 0;
     private double totalFee = 0;
     private String dateString;
@@ -108,21 +108,21 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
         dbTotalFee = new JLabel();
         dbTotalFee.setBounds(175,450,500,25);
 
-        createBillResetButton = new JButton("Reset");
-        createBillResetButton.setFont(new Font("Arial", Font.BOLD, 10));
-        createBillResetButton.setFocusPainted(false);
-        createBillResetButton.setBackground(Color.WHITE);
-        createBillResetButton.setBounds(475, 525, 75, 25);
-        createBillResetButton.setEnabled(false);
-        createBillResetButton.addActionListener(this);
+        resetButton = new JButton("Reset");
+        resetButton.setFont(new Font("Arial", Font.BOLD, 10));
+        resetButton.setFocusPainted(false);
+        resetButton.setBackground(Color.WHITE);
+        resetButton.setBounds(475, 525, 75, 25);
+        resetButton.setEnabled(false);
+        resetButton.addActionListener(this);
 
-        createBillButton = new JButton("Create");
-        createBillButton.setFont(new Font("Arial", Font.BOLD, 10));
-        createBillButton.setFocusPainted(false);
-        createBillButton.setBackground(Color.WHITE);
-        createBillButton.setBounds(560, 525, 75, 25);
-        createBillButton.setEnabled(false);
-        createBillButton.addActionListener(this);
+        createButton = new JButton("Create");
+        createButton.setFont(new Font("Arial", Font.BOLD, 10));
+        createButton.setFocusPainted(false);
+        createButton.setBackground(Color.WHITE);
+        createButton.setBounds(560, 525, 75, 25);
+        createButton.setEnabled(false);
+        createButton.addActionListener(this);
 
         add(dbDate);
         add(dbRoomNumber);
@@ -147,8 +147,8 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
         add(miscFeeLabel);
         add(recipientMiscFee);
         add(recipientTotalFee);
-        add(createBillResetButton);
-        add(createBillButton);
+        add(resetButton);
+        add(createButton);
     }
 
     @Override
@@ -203,7 +203,7 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
                             recipientSearchField.setEnabled(false);
                             recipientSearchButton.setEnabled(false);
                             recipientMiscFee.setEnabled(true);
-                            createBillResetButton.setEnabled(true);
+                            resetButton.setEnabled(true);
                         }
                         else
                         {
@@ -233,7 +233,7 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
         }
 
         // Create Bill Reset Button
-        if(e.getSource() == createBillResetButton)
+        if(e.getSource() == resetButton)
         {
             recipientPicture.setIcon(new ImageIcon(new ImageIcon("default_pic.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
             dbDate.setText("");
@@ -250,12 +250,12 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
             recipientSearchField.setEnabled(true);
             recipientSearchButton.setEnabled(true);
             recipientMiscFee.setEnabled(false);
-            createBillResetButton.setEnabled(false);
-            createBillButton.setEnabled(false);
+            resetButton.setEnabled(false);
+            createButton.setEnabled(false);
         }
 
         // Confirm Create Bill Button
-        if(e.getSource() == createBillButton)
+        if(e.getSource() == createButton)
         {
             connection.execute("INSERT INTO bills(recipient_id, date_issued, total_amount, amount_paid) " +
                                "VALUES(" +
@@ -279,8 +279,8 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
             recipientSearchField.setEnabled(true);
             recipientSearchButton.setEnabled(true);
             recipientMiscFee.setEnabled(false);
-            createBillResetButton.setEnabled(false);
-            createBillButton.setEnabled(false);
+            resetButton.setEnabled(false);
+            createButton.setEnabled(false);
             JOptionPane.showMessageDialog(null, "The bill is successfully created!", "Bill Created", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -297,7 +297,7 @@ public class CreateBill extends JPanel implements ActionListener, DocumentListen
             System.out.println("Miscellaneous Fee textfield's value is not a number.");
         }
         recipientTotalFee.setText("Total Fee: " + totalFee);
-        createBillButton.setEnabled(true);
+        createButton.setEnabled(true);
     }
 
     @Override

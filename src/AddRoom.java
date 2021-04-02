@@ -127,7 +127,7 @@ public class AddRoom extends JFrame implements ActionListener, WindowListener
         manageApartment.removeAll();
         manageApartment.revalidate();
         manageApartment.repaint();
-        manageApartment.create();
+        manageApartment.init();
     }
 
     @Override

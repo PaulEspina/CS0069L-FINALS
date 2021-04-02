@@ -22,12 +22,12 @@ public class ManageApartment extends JPanel implements ActionListener
     {
         connection = DatabaseConnection.getInstance();
         setLayout(null);
-        create();
+        init();
         roomPanel = new JPanel();
         scrollPane = new JScrollPane();
     }
 
-    public void create()
+    public void init()
     {
         rooms = new Vector<>();
         ResultSet resultSet = connection.getResult("SELECT * FROM rooms");

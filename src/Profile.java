@@ -8,7 +8,7 @@ import java.awt.event.WindowListener;
 
 public class Profile extends JFrame implements WindowListener, ActionListener
 {
-    DatabaseConnection connection;
+    private final DatabaseConnection connection;
     private final User user;
 
     private final JTextField firstNameField;
