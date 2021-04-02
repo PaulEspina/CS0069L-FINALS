@@ -19,13 +19,6 @@ public class Tenant extends User implements ActionListener
     {
         super(userID, username, firstName, middleName, lastName);
         connection = DatabaseConnection.getInstance();
-        frame = new JFrame();
-        frame.setTitle("Apartment Management System");
-        frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setIconImage(new ImageIcon("icon48.png").getImage());
         side();
         content();
         frame.add(sidePanel, BorderLayout.WEST);
@@ -175,7 +168,6 @@ public class Tenant extends User implements ActionListener
         payButton = new JButton("Pay");
         payButton.setBackground(Color.WHITE);
         payButton.setFont(new Font("Arial", Font.BOLD, 10));
-        payButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         payButton.setFocusPainted(false);
         payButton.setBounds(535, 25, 60, 24);
         payButton.addActionListener(this);
