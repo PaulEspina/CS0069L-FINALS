@@ -16,12 +16,7 @@ public class Admin extends User implements ActionListener
     {
         super(userID, username, firstName, middleName, lastName);
         contentCard = new CardLayout();
-        frame = new JFrame();
-        frame.setTitle("Apartment Management System");
-        frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
+
         side();
         content();
         frame.add(sidePanel, BorderLayout.WEST);
@@ -33,12 +28,6 @@ public class Admin extends User implements ActionListener
     @Override
     protected void side()
     {
-        sidePanel = new JPanel();
-        sidePanel.setPreferredSize(new Dimension(140, 600));
-        sidePanel.setLayout(new GridLayout(3, 1));
-        sidePanel.setBackground(Color.WHITE);
-        sidePanel.setOpaque(true);
-
         // PROFILE PANEL STARTS
         JPanel profilePanel = new JPanel();
         profilePanel.setLayout(null);
@@ -119,10 +108,6 @@ public class Admin extends User implements ActionListener
     @Override
     protected void content()
     {
-        contentPanel = new JPanel();
-        contentPanel.setBackground(Color.WHITE);
-        contentPanel.setOpaque(true);
-        contentPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         contentPanel.setLayout(contentCard);
         manageApartment = new ManageApartment();
         manageTenants = new ManageTenants();

@@ -36,13 +36,6 @@ public class Tenant extends User implements ActionListener
     @Override
     protected void side()
     {
-        //Setting for profile panel.
-        sidePanel = new JPanel();
-        sidePanel.setPreferredSize(new Dimension(140, 600));
-        sidePanel.setLayout(new GridLayout(3, 1));
-        sidePanel.setBackground(Color.WHITE);
-        sidePanel.setOpaque(true);
-
         // PROFILE PANEL STARTS
         JPanel profilePanel = new JPanel();
         profilePanel.setLayout(null);
@@ -107,11 +100,6 @@ public class Tenant extends User implements ActionListener
     @Override
     protected void content()
     {
-        contentPanel = new JPanel();
-        contentPanel.setOpaque(true);
-        contentPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
-        contentPanel.setLayout(null);
-
         //Table Settings
         defaultTableModeltt = new DefaultTableModel()
         {
